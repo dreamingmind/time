@@ -100,4 +100,11 @@ class TimesController extends AppController {
 		$this->Session->setFlash(__('Time was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
+	
+	public function timekeep(){
+	    $open = $this->Time->getOpenRecord();
+	    $projects = $this->Time->find('list',array('fields' => array('Time.project', 'Time.project')));
+	    $users = $this->Time->find('list',array('fields' => array('Time.user', 'Time.user')));
+	    $this->set(compact('open', 'projects', 'users'));
+	}
 }

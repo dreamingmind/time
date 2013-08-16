@@ -738,3 +738,10 @@ pre {
 #url-rewriting-warning {
 	display:none;
 }
+
+
+form.time {
+    clear: none;
+    float: left;
+    width: 45%;
+}
