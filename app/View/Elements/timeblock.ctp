@@ -17,10 +17,12 @@
 	'rows' => '2'
     ));
     echo $this->Form->input('time_in', array(
-	'value' => $time['Time']['time_in']
+	'value' => $time['Time']['time_in'],
+	'type' => 'text'
     ));
     echo $this->Form->input('time_out', array(
-	'value' => $time['Time']['time_out']
+	'value' => $time['Time']['time_out'],
+	'type' => 'text'
     ));
     echo $this->Form->end('Submit');
 ?>

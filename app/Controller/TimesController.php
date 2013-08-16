@@ -102,6 +102,9 @@ class TimesController extends AppController {
 	}
 	
 	public function timekeep(){
+	    if ($this->request->is('post')){
+		$this->Time->saveTime($this->request->data);
+	    }
 	    $open = $this->Time->getOpenRecord();
 	    $projects = $this->Time->find('list',array('fields' => array('Time.project', 'Time.project')));
 	    $users = $this->Time->find('list',array('fields' => array('Time.user', 'Time.user')));

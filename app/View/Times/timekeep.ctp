@@ -3,8 +3,9 @@ $empty = array('Time' => array(
     'id' => '',
     'user' => '',
     'project' => '',
+    'activity' => '',
     'time_in' => '',
-    'time_out' => ''
+    'time_out' => '0000-00-00 00:00:00'
 ));
 if ($open){
     foreach ($open as $time) {
