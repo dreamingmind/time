@@ -61,7 +61,7 @@ class Time extends AppModel {
 //	);
 	
 	function getOpenRecord(){
-	    $open = $this->find('all', array('conditions' => array('Time.time_out' => '0000-00-00 00:00:00')));
+	    $open = $this->find('all', array('conditions' => array('Time.time_out <' => '1')));
 	    return $open;
 	}
 }
