@@ -1,6 +1,6 @@
 <?php
     echo $this->Form->create('Time', array('class' => 'time'));
-    echo $this->Html->para('', 'id: ' . (($time['Time']['id'] < 1) ? 'new' : $time['Time']['id']));
+    echo $this->Html->para('', 'id: ' . (($time['Time']['id'] < 1) ? 'new' : $time['Time']['id']) . " ($duration hours)");
     echo $this->Form->input('id', array(
 	'type' => 'hidden',
 	'value' => $time['Time']['id']
@@ -24,5 +24,6 @@
 	'value' => $time['Time']['time_out'],
 	'type' => 'text'
     ));
+    echo $this->Html->para('', "$duration hours");
     echo $this->Form->end('Submit');
 ?>

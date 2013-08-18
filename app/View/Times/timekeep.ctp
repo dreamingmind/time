@@ -1,4 +1,5 @@
 <?php
+echo $this->Html->para('', 'Total project time: '.intval($duration['total']));
 $empty = array('Time' => array(
     'id' => '',
     'user' => '',
@@ -11,7 +12,8 @@ if ($open){
     foreach ($open as $time) {
 	echo $this->element('timeblock', array(
 	    'user' => $time['Time']['user'],
-	    'time' => $time));
+	    'time' => $time,
+	    'duration' => intval($duration[$time['Time']['user']])));
 	unset($users[$time['Time']['user']]);
     }
 }
@@ -19,7 +21,8 @@ if (isset($users)) {
     foreach ($users as $user) {
 	echo $this->element('timeblock', array(
 	    'user' => $user,
-	    'time' => $empty));
+	    'time' => $empty,
+	    'duration' => intval($duration[$user])));
     }
 }
 ?>

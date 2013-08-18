@@ -35,6 +35,8 @@ class Time extends AppModel {
 			),
 		),
 	);
+	
+	var $names = false;
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
@@ -59,6 +61,29 @@ class Time extends AppModel {
 //			'order' => ''
 //		)
 //	);
+	
+	function getNames(){
+	    if (!$this->names){
+		$this->names = $this->find('list',array('fields' => array('Time.user', 'Time.user')));
+	    }
+	    return $this->names;
+	}
+	
+	function getTimeTotals(){
+	    $this->getNames();
+	    $this->duration = array();
+	    foreach ($this->names as $name) {
+		$duration = $this->find('all', array(
+		    'fields' => array('SUM(duration)'),
+		    'conditions' => array('user' => $name)));
+		$this->duration[$name] = $duration[0][0]['SUM(duration)'];
+	    }
+	    $duration = $this->find('all', array(
+		'fields' => array('SUM(duration)')));
+	    $this->duration['total'] = $duration[0][0]['SUM(duration)'];
+	    
+	    return $this->duration;		
+	}
 	
 	function getOpenRecord(){
 	    $open = $this->find('all', array('conditions' => array('Time.time_out <' => '1')));

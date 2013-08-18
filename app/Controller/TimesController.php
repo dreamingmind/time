@@ -105,9 +105,10 @@ class TimesController extends AppController {
 	    if ($this->request->is('post')){
 		$this->Time->saveTime($this->request->data);
 	    }
+	    $duration = $this->Time->getTimeTotals();
 	    $open = $this->Time->getOpenRecord();
 	    $projects = $this->Time->find('list',array('fields' => array('Time.project', 'Time.project')));
-	    $users = $this->Time->find('list',array('fields' => array('Time.user', 'Time.user')));
-	    $this->set(compact('open', 'projects', 'users'));
+	    $users = $this->Time->getNames();
+	    $this->set(compact('open', 'projects', 'users', 'duration'));
 	}
 }
