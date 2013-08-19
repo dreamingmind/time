@@ -36,9 +36,16 @@ class Time extends AppModel {
 		),
 	);
 	
-	var $names = false;
+	/**
+	 * A list of all user names
+	 * 
+	 * array (name => name)
+	 *
+	 * @var array array of user names
+	 */
+	var $names = false; 
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+//These relationshops are for possible future expansion to multi table solution
 
 /**
  * belongsTo associations
@@ -62,6 +69,13 @@ class Time extends AppModel {
 //		)
 //	);
 	
+	/**
+	 * Set an array property of all user names
+	 * 
+	 * array ( name => name)
+	 * 
+	 * @return array The property that contains all the user names
+	 */
 	function getNames(){
 	    if (!$this->names){
 		$this->names = $this->find('list',array('fields' => array('Time.user', 'Time.user')));
@@ -69,8 +83,21 @@ class Time extends AppModel {
 	    return $this->names;
 	}
 	
+	/**
+	 * Get individual and total project time
+	 * 
+	 * This does not account for multiple projects
+	 * array (
+	 *	'total' => integer,
+	 *	username => integer (one for each user, by name)
+	 * )
+	 * 
+	 * @return array Total and individual total time
+	 */
 	function getTimeTotals(){
+	    // get a list of users
 	    $this->getNames();
+	    // walk through and get their summed time
 	    $this->duration = array();
 	    foreach ($this->names as $name) {
 		$duration = $this->find('all', array(
@@ -78,6 +105,7 @@ class Time extends AppModel {
 		    'conditions' => array('user' => $name)));
 		$this->duration[$name] = $duration[0][0]['SUM(duration)'];
 	    }
+	    // now get total time
 	    $duration = $this->find('all', array(
 		'fields' => array('SUM(duration)')));
 	    $this->duration['total'] = $duration[0][0]['SUM(duration)'];
@@ -85,19 +113,35 @@ class Time extends AppModel {
 	    return $this->duration;		
 	}
 	
+	/**
+	 * Get open time records if they exist
+	 * 
+	 * @return array|false data or false if there are no open records
+	 */
 	function getOpenRecord(){
 	    $open = $this->find('all', array('conditions' => array('Time.time_out <' => '1')));
 	    return $open;
 	}
 	
+	/**
+	 * Save a time record (possibly with calculated duration)
+	 * 
+	 * Only works if time is entered in 24 hour format
+	 * Calc the duration if the record is being closed
+	 * Save the record 
+	 * 
+	 * @param array $data A record to save
+	 */
 	function saveTime($data){
+	    // make the array access shorter
 	    $inputs = $data['Time'];
+	    // this if may be meaingless
 	    if ( isset($inputs['time_in']) && isset($inputs['time_out'])) {
-//		unset($inputs['time_in']['meridian']);
-//		unset($inputs['time_out']['meridian']);
 		$in = strtotime($inputs['time_in']);
 		$out = strtotime($inputs['time_out']);
+		// this if checks to see if the recor has both time_in and time_out set
 		if ($in > 0 && $out > 0) {
+		    // HOUR is a cake constant (3600)
 		    $data['Time']['duration'] = ($out - $in)/HOUR;
 		}
 	    }

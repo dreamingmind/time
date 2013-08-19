@@ -8,7 +8,7 @@ App::uses('AppController', 'Controller');
 class TimesController extends AppController {
 
 /**
- * index method
+ * index method standard bake
  *
  * @return void
  */
@@ -18,7 +18,7 @@ class TimesController extends AppController {
 	}
 
 /**
- * view method
+ * view method standard bake
  *
  * @throws NotFoundException
  * @param string $id
@@ -33,7 +33,7 @@ class TimesController extends AppController {
 	}
 
 /**
- * add method
+ * add method standard bake
  *
  * @return void
  */
@@ -53,7 +53,7 @@ class TimesController extends AppController {
 	}
 
 /**
- * edit method
+ * edit method standard bake
  *
  * @throws NotFoundException
  * @param string $id
@@ -80,7 +80,7 @@ class TimesController extends AppController {
 	}
 
 /**
- * delete method
+ * delete method standard bake
  *
  * @throws NotFoundException
  * @throws MethodNotAllowedException
@@ -101,14 +101,29 @@ class TimesController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 	
+	
+	/**
+	 * Main time keeping interface
+	 * 
+	 * Shows one record for each user.
+	 * A record with time_in and time_out == 0 will be loaded if it exists
+	 * An empty record presented if no partial (open) record exists
+	 */
 	public function timekeep(){
+	    // Save data if some is posted
 	    if ($this->request->is('post')){
 		$this->Time->saveTime($this->request->data);
 	    }
+	    // get array of total project and individual time
 	    $duration = $this->Time->getTimeTotals();
+	    // get any open records
 	    $open = $this->Time->getOpenRecord();
+	    // get a list of all projects
 	    $projects = $this->Time->find('list',array('fields' => array('Time.project', 'Time.project')));
+	    // get a list of all users
 	    $users = $this->Time->getNames();
+	    
+	    // send all the vars to the view
 	    $this->set(compact('open', 'projects', 'users', 'duration'));
 	}
 }
