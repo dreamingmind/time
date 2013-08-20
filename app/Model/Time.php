@@ -135,16 +135,24 @@ class Time extends AppModel {
 	function saveTime($data){
 	    // make the array access shorter
 	    $inputs = $data['Time'];
+	    $message = '';
 	    // this if may be meaingless
 	    if ( isset($inputs['time_in']) && isset($inputs['time_out'])) {
+		$message .= "Time inputs are set.\r";
 		$in = strtotime($inputs['time_in']);
 		$out = strtotime($inputs['time_out']);
 		// this if checks to see if the recor has both time_in and time_out set
 		if ($in > 0 && $out > 0) {
+		    $message .= "Duration being caluculated.\r";
 		    // HOUR is a cake constant (3600)
 		    $data['Time']['duration'] = ($out - $in)/HOUR;
 		}
 	    }
-	    $this->save($data);
+	    if ($this->save($data)) {
+		$message .= 'Successful save.';
+	    } else {
+		$message .= 'Save failed';
+	    }
+	    return $message;
 	}
 }

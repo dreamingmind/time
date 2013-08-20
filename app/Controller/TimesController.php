@@ -111,8 +111,9 @@ class TimesController extends AppController {
 	 */
 	public function timekeep(){
 	    // Save data if some is posted
+	    $message = 'No save attempted.';
 	    if ($this->request->is('post')){
-		$this->Time->saveTime($this->request->data);
+		$message = $this->Time->saveTime($this->request->data);
 	    }
 	    // get array of total project and individual time
 	    $duration = $this->Time->getTimeTotals();
@@ -125,5 +126,6 @@ class TimesController extends AppController {
 	    
 	    // send all the vars to the view
 	    $this->set(compact('open', 'projects', 'users', 'duration'));
+	    debug($message);
 	}
 }
