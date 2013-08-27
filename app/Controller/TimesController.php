@@ -128,4 +128,18 @@ class TimesController extends AppController {
 	    $this->set(compact('open', 'projects', 'users', 'duration'));
 	    debug($message);
 	}
+	
+	public function insert(){
+	    $sequence = array();
+	    $low = 1;
+	    $high = 2;
+	    for ($i = 0; $i < 41; $i++) {
+		$sequence[$i]['low'] = $low;
+		$sequence[$i]['tween'] = $low + (($high-$low)/2);
+		$sequence[$i]['high'] = $high;
+		$low = $sequence[$i]['tween'];
+	    }
+	    $this->set('sequence', $sequence);
+	    
+	}
 }

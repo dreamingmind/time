@@ -110,7 +110,7 @@ class Time extends AppModel {
 		'fields' => array('SUM(duration)')));
 	    $this->duration['total'] = $duration[0][0]['SUM(duration)'];
 	    
-	    return $this->duration;		
+	    return $this->duration;
 	}
 	
 	/**
