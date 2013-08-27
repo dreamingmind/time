@@ -745,3 +745,6 @@ form.time {
     float: left;
     width: 45%;
 }
+li.placeholder {
+    background-color: tan;
+}
