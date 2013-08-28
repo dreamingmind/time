@@ -34,4 +34,12 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
     public $components = array('DebugKit.Toolbar');
     public $helpers = array('Form', 'Html', 'Js');
+    
+    /**
+     * Set page title for app
+     */
+    function beforeFilter() {
+        parent::beforeFilter();
+        $this->set('title_for_layout', 'DMTime');
+    }
 }

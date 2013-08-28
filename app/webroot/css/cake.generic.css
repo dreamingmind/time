@@ -748,3 +748,11 @@ form.time {
 li.placeholder {
     background-color: tan;
 }
+
+li:first-of-type > span.in {
+    display: none;
+}
+
+button.HorizButtons {
+    display: inline;
+}
