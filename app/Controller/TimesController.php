@@ -143,7 +143,8 @@ class TimesController extends AppController {
 	    
 	}
 	
-	public function tree_jax($data){
+	public function tree_jax($line, $sibling, $parent){
 	    $this->layout = 'ajax';
+        $this->set(compact('line','sibling','parent'));
 	}
 }
