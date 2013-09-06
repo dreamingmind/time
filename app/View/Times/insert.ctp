@@ -1,62 +1,45 @@
-<ul id="list1" class="connect">
-    <li id="Category_1"><span class="in">=></span>Jake
+<ul id="list99" class="connect">
+    <li id="Category_1"><span class="in">=></span>list99 Jake Category_1
 	<ul id="list3" class="connect">
 	</ul>
     </li>
-    <li id="Category_2"><span class="in">=></span>Jim
-	<ul id="list2" class="connect">
-	    <li id="Category_6"><span class="in">=></span>Carol</li>
-	    <li id="Category_7"><span class="in">=></span>Karl</li>
-	    <li id="Category_8"><span class="in">=></span>Karen</li>
-	    <li id="Category_9"><span class="in">=></span>Cathy</li>
-	    <li id="Category_10"><span class="in">=></span>Chuck</li>
-	    <li id="Category_12"><span class="in">=></span>Jim
-		<ul id="list2" class="connect">
-		    <li id="Category_26"><span class="in">=></span>Carol</li>
-		    <li id="Category_127"><span class="in">=></span>Karl</li>
-		    <li id="Category_28"><span class="in">=></span>Karen</li>
-		    <li id="Category_29"><span class="in">=></span>Cathy</li>
-		    <li id="Category_21"><span class="in">=></span>Chuck	
-			<ul id="list2" class="connect">
-			    <li id="Category_16"><span class="in">=></span>Carol</li>
-			    <li id="Category_17"><span class="in">=></span>Karl</li>
-			    <li id="Category_18"><span class="in">=></span>Karen</li>
-			    <li id="Category_19"><span class="in">=></span>Cathy<ul id="list2" class="connect">
-				    <li id="Category_16"><span class="in">=></span>Carol</li>
-				    <li id="Category_17"><span class="in">=></span>Karl</li>
-				    <li id="Category_18"><span class="in">=></span>Karen</li>
-				    <li id="Category_19"><span class="in">=></span>Cathy</li>
-				    <li id="Category_20"><span class="in">=></span>Chuck</li>
-				</ul></li>
-			    <li id="Category_20"><span class="in">=></span>Chuck</li>
-			</ul>
-		    </li>
-		</ul>
+    <li id="Category_2"><span class="in">=></span>Jim Category_2
+	<ul id="list22" class="connect">
+	    <li id="Category_6"><span class="in">=></span>list22 Carrol Category_6</li>
+	    <li id="Category_7"><span class="in">=></span>Karrl Category_7</li>
+	    <li id="Category_8"><span class="in">=></span>Karren Category_8</li>
+	    <li id="Category_9"><span class="in">=></span>Crathy Category_9</li>
+	    <li id="Category_10"><span class="in">=></span>Chruck Category_10</li>
+	    <li id="Category_12"><span class="in">=></span>Jrim Category_12
 	    </li>
 	</ul>
     </li>
-    <li id="Category_3"><span class="in">=></span>Julie</li>
-    <li id="Category_4"><span class="in">=></span>Joyce</li>
-    <li id="Category_5"><span class="in">=></span>Jamalia</li>
-    <li id="Category_11"><span class="in">=></span>Jake
-	<ul id="list3" class="connect">
+    <li id="Category_333"><span class="in">=></span>JJulie Category_333</li>
+    <li id="Category_433"><span class="in">=></span>JJoyce Category_433</li>
+    <li id="Category_533"><span class="in">=></span>JJamalia Category_533</li>
+    <li id="Category_1133"><span class="in">=></span>JJake Category_1133
+	<ul id="list35" class="connect">
 	</ul>
     </li>
-    <li id="Category_12"><span class="in">=></span>Jim
-	<ul id="list2" class="connect Category_12">
-	    <li id="Category_16"><span class="in">=></span>Carol</li>
-	    <li id="Category_17"><span class="in">=></span>Karl</li>
-	    <li id="Category_18"><span class="in">=></span>Karen</li>
-	    <li id="Category_19"><span class="in">=></span>Cathy</li>
-	    <li id="Category_20"><span class="in">=></span>Chuck</li>
+    <li id="Category_123"><span class="in">=></span>Jim Category_123
+	<ul id="list26" class="connect Category_12">
+	    <li id="Category_136"><span class="in">=></span>list26 Caarol Category_136</li>
+	    <li id="Category_137"><span class="in">=></span>Kaarl Category_137</li>
+	    <li id="Category_138"><span class="in">=></span>Kaaren Category_138</li>
+	    <li id="Category_139"><span class="in">=></span>Caathy Category_139</li>
+	    <li id="Category_2330"><span class="in">=></span>Chauck Category_2330</li>
 	</ul>
     </li>
-    <li id="Category_13"><span class="in">=></span>Julie</li>
-    <li id="Category_14"><span class="in">=></span>Joyce</li>
-    <li id="Category_15"><span class="in">=></span>Jamalia</li>
+    <li id="Category_143"><span class="in">=></span>Jhulie Category_143</li>
+    <li id="Category_144"><span class="in">=></span>Jhoyce  Category_144</li>
+    <li id="Category_145"><span class="in">=></span>Jhamalia Category_145</li>
 </ul>
 <div id="list">
+    <p id='showthis'>reveal</p>
+    <p id='splash'>x</p>
     <?php
+    echo $this->Form->create('Time');
+    echo $this->Form->end('Submit');
 //foreach ($sequence as $count => $set) {
 //    echo $this->Html->para('', "Number  : $count");
 //    echo $this->Html->para('', "L: {$set['low']}<br />T: {$set['tween']}<br />H: {$set['high']}<br />");
@@ -68,6 +51,41 @@
 //$this->Js->sortable(array(
 //	'complete' => '$.post("/times/reorder", $(function() {$("#list1, #list2" ).sortable({connectWith: ".connect"}).disableSelection();});)',
 //	));
-$this->Js->buffer('$(function() {$("#list1, #list2, #list3" ).sortable({connectWith: "ul"}).sortable({placeholder: ".placehold"}).sortable({update: function(){alert("change!")}}).disableSelection();});');
+$this->Js->buffer('var change = new Object();');
+$this->Js->buffer('$(function() {$("ul" )
+    .sortable({connectWith: "ul"})
+    .sortable({placeholder: ".placehold"})
+    .sortable({update: function(event, ui){
+	//alert(ui.item.attr("id"));
+	change.line = ui.item.attr("id");
+	change.sibling = ui.item.prev().attr("id");
+	change.parent = ($(this).parent().attr("id"));
+	//$.load("/cake23/times/tree_jax", "line = " + change.line + " prev sibling = " + change.sibling + " parent = " + change.parent, function(response){$("splash").html(response)} );
+	}})
+    //.sortable({receive: function(){showme()}})
+    .disableSelection();});');
+$this->Js->buffer(
+    'function showme(){
+    alert("line = " + change.line + " prev sibling = " + change.sibling + " parent = " + change.parent);
+    }
+    function hitme(){
+    alert("hit me");
+    }');
+$this->Js->buffer('$("#showthis").bind("click", showme);');
+//$this->Js->buffer('$("#list99").menu();');
 echo $this->Js->writeBuffer();
+
+//$this->Js->buffer('$(function() {$("ul" )
+//    .sortable({connectWith: "ul"})
+//    .sortable({placeholder: ".placehold"})
+//    .sortable({update: function(event, ui){
+//	//alert(ui.item.attr("id"));
+//	change.line = ui.item.attr("id");
+//	change.sibling = ui.item.prev().attr("id");
+//	change.parent = ($(this).parent().attr("id"));
+//	//$.post("/cake23/times/tree_jax", "line = " + change.line + " prev sibling = " + change.sibling + " parent = " + change.parent, function(response){$("splash").html(response)} );
+//	}})
+//    //.sortable({receive: function(){showme()}})
+//    .disableSelection();});');
+
 ?>

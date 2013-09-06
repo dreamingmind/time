@@ -142,4 +142,8 @@ class TimesController extends AppController {
 	    $this->set('sequence', $sequence);
 	    
 	}
+	
+	public function tree_jax($data){
+	    $this->layout = 'ajax';
+	}
 }
