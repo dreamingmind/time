@@ -42,7 +42,8 @@ $buttonset=$this->Html->tag(
 
 $buttonset.=$this->Form->button('Out Now', array(
     'id' => 'OutNowButton',
-    'class' => 'HorizButtons small col_3'
+    'class' => 'HorizButtons small col_3',
+	'bind' => 'click.OutNow'
 ));
     $options = array(
     '-60' => 'Minus 60 Min',
@@ -54,7 +55,8 @@ $buttonset.=$this->Form->select('Adjustment',$options,array(
     'id' => 'OutTimeAdjust',
     'class' => 'HorizButtons',
 	'label' => FALSE,
-    'empty' => 'Out Time Adjustment'
+    'empty' => 'Out Time Adjustment',
+	'bind' => 'change.AdjustSelect'
 ));
 $buttonset.=$this->Form->input('time_out', array(
     'value' => $time['Time']['time_out'],

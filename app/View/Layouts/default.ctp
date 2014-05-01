@@ -43,7 +43,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 <body>
 	<div id="container">
 		<div id="header">
-			<h1>Project Time Keeping</h1>
+			<h3>Project Time Keeping</h3>
 		</div>
 		<div id="content">
 
