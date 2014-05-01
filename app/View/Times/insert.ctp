@@ -72,13 +72,13 @@ $this->Js->buffer('$(function() {$("ul" )
 	change.sibling = ui.item.prev().attr("id");
 	change.parent = $(this).parent().attr("id");
 //	showme();
-//	$("p#splash").load("/time/times/tree_jax/"+ change.line + "/" + change.sibling + "/" + change.parent,
+//	$("p#splash").load("/cake23/times/tree_jax/"+ change.line + "/" + change.sibling + "/" + change.parent,
 //    "line = " + change.line + " prev sibling = " + change.sibling + " parent = " + change.parent,
 //    function(response){$("p#splash").html(response)} );
 	}})
 //    .sortable({receive: function(){showme()}})
 .sortable({stop:function(event, ui){
-$("p#splash").load("/time/times/tree_jax/"+ change.line + "/" + change.sibling + "/" + change.parent,
+$("p#splash").load("/cake23/times/tree_jax/"+ change.line + "/" + change.sibling + "/" + change.parent,
     "line = " + change.line + " prev sibling = " + change.sibling + " parent = " + change.parent,
     function(response){$("p#splash").html(response)} )}})
     .disableSelection();});');

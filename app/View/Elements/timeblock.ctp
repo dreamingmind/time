@@ -4,7 +4,7 @@
 // so even though multiple records show on a page,
 // they submit independent of each other
 
-echo $this->Form->create('Time', array('class' => 'time', 'controller' => 'times', 'action' => 'timekeep'));
+echo $this->Form->create('Time', array('class' => 'time col_5 vertical', 'controller' => 'times', 'action' => 'timekeep'));
 echo $this->Html->para('', 'id: ' . (($time['Time']['id'] < 1) ? 'new' : $time['Time']['id']));
 echo $this->Form->input('id', array(
     'type' => 'hidden',
@@ -19,7 +19,7 @@ echo $this->Form->input('project', array(
 ));
 echo $this->Form->input('activity', array(
     'value' => $time['Time']['activity'],
-    'rows' => '2'
+    'rows' => '1'
 ));
 
 // set these to type text to prevent the 
@@ -42,7 +42,7 @@ $buttonset=$this->Html->tag(
 
 $buttonset.=$this->Form->button('Out Now', array(
     'id' => 'OutNowButton',
-    'class' => 'HorizButtons'
+    'class' => 'HorizButtons small col_3'
 ));
     $options = array(
     '-60' => 'Minus 60 Min',
@@ -53,6 +53,7 @@ $buttonset.=$this->Form->button('Out Now', array(
 $buttonset.=$this->Form->select('Adjustment',$options,array(
     'id' => 'OutTimeAdjust',
     'class' => 'HorizButtons',
+	'label' => FALSE,
     'empty' => 'Out Time Adjustment'
 ));
 $buttonset.=$this->Form->input('time_out', array(
@@ -70,5 +71,10 @@ echo $this->Html->tag(
 
 
 echo $this->Html->para('', "$duration hours");
-echo $this->Form->end('Submit');
+echo $this->Form->button('Submit', array(
+    'id' => 'Submit',
+    'class' => 'HorizButtons small col_3'
+));
+echo $this->Form->end();
 ?>
+<div class="col_1"></div>
