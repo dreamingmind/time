@@ -14,6 +14,11 @@ class TimesController extends AppController {
  */
 	public function index() {
 		$this->Time->recursive = 0;
+		$this->paginate = array(
+			'order' => array(
+				'Time.created' => 'desc'
+			)
+		);
 		$this->set('times', $this->paginate());
 	}
 
