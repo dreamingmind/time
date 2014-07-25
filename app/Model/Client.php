@@ -1,12 +1,11 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Group Model
+ * Client Model
  *
- * @property Time $Time
- * @property User $User
+ * @property Project $Project
  */
-class Group extends AppModel {
+class Client extends AppModel {
 
 /**
  * Validation rules
@@ -34,9 +33,9 @@ class Group extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'User' => array(
-			'className' => 'User',
-			'foreignKey' => 'group_id',
+		'Project' => array(
+			'className' => 'Project',
+			'foreignKey' => 'client_id',
 			'dependent' => false,
 			'conditions' => '',
 			'fields' => '',

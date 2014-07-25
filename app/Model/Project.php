@@ -1,12 +1,12 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Group Model
+ * Project Model
  *
+ * @property Client $Client
  * @property Time $Time
- * @property User $User
  */
-class Group extends AppModel {
+class Project extends AppModel {
 
 /**
  * Validation rules
@@ -29,14 +29,29 @@ class Group extends AppModel {
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
+ * belongsTo associations
+ *
+ * @var array
+ */
+	public $belongsTo = array(
+		'Client' => array(
+			'className' => 'Client',
+			'foreignKey' => 'client_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
+
+/**
  * hasMany associations
  *
  * @var array
  */
 	public $hasMany = array(
-		'User' => array(
-			'className' => 'User',
-			'foreignKey' => 'group_id',
+		'Time' => array(
+			'className' => 'Time',
+			'foreignKey' => 'project_id',
 			'dependent' => false,
 			'conditions' => '',
 			'fields' => '',

@@ -14,7 +14,7 @@ class Time extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'user' => array(
+		'user_id' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
 				//'message' => 'Your custom message here',
@@ -24,7 +24,7 @@ class Time extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'project' => array(
+		'project_id' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
 				//'message' => 'Your custom message here',
@@ -52,22 +52,22 @@ class Time extends AppModel {
  *
  * @var array
  */
-//	public $belongsTo = array(
-//		'User' => array(
-//			'className' => 'User',
-//			'foreignKey' => 'user_id',
-//			'conditions' => '',
-//			'fields' => '',
-//			'order' => ''
-//		),
-//		'Project' => array(
-//			'className' => 'Project',
-//			'foreignKey' => 'project_id',
-//			'conditions' => '',
-//			'fields' => '',
-//			'order' => ''
-//		)
-//	);
+	public $belongsTo = array(
+		'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'user_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Project' => array(
+			'className' => 'Project',
+			'foreignKey' => 'project_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
 	
 	/**
 	 * Set an array property of all user names
