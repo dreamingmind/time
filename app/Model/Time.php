@@ -8,11 +8,11 @@ App::uses('AppModel', 'Model');
  */
 class Time extends AppModel {
 
-/**
- * Validation rules
- *
- * @var array
- */
+	/**
+	 * Validation rules
+	 *
+	 * @var array
+	 */
 	public $validate = array(
 		'user_id' => array(
 			'notempty' => array(
@@ -47,11 +47,11 @@ class Time extends AppModel {
 
 //These relationshops are for possible future expansion to multi table solution
 
-/**
- * belongsTo associations
- *
- * @var array
- */
+	/**
+	 * belongsTo associations
+	 *
+	 * @var array
+	 */
 	public $belongsTo = array(
 		'User' => array(
 			'className' => 'User',

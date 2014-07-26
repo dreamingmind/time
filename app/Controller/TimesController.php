@@ -7,6 +7,11 @@ App::uses('AppController', 'Controller');
  */
 class TimesController extends AppController {
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('index', 'view');
+	}
+
 /**
  * index method standard bake
  *

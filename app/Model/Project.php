@@ -8,11 +8,11 @@ App::uses('AppModel', 'Model');
  */
 class Project extends AppModel {
 
-/**
- * Validation rules
- *
- * @var array
- */
+	/**
+	 * Validation rules
+	 *
+	 * @var array
+	 */
 	public $validate = array(
 		'name' => array(
 			'notempty' => array(
@@ -26,13 +26,11 @@ class Project extends AppModel {
 		),
 	);
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
-/**
- * belongsTo associations
- *
- * @var array
- */
+	/**
+	 * belongsTo associations
+	 *
+	 * @var array
+	 */
 	public $belongsTo = array(
 		'Client' => array(
 			'className' => 'Client',
@@ -43,11 +41,11 @@ class Project extends AppModel {
 		)
 	);
 
-/**
- * hasMany associations
- *
- * @var array
- */
+	/**
+	 * hasMany associations
+	 *
+	 * @var array
+	 */
 	public $hasMany = array(
 		'Time' => array(
 			'className' => 'Time',

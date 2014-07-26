@@ -6,24 +6,59 @@ App::uses('AppController', 'Controller');
  * @property User $User
  */
 class UsersController extends AppController {
+	
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow();
+	}
+	
+	public function initAuth() {
+		$group = $this->User->Group;
 
-/**
- * index method
- *
- * @return void
- */
+		// Allow admins to everything
+		$group->id = 1;
+		$this->Acl->allow($group, 'controllers');
+
+		// allow managers to posts and widgets
+		$group->id = 2;
+		$this->Acl->deny($group, 'controllers');
+		$this->Acl->allow($group, 'controllers/Times');
+		$this->Acl->allow($group, 'controllers/Projects');
+		$this->Acl->allow($group, 'controllers/Clients');
+
+		// allow users to only add and edit on posts and widgets
+		$group->id = 4;
+		$this->Acl->deny($group, 'controllers');
+		$this->Acl->allow($group, 'controllers/Times/add');
+		$this->Acl->allow($group, 'controllers/Times/edit');
+		$this->Acl->allow($group, 'controllers/Times/timekeep');
+		$this->Acl->allow($group, 'controllers/Times/insert');
+
+		// allow basic users to log out
+		$this->Acl->allow($group, 'controllers/users/logout');
+
+		// we add an exit to avoid an ugly "missing views" error message
+		echo "all done";
+		exit;
+	}
+
+	/**
+	 * index method
+	 *
+	 * @return void
+	 */
 	public function index() {
 		$this->User->recursive = 0;
 		$this->set('users', $this->paginate());
 	}
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * view method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function view($id = null) {
 		if (!$this->User->exists($id)) {
 			throw new NotFoundException(__('Invalid user'));
@@ -32,11 +67,11 @@ class UsersController extends AppController {
 		$this->set('user', $this->User->find('first', $options));
 	}
 
-/**
- * add method
- *
- * @return void
- */
+	/**
+	 * add method
+	 *
+	 * @return void
+	 */
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->User->create();
@@ -51,13 +86,13 @@ class UsersController extends AppController {
 		$this->set(compact('groups'));
 	}
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	/**
+	 * edit method
+	 *
+	 * @throws NotFoundException
+	 * @param string $id
+	 * @return void
+	 */
 	public function edit($id = null) {
 		if (!$this->User->exists($id)) {
 			throw new NotFoundException(__('Invalid user'));
@@ -77,14 +112,14 @@ class UsersController extends AppController {
 		$this->set(compact('groups'));
 	}
 
-/**
- * delete method
- *
- * @throws NotFoundException
- * @throws MethodNotAllowedException
- * @param string $id
- * @return void
- */
+	/**
+	 * delete method
+	 *
+	 * @throws NotFoundException
+	 * @throws MethodNotAllowedException
+	 * @param string $id
+	 * @return void
+	 */
 	public function delete($id = null) {
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
@@ -98,4 +133,23 @@ class UsersController extends AppController {
 		$this->Session->setFlash(__('User was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
+	
+	public function login() {
+		if ($this->Session->read('Auth.User')) {
+			$this->Session->setFlash('You are logged in!');
+			return $this->redirect('/');
+		}
+		if ($this->request->is('post')) {
+			if ($this->Auth->login()) {
+				return $this->redirect($this->Auth->redirect());
+			}
+			$this->Session->setFlash(__('Your username or password was incorrect.'));
+		}
+	}
+
+	public function logout() {
+		$this->Session->setFlash('Good-Bye');
+		$this->redirect($this->Auth->logout());
+	}
+
 }

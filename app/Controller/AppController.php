@@ -32,14 +32,35 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-    public $components = array('DebugKit.Toolbar');
-    public $helpers = array('Form', 'Html', 'Js');
+	public $components = array(
+		'DebugKit.Toolbar',
+        'Acl',
+        'Auth' => array(
+            'authorize' => array(
+                'Actions' => array('actionPath' => 'controllers')
+            )
+        ),
+        'Session'
+    );
+	
+    public $helpers = array('Html', 'Form', 'Session', 'Js');
     
-    /**
-     * Set page title for app
-     */
     function beforeFilter() {
         parent::beforeFilter();
         $this->set('title_for_layout', 'DMTime');
+		
+        //Configure AuthComponent
+        $this->Auth->loginAction = array(
+          'controller' => 'users',
+          'action' => 'login'
+        );
+        $this->Auth->logoutRedirect = array(
+          'controller' => 'users',
+          'action' => 'login'
+        );
+        $this->Auth->loginRedirect = array(
+          'controller' => 'posts',
+          'action' => 'add'
+        );
     }
 }
