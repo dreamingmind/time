@@ -64,3 +64,15 @@ $(document).ready(function(){
 //            alert(dadj);
             $(this).parents('form').find('#TimeTimeOut').attr('value',dstring);
     }
+	
+	function timeStop(e){
+		e.preventDefault();
+	}
+	
+	function timePause(e){
+		e.preventDefault();
+	}
+	
+	function timeBack(e){
+		e.preventDefault();
+	}

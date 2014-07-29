@@ -172,6 +172,7 @@ class TimesController extends AppController {
 			}
 			$projectInList = $this->Time->Project->projectsInList($pList);
 		}
-		$this->set(compact('openRecords', 'projectInList'));
+		$userId = $this->userId;
+		$this->set(compact('openRecords', 'projectInList', 'userId'));
 	}
 }
