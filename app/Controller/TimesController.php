@@ -6,10 +6,13 @@ App::uses('AppController', 'Controller');
  * @property Time $Time
  */
 class TimesController extends AppController {
+	
+	public $userId;
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('index', 'view');
+//		$this->Auth->allow('index', 'view');
+		$this->Auth->allow();
 	}
 
 /**
@@ -156,5 +159,19 @@ class TimesController extends AppController {
 	public function tree_jax($line, $sibling, $parent){
 	    $this->layout = 'ajax';
         $this->set(compact('line','sibling','parent'));
+	}
+	
+	public function track() {
+		$this->userId = $this->Session->read('Auth.User.id');
+		$openRecords = $this->Time->openRecords($this->userId);
+		if(!empty($openRecords)){
+			$pList = array();
+			foreach ($openRecords as $key => $record) {
+				$p = array($record['Time']['project_id'] => $record['Time']['project_id']);
+				$pList = array_merge($p, $pList);
+			}
+			$projectInList = $this->Time->Project->projectsInList($pList);
+		}
+		$this->set(compact('openRecords', 'projectInList'));
 	}
 }

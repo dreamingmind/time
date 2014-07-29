@@ -29,10 +29,9 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
-//		echo $this->Html->css('cake.generic');
-//		echo $this->Html->css('cake.generic', 'kickstart-grid');
 		echo $this->Html->css('kickstart');
 		echo $this->Html->css('kickstart-grid');
+		echo $this->Html->css('time');
 		echo $this->Html->script(array('jquery-1.10.2', 'jquery-ui','timekeep', 'kickstart'));
 
 		echo $this->fetch('meta');
@@ -52,12 +51,6 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 			<?php echo $this->fetch('content'); ?>
 		</div>
 		<div id="footer">
-			<?php // echo $this->Html->link(
-//					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-//					'http://www.cakephp.org/',
-//					array('target' => '_blank', 'escape' => false)
-//				);
-			?>
 		</div>
 	</div>
 	<?php echo $this->element('sql_dump'); ?>

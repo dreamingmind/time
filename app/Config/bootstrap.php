@@ -109,3 +109,11 @@ CakeLog::config('error', array(
 ));
 CakePlugin::load('DebugKit');
 CakePlugin::load('AclExtras');
+
+/**
+ * Establish constants
+ * 
+ */
+define("OPEN", 1);
+define("REVIEW", 2);
+define("CLOSED", 4);

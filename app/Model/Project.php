@@ -61,5 +61,19 @@ class Project extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+	/**
+	 * Return a list of project ids and names based upon a provided inlist
+	 * 
+	 * @param type $inList
+	 * @return array (in list)
+	 */
+	public function projectsInList($inList) {
+		$projectsInList = $this->find('list', array(
+			'fields' => array('Project.id', 'Project.name'),
+			'conditions' => array('Project.id' => $inList)
+		));
+		return $projectsInList;
+	}
 
 }

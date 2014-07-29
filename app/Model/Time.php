@@ -155,4 +155,21 @@ class Time extends AppModel {
 	    }
 	    return $message;
 	}
+	
+	/**
+	 * Find and return an array of all open records belonging to the provided user id
+	 * 
+	 * @param int $userId
+	 * @return array
+	 */
+	public function openRecords($userId) {
+		$records = $this->find('all', array(
+			'conditions' => array(
+				'user_id' => $userId,
+				'status' => OPEN
+			),
+			'recursive' => -1
+		));
+		return $records;
+	}
 }
