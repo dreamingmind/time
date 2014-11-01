@@ -112,5 +112,5 @@ class User extends AppModel {
 	public function bindNode($user) {
 		return array('model' => 'Group', 'foreign_key' => $user['User']['group_id']);
 	}
-	
+		
 }

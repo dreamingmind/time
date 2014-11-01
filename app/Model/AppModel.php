@@ -32,4 +32,9 @@ App::uses('Model', 'Model');
  * @package       app.Model
  */
 class AppModel extends Model {
+	
+	public function fetchList($user_id) {
+		return $this->find('list');
+	}
+
 }

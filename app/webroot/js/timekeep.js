@@ -76,3 +76,8 @@ $(document).ready(function(){
 	function timeBack(e){
 		e.preventDefault();
 	}
+	
+	function newTime(e){
+		e.preventDefault();
+		
+	}

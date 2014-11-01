@@ -114,6 +114,9 @@ CakePlugin::load('AclExtras');
  * Establish constants
  * 
  */
+
+//Status constants
 define("OPEN", 1);
 define("REVIEW", 2);
 define("CLOSED", 4);
+
