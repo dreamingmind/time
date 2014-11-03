@@ -11,7 +11,8 @@ if (!empty($openRecords)) {
     foreach ($openRecords as $key => $record) {
         echo $this->element('track_row', array(
             'record' => $record,
-            'actionButtons' => $actionButtons
+            'actionButtons' => $actionButtons,
+            'projects' => $projectInList
         ));
     }
 }

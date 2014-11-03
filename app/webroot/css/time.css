@@ -10,3 +10,7 @@ and open the template in the editor.
 table.striped tbody th{
 	text-align: left;
 }
+
+textarea {
+    height: 30px;
+}
