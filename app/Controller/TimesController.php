@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('TkHelper', 'Helper');
 
 /**
  * Times Controller
@@ -8,6 +9,8 @@ App::uses('AppController', 'Controller');
  * @property Time $Time
  */
 class TimesController extends AppController {
+    
+    public $helpers = array('Tk');
 
     public $userId;
 
@@ -176,17 +179,10 @@ class TimesController extends AppController {
 
     public function track() {
         $this->userId = $this->Session->read('Auth.User.id');
-        $openRecords = $this->Time->openRecords($this->userId);
-        if (!empty($openRecords)) {
-            $pList = array();
-            foreach ($openRecords as $key => $record) {
-                $p = array($record['Time']['project_id'] => $record['Time']['project_id']);
-                $pList = array_merge($p, $pList);
-            }
-            $projectInList = $this->Time->Project->projectsInList($pList);
-        }
+        $this->request->data = $this->Time->openRecords($this->userId);
+        $projectInList = $this->Time->Project->fetchList($this->Auth->user('id'));
         $userId = $this->userId;
-        $this->set(compact('openRecords', 'projectInList', 'userId'));
+        $this->set(compact('projectInList', 'userId'));
     }
 
     public function newTime() {
@@ -228,6 +224,7 @@ class TimesController extends AppController {
         $userId = $record['Time']['user_id'];
         $users = $this->Time->User->fetchList($this->Auth->user('id'));
         $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
+        dmDebug::ddd($projects, 'projects');
         $this->set(compact('users', 'projects', 'record', 'userId'));
         $this->render('/Elements/track_row');
     }
