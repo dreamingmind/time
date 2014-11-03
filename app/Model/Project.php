@@ -75,5 +75,11 @@ class Project extends AppModel {
 		));
 		return $projectsInList;
 	}
+	
+	
+	public function fetchList() {
+		parent::fetchList();
+		// later we can override and only get active projects
+	}
 
 }

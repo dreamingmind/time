@@ -33,7 +33,7 @@ App::uses('Model', 'Model');
  */
 class AppModel extends Model {
 	
-	public function fetchList($user_id) {
+	public function fetchList() {
 		return $this->find('list');
 	}
 
