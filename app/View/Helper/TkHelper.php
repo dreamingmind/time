@@ -45,9 +45,11 @@ class TkHelper extends AppHelper {
 
     public function timeFormActionButtons() {
         $buttons = array(
+            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-info-sign')), '', array('bind' => 'click.timeInfo', 'escape' => FALSE)),
             $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-stop')), '', array('bind' => 'click.timeStop', 'escape' => FALSE)),
             $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-pause')), '', array('bind' => 'click.timePause', 'escape' => FALSE)),
             $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-backward')), '', array('bind' => 'click.timeBack', 'escape' => FALSE)),
+            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-trash')), '', array('bind' => 'click.timeDelete', 'escape' => FALSE)),
         );
         return $this->Html->nestedList($buttons, array('class' => 'button-bar'));
 //        $actionButtons = '<ul class="button-bar">
