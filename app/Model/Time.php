@@ -74,8 +74,6 @@ class Time extends AppModel {
     public function beforeSave($options = array()) {
         parent::beforeSave($options);
         $this->data['Time']['duration'] = (strtotime($this->data['Time']['time_out']) - strtotime($this->data['Time']['time_in']))/HOUR;
-        dmDebug::ddd($this->data, 'this->data');
-        die;
     }
     
     /**

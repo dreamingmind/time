@@ -196,4 +196,26 @@ class TimesController extends AppController {
         $this->set(compact('users', 'projects'));
     }
 
+    public function newTimeRow() {
+        $this->layout = 'ajax';
+        $this->Time->create();
+        $this->request->data['Time']['user_id'] = $this->Auth->user('id');
+        $this->request->data['Time']['time_in'] = date('Y-m-d H:i:s');
+        $this->request->data['Time']['time_out'] = date('Y-m-d H:i:s');
+        $this->request->data['Time']['status'] = OPEN;
+        $record = $this->Time->save($this->request->data);
+//            dmDebug::ddd($this->request->data, 'trd');
+//            die;
+//        if ($this->Time->save($this->request->data)) {
+//            $this->Session->setFlash(__('The time has been saved'));
+//            $this->redirect(array('action' => 'index'));
+//        } else {
+//            $this->Session->setFlash(__('The time could not be saved. Please, try again.'));
+//        }
+        $users = $this->Time->User->fetchList($this->Auth->user('id'));
+        $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
+        $this->set(compact('users', 'projects', 'record'));
+        $this->render('/Elements/track_row');
+    }
+
 }
