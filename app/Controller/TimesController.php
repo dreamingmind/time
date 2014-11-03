@@ -212,9 +212,10 @@ class TimesController extends AppController {
 //        } else {
 //            $this->Session->setFlash(__('The time could not be saved. Please, try again.'));
 //        }
+        $userId = $record['Time']['user_id'];
         $users = $this->Time->User->fetchList($this->Auth->user('id'));
         $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
-        $this->set(compact('users', 'projects', 'record'));
+        $this->set(compact('users', 'projects', 'record', 'userId'));
         $this->render('/Elements/track_row');
     }
 

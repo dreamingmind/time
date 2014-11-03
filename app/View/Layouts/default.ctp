@@ -16,43 +16,56 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
 $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
+// create global variables set for javascript paths
+$this->start('jsGlobalVars');
+echo "var webroot = '{$this->request->webroot}';";
+echo "var action = '{$this->request->params['action']}/';";
+echo "var controller = '{$this->request->params['controller']}/';";
+$this->end();
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-	<?php echo $this->Html->charset(); ?>
-	<title>
-		<?php // echo $cakeDescription ?>
-		<?php echo $title_for_layout; ?>
-	</title>
-	<?php
-		echo $this->Html->meta('icon');
-		echo $this->Html->css('kickstart');
-		echo $this->Html->css('kickstart-grid');
-		echo $this->Html->css('time');
-		echo $this->Html->script(array('jquery-1.10.2', 'jquery-ui','timekeep', 'kickstart'));
+    <head>
+        <?php echo $this->Html->charset(); ?>
+        <title>
+            <?php // echo $cakeDescription  ?>
+            <?php echo $title_for_layout; ?>
+        </title>
+        <?php
+        echo $this->Html->meta('icon');
+        echo $this->Html->css('kickstart');
+        echo $this->Html->css('kickstart-grid');
+        echo $this->Html->css('time');
+        echo $this->Html->script(array('jquery-1.10.2', 'jquery-ui', 'timekeep', 'kickstart'));
 
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
-	?>
-</head>
-<body>
-	<div id="container">
-		<div id="header">
-			<h3>Project Time Keeping</h3>
-		</div>
-		<div id="content">
+        echo $this->fetch('meta');
+        echo $this->fetch('css');
+        echo $this->fetch('script');
+        // Javascript often needs to construct a path but doesn't have access to needed
+        // environmental or contextual values. Global vars here can fix that.
+        echo "<script type=\"text/javascript\">
+        //<![CDATA[
+        // global data for javascript\r";
+        echo $this->fetch('jsGlobalVars');
+        echo"\r//]]>
+        </script>";
+        ?>
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <h3>Project Time Keeping</h3>
+            </div>
+            <div id="content">
 
-	 		<?php echo $this->Session->flash(); ?>
+                <?php echo $this->Session->flash(); ?>
 
-			<?php echo $this->fetch('content'); ?>
-		</div>
-		<div id="footer">
-		</div>
-	</div>
-	<?php echo $this->element('sql_dump'); ?>
-</body>
+                <?php echo $this->fetch('content'); ?>
+            </div>
+            <div id="footer">
+            </div>
+        </div>
+        <?php echo $this->element('sql_dump'); ?>
+    </body>
 </html>
