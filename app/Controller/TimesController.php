@@ -179,6 +179,11 @@ class TimesController extends AppController {
     public function newTime() {
         if ($this->request->is('post')) {
             $this->Time->create();
+            $this->request->data['Time']['time_in'] = date('Y-m-d H:i:s');
+            $this->request->data['Time']['time_out'] = date('Y-m-d H:i:s');
+            $this->request->data['Time']['status'] = OPEN;
+//            dmDebug::ddd($this->request->data, 'trd');
+//            die;
             if ($this->Time->save($this->request->data)) {
                 $this->Session->setFlash(__('The time has been saved'));
                 $this->redirect(array('action' => 'index'));

@@ -61,7 +61,7 @@ class AppController extends Controller {
         );
         $this->Auth->loginRedirect = array(
           'controller' => 'times',
-          'action' => 'index'
+          'action' => 'track'
         );
     }
 }
