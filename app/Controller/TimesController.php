@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('TkHelper', 'Helper');
 
 /**
  * Times Controller
@@ -8,6 +9,8 @@ App::uses('AppController', 'Controller');
  * @property Time $Time
  */
 class TimesController extends AppController {
+    
+    public $helpers = array('Tk');
 
     public $userId;
 

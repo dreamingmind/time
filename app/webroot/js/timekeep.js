@@ -86,13 +86,21 @@ function newTime(e) {
 }
 
 /**
+ * Set the default project for new time entries
+ */
+function setDefaultProject() {
+    e.preventDefault();
+    alert('Set default project');
+}
+
+/**
  * Create a new row for time keeping
  */
 function newTimeRow(e) {
     e.preventDefault();
     $.ajax({
         type: "POST",
-        url: webroot + "time/newTimeRow",
+        url: webroot + controller + "newTimeRow",
         dataType: "html",
         success: function (data) {
             $('#TimeTrackForm tbody').append(data);
