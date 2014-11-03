@@ -182,5 +182,24 @@ class Time extends AppModel {
         ));
         return $records;
     }
+	
+	/**
+	 * Re-index a find(all) result onto Time.id
+	 * 
+	 * @param type $data EXPECTS!! [0][Alias][field] and [id] in the field set
+	 */
+	public function reindex($data) {
+		$result = array();
+		foreach($data as $record) {
+			if (isset($record['Time']['id'])) {
+				$result[$record['Time']['id']] = $record;
+			}			
+		}
+		if (empty($resul)) {
+			return $data;
+		} else {
+			return $result;
+		}
+	}
 
 }
