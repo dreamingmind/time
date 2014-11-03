@@ -74,14 +74,19 @@ class TimesController extends AppController {
      * @param string $id
      * @return void
      */
-    public function edit($id = null) {
+    public function edit($id = null, $info = FALSE) {
+		$saved = FALSE;
         if (!$this->Time->exists($id)) {
             throw new NotFoundException(__('Invalid time'));
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Time->save($this->request->data)) {
                 $this->Session->setFlash(__('The time has been saved'));
-                $this->redirect(array('action' => 'index'));
+				if (!$info) {
+					$this->redirect(array('action' => 'index'));
+				} else {
+					$saved = TRUE;
+				}
             } else {
                 $this->Session->setFlash(__('The time could not be saved. Please, try again.'));
             }
@@ -92,6 +97,14 @@ class TimesController extends AppController {
 //		$users = $this->Time->User->find('list');
 //		$projects = $this->Time->Project->find('list');
         $this->set(compact('users', 'projects'));
+		if ($info) {
+			$this->layout = 'ajax';
+			if ($saved) {
+				$this->render('/Elements/ajax_flash');
+			} else {
+				$this->render('/Elements/info');
+			}
+		}
     }
 
     /**
