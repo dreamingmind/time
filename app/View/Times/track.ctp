@@ -2,12 +2,11 @@
 echo $this->Form->create('Time');
 echo $this->Html->tag('Table', NULL, array('class' => 'striped tight sortable'));
 echo $this->Html->tableHeaders(array('Project', 'Time In', 'Duration', 'Activity', 'Tools'), array('class' => 'thead'));
-$records = $this->request->data;
-if (!empty($records)) {
-    foreach ($records as $key => $record) {
-        $this->request->data = $record;
+if (!empty($this->request->data)) {
+    foreach ($this->request->data as $index => $record) {
         echo $this->element('track_row', array(
-            'projects' => $projectInList
+            'projects' => $projectInList,
+            'index' => $index
         ));
     }
 }

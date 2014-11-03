@@ -80,6 +80,30 @@ function timeBack(e) {
     e.preventDefault();
 }
 
+function timeDelete(e) {
+    e.preventDefault();
+    var c = confirm('Are you sure you want to delete this time record?');
+    if(!c){
+        return; 
+   }
+    var id = $('#'+$(this).attr('index')+'TimeId').val();
+    $.ajax({
+        type: "POST",
+        url: webroot + controller + "deleteRow/" + id,
+        dataType: "JSON",
+        success: function (data) {
+            if(data.result){
+                $('#'+id+'TimeId').parents('tr').remove();
+            } else {
+                alert('The deletion failed, please try again.');
+            }
+        },
+        error: function () {
+            alert('Error deleting the time row.')
+        }
+    });
+}
+
 function newTime(e) {
     e.preventDefault();
 
@@ -119,8 +143,9 @@ function newTimeRow(e) {
  * Update table classing for kickstart after AJAX insertion
  */
 function updateTableClassing() {
+    var rows = $('table.sortable').find('tbody tr');
     rows.removeClass('alt first last');
-    var table = $(this).parents('table.sortable');
+    var table = $('table.sortable');
     table.find('tr:even').addClass('alt');
     table.find('tr:first').addClass('first');
     table.find('tr:last').addClass('last');

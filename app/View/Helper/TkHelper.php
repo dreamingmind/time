@@ -43,13 +43,13 @@ class TkHelper extends AppHelper {
         return $this->Form->button($this->Html->tag('i', '', array('class' => 'icon-reply')), $buttonOptions);
     }
 
-    public function timeFormActionButtons() {
+    public function timeFormActionButtons($index) {
         $buttons = array(
-            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-info-sign')), '', array('bind' => 'click.timeInfo', 'escape' => FALSE)),
-            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-stop')), '', array('bind' => 'click.timeStop', 'escape' => FALSE)),
-            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-pause')), '', array('bind' => 'click.timePause', 'escape' => FALSE)),
-            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-backward')), '', array('bind' => 'click.timeBack', 'escape' => FALSE)),
-            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-trash')), '', array('bind' => 'click.timeDelete', 'escape' => FALSE)),
+            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-info-sign')), '', array('bind' => 'click.timeInfo', 'escape' => FALSE, 'index' => $index)),
+            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-stop')), '', array('bind' => 'click.timeStop', 'escape' => FALSE, 'index' => $index)),
+            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-pause')), '', array('bind' => 'click.timePause', 'escape' => FALSE, 'index' => $index)),
+            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-backward')), '', array('bind' => 'click.timeBack', 'escape' => FALSE, 'index' => $index)),
+            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-trash')), '', array('bind' => 'click.timeDelete', 'escape' => FALSE, 'index' => $index)),
         );
         return $this->Html->nestedList($buttons, array('class' => 'button-bar'));
 //        $actionButtons = '<ul class="button-bar">

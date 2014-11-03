@@ -180,6 +180,7 @@ class TimesController extends AppController {
     public function track() {
         $this->userId = $this->Session->read('Auth.User.id');
         $this->request->data = $this->Time->openRecords($this->userId);
+        $this->request->data = $this->Time->reindex($this->request->data);
         $projectInList = $this->Time->Project->fetchList($this->Auth->user('id'));
         $userId = $this->userId;
         $this->set(compact('projectInList', 'userId'));
@@ -207,26 +208,27 @@ class TimesController extends AppController {
 
     public function newTimeRow() {
         $this->layout = 'ajax';
-        $this->Time->create();
         $this->request->data['Time']['user_id'] = $this->Auth->user('id');
         $this->request->data['Time']['time_in'] = date('Y-m-d H:i:s');
         $this->request->data['Time']['time_out'] = date('Y-m-d H:i:s');
         $this->request->data['Time']['status'] = OPEN;
-        $record = $this->Time->save($this->request->data);
-//            dmDebug::ddd($this->request->data, 'trd');
-//            die;
-//        if ($this->Time->save($this->request->data)) {
-//            $this->Session->setFlash(__('The time has been saved'));
-//            $this->redirect(array('action' => 'index'));
-//        } else {
-//            $this->Session->setFlash(__('The time could not be saved. Please, try again.'));
-//        }
-        $userId = $record['Time']['user_id'];
+        $this->request->data['Time']['project_id'] = NULL;
+        $this->Time->create($this->request->data);
+        $result = $this->Time->save($this->request->data);
+        $this->request->data = array($result['Time']['id'] => $result);
+        $userId = $result['Time']['user_id'];
+        $index = $result['Time']['id'];
         $users = $this->Time->User->fetchList($this->Auth->user('id'));
         $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
-        dmDebug::ddd($projects, 'projects');
-        $this->set(compact('users', 'projects', 'record', 'userId'));
+        $this->set(compact('users', 'projects', 'userId', 'index'));
         $this->render('/Elements/track_row');
     }
-
+    
+    public function deleteRow($id) {
+        $this->layout = 'ajax';
+        $result = $this->Time->delete($id);
+        $this->set('result', array('result' => $result));
+        $this->render('/Elements/json_return');
+    }
+    
 }
