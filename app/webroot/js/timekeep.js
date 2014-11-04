@@ -112,12 +112,11 @@ function newTime(e) {
 function timeInfo(e) {
 	e.preventDefault();
 	var target = e.currentTarget;
-	var id = $(target).index;
+	var id = $(target).attr('index');
 	$.ajax({
 		type: "GET",
-		dataType: "JSON",
-		data: 'HTML',
-		url: webroot + controller + 'index/' + id + '/1',
+		dataType: "HTML",
+		url: webroot + controller + 'edit/' + id + '/true',
 		success: function (data) {
 			$(target).prepend(data);
 		},
