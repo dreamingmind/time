@@ -83,13 +83,41 @@ function timeInfo(e) {
 		dataType: "HTML",
 		url: webroot + controller + 'edit/' + id + '/true',
 		success: function (data) {
-			$(target).prepend(data);
+			$('div.times.form').remove();
+			$(target).parents('td').prepend(data);
+			bindHandlers('div.times.form');
 		},
 		error: function (data) {
 			alert('There was an error on the server. Please try again');
 		}
 	})
+}
 
+function cancelTimeEdit(e){
+	e.stopPropagation();
+	$('div.times.form').remove();
+}
+
+function saveTimeEdit(e) {
+	e.preventDefault();
+	e.stopPropagation();
+//	var formData = $('form#TimeEditForm').serialize();
+	$.ajax({
+		type: "PUT",
+		dataType: "HTML",
+		data: $('form#TimeEditForm').serialize(),
+		url: $('form#TimeEditForm').attr('action'),
+		success: function (data) {
+			if (data.match(/has been saved/)[0] == 'has been saved') {
+				var link = $('div.times.form').parents('td').find('li.first > a');
+				$('div.times.form').remove();
+				$(link).children('i').removeClass('icon-info-sign').addClass('icon-check').css('color', 'green');
+			}
+		},
+		error: function (data) {
+			alert('failure');
+		}
+	})
 }
 
 /**
