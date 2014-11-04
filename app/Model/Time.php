@@ -55,10 +55,13 @@ class Time extends AppModel {
             'order' => ''
         )
     );
+    
+    public $virtualFields = array(
+        'duration' => 'TIMEDIFF(Time.time_out,Time.time_in)'
+    );
 
     public function beforeSave($options = array()) {
         parent::beforeSave($options);
-        $this->data['Time']['duration'] = (strtotime($this->data['Time']['time_out']) - strtotime($this->data['Time']['time_in']))/HOUR;
     }
     
     /**

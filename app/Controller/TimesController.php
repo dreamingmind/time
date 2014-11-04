@@ -231,4 +231,11 @@ class TimesController extends AppController {
         $this->render('/Elements/json_return');
     }
     
+    public function saveField() {
+        $this->layout = 'ajax';
+        $this->Time->id = $this->request->data['id'];
+        $result = $this->Time->saveField($this->request->data['fieldName'], $this->request->data['value']);
+        $this->set('result', array('result' => $result));
+        $this->render('/Elements/json_return');
+    }
 }

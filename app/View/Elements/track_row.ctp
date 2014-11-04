@@ -1,6 +1,13 @@
 <?php
-$duration = $this->Html->tag('span',  $this->request->data[$index]['Time']['duration'], array('id' => $index.'duration', 'class' => 'toggle'));
-$duration .= $this->Form->input("$index.Time.duration", array('class' => $index.'duration hide', 'label' => FALSE));
+$duration = $this->Html->tag('span',  $this->request->data[$index]['Time']['duration'], array(
+    'id' => $index.'duration', 
+    'class' => 'toggle'));
+$duration .= $this->Form->input("$index.Time.duration", array(
+    'class' => $index.'duration hide', 
+    'label' => FALSE, 
+    'bind' => 'change.saveField',
+    'fieldName' => 'duration',
+    'index' => $index));
 
 echo $this->Html->tableCells(array(
     array(
@@ -11,15 +18,19 @@ echo $this->Html->tableCells(array(
             'options' => $projects,
             'label' => FALSE,
             'div' => FALSE,
+            'bind' => 'change.saveField',
             'empty' => 'Choose a project',
             'fieldName' => 'project_id',
             'index' => $index
-        )) . '&nbsp;' . $this->Tk->setProjectDefaultButton($this->request->data[$index]['Time']['project_id']),
+        ))
+        . '&nbsp;' 
+        . $this->Tk->setProjectDefaultButton($this->request->data[$index]['Time']['project_id']),
         $this->Time->format($this->request->data[$index]['Time']['time_in'], '%m.%d.%y --- %I:%M %p'),
         $duration,
         $this->Form->input('$index.Time.activity', array(
             'label' => FALSE,
             'div' => FALSE,
+            'bind' => 'change.saveField',
             'fieldName' => 'activity',
             'index' => $index
         )),

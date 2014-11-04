@@ -143,3 +143,29 @@ function updateTableSortability() {
         $(this).attr('value', $(this).text());
     });
 }
+
+/**
+ * Save a single field change on the timekeeping form
+ */
+function saveField(e) {
+    var id = $(e.currentTarget).attr('index');
+    var fieldName = $(e.currentTarget).attr('fieldName');
+    var value = $(e.currentTarget).val();
+    var postData = {'id':id,'fieldName':fieldName, 'value':value}; 
+    $.ajax({
+        type: "POST",
+        url: webroot + controller + "saveField",
+        data: postData,
+        dataType: "JSON",
+        success: function (data) {
+            $('#TimeTrackForm tbody').append(data);
+            updateTableClassing();
+            updateTableSortability();
+            bindHandlers('table.sortable tr.last');
+        },
+        error: function () {
+            alert('Error adding the time row.')
+        }
+    });
+
+}
