@@ -109,8 +109,10 @@ class TimesController extends AppController {
 			// This runs if the info button was clicked on the track page
 			$this->layout = 'ajax';
 			if ($saved) {
-				$index = $this->Time->id = $this->request->data['Time']['id'];
-				$this->request->data = array($index => $this->Time->find('first'));
+				$index = $this->request->data['Time']['id'];
+				$this->request->data = array($index => $this->Time->find('first', array(
+					'conditions' => array('Time.id' => $index),
+					'contain' => FALSE)));
 				$this->set('index', $index);
 				$this->render('/Elements/track_row');
 			} else {

@@ -6,9 +6,7 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('user_id');
-		echo $this->Form->input('user');
 		echo $this->Form->input('project_id');
-		echo $this->Form->input('project');
 		echo $this->Form->input('time_in');
 		echo $this->Form->input('time_out');
 		echo $this->Form->input('duration');
@@ -18,4 +16,21 @@
 <?php echo $this->Form->button(__('Cancel'), array('bind' => 'click.cancelTimeEdit')); ?>
 <?php echo $this->Form->button(__('Submit'), array('bind' => 'click.saveTimeEdit')); ?>
 <?php echo $this->Form->end(); ?>
+	<style type="text/css">
+/*<![CDATA[*/
+div.times.form {
+     background-color: grey;
+     position: absolute;
+     z-index: 3000;
+	 left: 500px;
+}
+
+div.times.form label {
+     padding-right: 8px;
+     text-align: right;
+     width: 100px;
+}
+
+/*]]>*/
+	</style>
 </div>

@@ -86,6 +86,7 @@ function timeInfo(e) {
 			$('div.times.form').remove();
 			$(target).parents('td').prepend(data);
 			bindHandlers('div.times.form');
+			$('div.times.form').draggable();
 		},
 		error: function (data) {
 			alert('There was an error on the server. Please try again');
