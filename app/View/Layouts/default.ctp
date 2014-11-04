@@ -37,7 +37,7 @@ $this->end();
         echo $this->Html->css('kickstart');
         echo $this->Html->css('kickstart-grid');
         echo $this->Html->css('time');
-        echo $this->Html->script(array('jquery-1.10.2', 'jquery-ui', 'timekeep', 'kickstart'));
+        echo $this->Html->script(array('jquery-1.10.2', 'jquery-ui', 'kickstart', 'app', 'timekeep'));
 
         echo $this->fetch('meta');
         echo $this->fetch('css');
