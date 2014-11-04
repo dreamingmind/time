@@ -109,6 +109,25 @@ function newTime(e) {
 
 }
 
+function timeInfo(e) {
+	e.preventDefault();
+	var target = e.currentTarget;
+	var id = $(target).index;
+	$.ajax({
+		type: "GET",
+		dataType: "JSON",
+		data: 'HTML',
+		url: webroot + controller + 'index/' + id + '/1',
+		success: function (data) {
+			$(target).prepend(data);
+		},
+		error: function (data) {
+			alert('There was an error on the server. Please try again');
+		}
+	})
+
+}
+
 /**
  * Set the default project for new time entries
  */
