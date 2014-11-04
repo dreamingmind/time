@@ -86,24 +86,33 @@ class TimesController extends AppController {
             if ($this->Time->save($this->request->data)) {
                 $this->Session->setFlash(__('The time has been saved'));
 				if (!$info) {
+					// redirect for normal CRUD successful save
 					$this->redirect(array('action' => 'index'));
 				} else {
+					// successful ajax save sets flag and falls through
 					$saved = TRUE;
 				}
             } else {
+				// failed save, fall through to normal or ajax re-render
                 $this->Session->setFlash(__('The time could not be saved. Please, try again.'));
             }
         } else {
+			// not a post/put. just a rendering fall-through
             $options = array('conditions' => array('Time.' . $this->Time->primaryKey => $id));
             $this->request->data = $this->Time->find('first', $options);
         }
-//		$users = $this->Time->User->find('list');
-//		$projects = $this->Time->Project->find('list');
+		// first visit, failed normal save, succesful of failed ajax save all run through here
+		$users = $this->Time->User->find('list');
+		$projects = $this->Time->Project->find('list');
         $this->set(compact('users', 'projects'));
 		if ($info) {
+			// This runs if the info button was clicked on the track page
 			$this->layout = 'ajax';
 			if ($saved) {
-				$this->render('/Elements/ajax_flash');
+				$index = $this->Time->id = $this->request->data['Time']['id'];
+				$this->request->data = array($index => $this->Time->find('first'));
+				$this->set('index', $index);
+				$this->render('/Elements/track_row');
 			} else {
 				$this->render('/Elements/info');
 			}

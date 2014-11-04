@@ -108,10 +108,16 @@ function saveTimeEdit(e) {
 		data: $('form#TimeEditForm').serialize(),
 		url: $('form#TimeEditForm').attr('action'),
 		success: function (data) {
-			if (data.match(/has been saved/)[0] == 'has been saved') {
-				var link = $('div.times.form').parents('td').find('li.first > a');
-				$('div.times.form').remove();
-				$(link).children('i').removeClass('icon-info-sign').addClass('icon-check').css('color', 'green');
+			if (data.match(/<tr><td>/)[0] == '<tr><td>') {
+				var id = Date.now();
+				data = data.replace('tr', 'tr id="' + id + '"');
+				var row = $('div.times.form').parents('tr');
+				$(row).replaceWith(data);
+				bindHandlers('tr#'+id);
+				initToggles();
+				updateTableClassing();
+				updateTableSortability();
+//				HAVE BIND THE HANDLERS HERE. HOW DO WE TARGET THE ROW?
 			}
 		},
 		error: function (data) {
