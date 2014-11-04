@@ -1,5 +1,5 @@
 <?php
-$duration = $this->Html->tag('span',  $this->request->data[$index]['Time']['duration'], array(
+$duration = $this->Html->tag('span', substr($this->request->data[$index]['Time']['duration'],0,5), array(
     'id' => $index.'duration', 
     'class' => 'toggle'));
 $duration .= $this->Form->input("$index.Time.duration", array(
