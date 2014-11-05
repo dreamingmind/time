@@ -245,8 +245,39 @@ class TimesController extends AppController {
     public function saveField() {
         $this->layout = 'ajax';
         $this->Time->id = $this->request->data['id'];
-        $result = $this->Time->saveField($this->request->data['fieldName'], $this->request->data['value']);
+        if($this->request->data['fieldName'] == 'duration'){
+            $this->saveDuration();
+        } else {
+            $this->saveStandard();
+        }
+        $result = $this->Time->save($this->request->data);
         $this->set('result', array('result' => $result));
         $this->render('/Elements/json_return');
+    }
+    
+    public function saveDuration() {
+        $time = explode(':', $this->request->data['value']);
+        if (count($time) == 1) {
+            $durSeconds = ($time[0] * MINUTE);
+        }  else {
+            $durSeconds = ($time[0] * HOUR + $time[1] * MINUTE);
+        }      
+        $timeIn = date('Y-m-d H:i:s', time() - $durSeconds);
+        $timeOut = date('Y-m-d H:i:s', time());
+        $this->request->data= array(
+            'Time' => array(
+                'id' => $this->request->data['id'],
+                'time_in' => $timeIn,
+                'time_out' => $timeOut
+            )
+        );
+    }
+    
+    private function saveStandard() {
+        $this->request->data = array(
+            'Time' => array(
+                'id' => $this->request->data['id'],
+                $this->request->data['fieldName'] => $this->request->data['value']
+        ));
     }
 }

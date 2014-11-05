@@ -48,17 +48,17 @@ function timeBack(e) {
 function timeDelete(e) {
     e.preventDefault();
     var c = confirm('Are you sure you want to delete this time record?');
-    if(!c){
-        return; 
-   }
-    var id = $('#'+$(this).attr('index')+'TimeId').val();
+    if (!c) {
+        return;
+    }
+    var id = $('#' + $(this).attr('index') + 'TimeId').val();
     $.ajax({
         type: "POST",
         url: webroot + controller + "deleteRow/" + id,
         dataType: "JSON",
         success: function (data) {
-            if(data.result){
-                $('#'+id+'TimeId').parents('tr').remove();
+            if (data.result) {
+                $('#' + id + 'TimeId').parents('tr').remove();
             } else {
                 alert('The deletion failed, please try again.');
             }
