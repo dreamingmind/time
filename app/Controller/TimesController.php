@@ -17,7 +17,7 @@ class TimesController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
 //		$this->Auth->allow('index', 'view');
-        $this->Auth->allow();
+//        $this->Auth->allow();
     }
 
     /**
@@ -219,11 +219,11 @@ class TimesController extends AppController {
 
     public function newTimeRow() {
         $this->layout = 'ajax';
-        $this->request->data['Time']['user_id'] = $this->Auth->user('id');
-        $this->request->data['Time']['time_in'] = date('Y-m-d H:i:s');
-        $this->request->data['Time']['time_out'] = date('Y-m-d H:i:s');
-        $this->request->data['Time']['status'] = OPEN;
-        $this->request->data['Time']['project_id'] = NULL;
+        $this->request->data('Time.user_id', $this->Auth->user('id'))
+                ->data('Time.time_in', date('Y-m-d H:i:s'))
+                ->data('Time.time_out', date('Y-m-d H:i:s'))
+                ->data('Time.project_id', NULL)
+                ->data('Time.duration', '00:00');
         $this->Time->create($this->request->data);
         $result = $this->Time->save($this->request->data);
         $this->request->data = array($result['Time']['id'] => $result);
@@ -243,6 +243,7 @@ class TimesController extends AppController {
     }
     
     public function saveField() {
+        $result = array();
         $this->layout = 'ajax';
         $this->Time->id = $this->request->data['id'];
         if($this->request->data['fieldName'] == 'duration'){
@@ -250,12 +251,13 @@ class TimesController extends AppController {
         } else {
             $this->saveStandard();
         }
-        $result = $this->Time->save($this->request->data);
-        $this->set('result', array('result' => $result));
+        $result['result'] = $this->Time->save($this->request->data);
+        $result['duration'] = substr($this->Time->field('Time.duration', array('Time.id' => $this->request->data['Time']['id'])),0,5);
+        $this->set('result', $result);
         $this->render('/Elements/json_return');
     }
     
-    public function saveDuration() {
+    private function saveDuration() {
         $time = explode(':', $this->request->data['value']);
         if (count($time) == 1) {
             $durSeconds = ($time[0] * MINUTE);

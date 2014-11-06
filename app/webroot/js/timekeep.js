@@ -149,6 +149,7 @@ function newTimeRow(e) {
             updateTableClassing();
             updateTableSortability();
             bindHandlers('table.sortable tr.last');
+            initToggles();
         },
         error: function () {
             alert('Error adding the time row.')
@@ -193,7 +194,9 @@ function saveField(e) {
         data: postData,
         dataType: "JSON",
         success: function (data) {
-            $('#TimeTrackForm tbody').append(data);
+            if(fieldName == 'duration'){
+                $('#'+id+'duration').html(data.duration).trigger('click');
+            }
             updateTableClassing();
             updateTableSortability();
             bindHandlers('table.sortable tr.last');

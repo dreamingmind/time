@@ -51,8 +51,13 @@ function bindHandlers(target) {
  * 
  * Any <item class=toggle id=unique_name> will toggle <item class=unique_name> on click
  */
-function initToggles() {
-    $('.toggle').unbind('click').bind('click', function(e) {
+function initToggles(target) {
+    if (typeof (target) == 'undefined') {
+        var targets = $('*.toggle');
+    } else {
+        var targets = $(target).find('*.toggle')
+    }
+    targets.unbind('click').bind('click', function(e) {
 		var id = e.currentTarget.id;
         $('.' + $(this).attr('id')).toggle(50, function() {
             // animation complete.

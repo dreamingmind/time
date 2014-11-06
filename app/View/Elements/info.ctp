@@ -13,8 +13,8 @@
 		echo $this->Form->input('activity');
 	?>
 	</fieldset>
-<?php echo $this->Form->button(__('Cancel'), array('bind' => 'click.cancelTimeEdit')); ?>
-<?php echo $this->Form->button(__('Submit'), array('bind' => 'click.saveTimeEdit')); ?>
+<?php echo $this->Form->button(__('Cancel'), array('class' => 'small red', 'bind' => 'click.cancelTimeEdit')); ?>
+<?php echo $this->Form->button(__('Submit'), array('class' => 'small green', 'bind' => 'click.saveTimeEdit')); ?>
 <?php echo $this->Form->end(); ?>
 	<style type="text/css">
 /*<![CDATA[*/
