@@ -8,6 +8,13 @@ $duration .= $this->Form->input("$index.Time.duration", array(
     'bind' => 'change.saveField',
     'fieldName' => 'duration',
     'index' => $index));
+$rowAttr = $this->request->data("$index.Time.status") == 1 
+		? array('class' => 'open') 
+		: $this->request->data("$index.Time.status") == 2 
+			? array('class' => 'review') 
+			: array('class' => 'closed')
+		;
+//dmDebug::ddd($this->request->data('{n}.Time.status'), 'status');
 
 echo $this->Html->tableCells(array(
     array(
@@ -35,4 +42,4 @@ echo $this->Html->tableCells(array(
             'index' => $index
         )),
         $this->Tk->timeFormActionButtons($index))
-));
+), $rowAttr, $rowAttr);
