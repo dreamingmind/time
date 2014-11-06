@@ -153,7 +153,7 @@ function saveTimeEdit(e) {
  * Replace the row contents with returned row
  */
 function replaceRow(data, id) {
-    $('#row_'+id).replaceWith(data);
+    $('#row_' + id).replaceWith(data);
     bindHandlers('#row_' + id);
     initToggles('#row_' + id);
     updateTableClassing();
@@ -217,6 +217,7 @@ function updateTableSortability() {
  * Save a single field change on the timekeeping form
  */
 function saveField(e) {
+    e.stopPropagation();
     var id = $(e.currentTarget).attr('index');
     var fieldName = $(e.currentTarget).attr('fieldName');
     var value = $(e.currentTarget).val();
@@ -228,7 +229,10 @@ function saveField(e) {
         dataType: "JSON",
         success: function (data) {
             if (fieldName == 'duration') {
-                $('#' + id + 'duration').html(data.duration).trigger('click');
+                $('#' + id + 'duration').html(data.duration)
+                if ($('#'+id+'TimeDuration').css('display') != 'none') {
+                    $('#' + id + 'duration').trigger('click');
+                }
             }
             updateTableClassing();
             updateTableSortability();
@@ -240,3 +244,14 @@ function saveField(e) {
     });
 
 }
+/**
+ * Hide the duration input on blur
+ */
+function hideDurationInput(e) {
+    e.stopPropagation();
+    var id = $(e.currentTarget).attr('index');
+    if($(e.currentTarget).css('display') != 'none'){
+        $('#' + id + 'duration').trigger('click');
+    }
+}
+

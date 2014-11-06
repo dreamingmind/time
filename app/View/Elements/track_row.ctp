@@ -1,13 +1,16 @@
 <?php
 $duration = $this->Html->tag('span', substr($this->request->data[$index]['Time']['duration'],0,5), array(
     'id' => $index.'duration', 
-    'class' => 'toggle'));
+    'class' => "toggle {$index}duration"));
 $duration .= $this->Form->input("$index.Time.duration", array(
     'class' => $index.'duration hide', 
     'label' => FALSE, 
-    'bind' => 'change.saveField',
+    'bind' => 'change.saveField blur.hideDurationInput',
     'fieldName' => 'duration',
-    'index' => $index));
+    'index' => $index,
+    'div' => array(
+        'id' => "durdiv$index"
+    )));
 $rowAttr = array('id' => 'row_'.$index);
 switch ($this->request->data("$index.Time.status")) {
     case OPEN:
