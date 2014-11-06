@@ -8,12 +8,23 @@ $duration .= $this->Form->input("$index.Time.duration", array(
     'bind' => 'change.saveField',
     'fieldName' => 'duration',
     'index' => $index));
-$rowAttr = $this->request->data("$index.Time.status") == 1 
-		? array('class' => 'open') 
-		: $this->request->data("$index.Time.status") == 2 
-			? array('class' => 'review') 
-			: array('class' => 'closed')
-		;
+$rowAttr = array('id' => 'row_'.$index);
+switch ($this->request->data("$index.Time.status")) {
+    case OPEN:
+        $rowAttr['class'] = 'open';
+        break;
+    case CLOSED:
+        $rowAttr['class'] = 'closed';
+        break;
+    case REVIEW:
+        $rowAttr['class'] = 'review';
+        break;
+    case PAUSED:
+        $rowAttr['class'] = 'paused';
+        break;
+    default:
+        break;
+}
 //dmDebug::ddd($this->request->data('{n}.Time.status'), 'status');
 
 echo $this->Html->tableCells(array(
@@ -41,5 +52,5 @@ echo $this->Html->tableCells(array(
             'fieldName' => 'activity',
             'index' => $index
         )),
-        $this->Tk->timeFormActionButtons($index))
+        $this->Tk->timeFormActionButtons($index, $this->request->data("$index.Time.status")))
 ), $rowAttr, $rowAttr);

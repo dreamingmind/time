@@ -9,12 +9,12 @@
 		echo $this->Form->input('project_id');
 		echo $this->Form->input('time_in');
 		echo $this->Form->input('time_out');
-		echo $this->Form->input('duration');
+		echo $this->Form->input('duration', array('disabled' => TRUE));
 		echo $this->Form->input('activity');
 	?>
 	</fieldset>
 <?php echo $this->Form->button(__('Cancel'), array('class' => 'small red', 'bind' => 'click.cancelTimeEdit')); ?>
-<?php echo $this->Form->button(__('Submit'), array('class' => 'small green', 'bind' => 'click.saveTimeEdit')); ?>
+<?php echo $this->Form->button(__('Submit'), array('class' => 'small green', 'bind' => 'click.saveTimeEdit', 'index' => $this->request->data('Time.id'))); ?>
 <?php echo $this->Form->end(); ?>
 	<style type="text/css">
 /*<![CDATA[*/

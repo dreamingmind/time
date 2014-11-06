@@ -223,7 +223,8 @@ class TimesController extends AppController {
                 ->data('Time.time_in', date('Y-m-d H:i:s'))
                 ->data('Time.time_out', date('Y-m-d H:i:s'))
                 ->data('Time.project_id', NULL)
-                ->data('Time.duration', '00:00');
+                ->data('Time.duration', '00:00')
+                ->data('Time.status', OPEN);
         $this->Time->create($this->request->data);
         $result = $this->Time->save($this->request->data);
         $this->request->data = array($result['Time']['id'] => $result);
@@ -281,5 +282,51 @@ class TimesController extends AppController {
                 'id' => $this->request->data['id'],
                 $this->request->data['fieldName'] => $this->request->data['value']
         ));
+    }
+    
+    public function timeStop($id) {
+        $this->layout = 'ajax';
+        $time = date('Y-m-d H:i:s');
+        $this->request->data('Time.time_out', $time)
+                ->data('Time.id', $id)
+                ->data('Time.status', CLOSED);
+        $element = $this->saveTimeChange($id);
+        $this->render($element);
+    }
+    
+    public function timePause($id) {
+        $this->layout = 'ajax';
+        $time = date('Y-m-d H:i:s');
+        $this->request->data('Time.time_out', $time)
+                ->data('Time.id', $id)
+                ->data('Time.status', PAUSED);
+        $element = $this->saveTimeChange($id);
+        $this->render($element);
+    }
+    
+    public function timeRestart($id) {
+        $this->layout = 'ajax';
+        $duration = $this->Time->field('duration', array('Time.id' => $id));
+        $this->request->data('id', $id)
+                ->data('value', $duration);
+        $this->saveDuration();
+        $this->request->data('Time.status', OPEN);
+        $element = $this->saveTimeChange($id);
+        $this->render($element);
+    }
+    
+    private function saveTimeChange($id) {
+        if(!$this->Time->save($this->request->data)){
+            $this->Session->setFlash('The record update failed, please try again.');
+            $element = '/Elements/ajax_flash';
+        } else {
+            $this->request->data[$id] = $this->Time->find('first', array('conditions' => array('Time.id' => $id)));
+            $users = $this->Time->User->fetchList($this->Auth->user('id'));
+            $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
+            $index = $id;
+            $this->set(compact('users', 'projects', 'index'));
+            $element = '/Elements/track_row';
+        }
+        return $element;
     }
 }

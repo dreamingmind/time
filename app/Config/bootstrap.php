@@ -119,4 +119,4 @@ CakePlugin::load('AclExtras');
 define("OPEN", 1);
 define("REVIEW", 2);
 define("CLOSED", 4);
-
+define("PAUSED", 8);

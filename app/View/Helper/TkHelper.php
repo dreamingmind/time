@@ -13,6 +13,8 @@
 class TkHelper extends AppHelper {
 
     public $helpers = array('Form', 'Html');
+    
+    public $index = '';
 
     public function __construct(View $View, $settings = array()) {
         parent::__construct($View, $settings);
@@ -43,20 +45,42 @@ class TkHelper extends AppHelper {
         return $this->Form->button($this->Html->tag('i', '', array('class' => 'icon-reply')), $buttonOptions);
     }
 
-    public function timeFormActionButtons($index) {
+    public function timeFormActionButtons($index, $status) {
+        $this->index = $index;
         $buttons = array(
-            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-info-sign')), '', array('bind' => 'click.timeInfo', 'escape' => FALSE, 'index' => $index)),
-            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-stop')), '', array('bind' => 'click.timeStop', 'escape' => FALSE, 'index' => $index)),
-            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-pause')), '', array('bind' => 'click.timePause', 'escape' => FALSE, 'index' => $index)),
-            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-backward')), '', array('bind' => 'click.timeBack', 'escape' => FALSE, 'index' => $index)),
-            $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-trash')), '', array('bind' => 'click.timeDelete', 'escape' => FALSE, 'index' => $index)),
+            $this->actionButton('icon-info-sign', 'click.timeInfo')
         );
+        if($status & CLOSED){
+            $buttons[] = $this->actionButton('icon-refresh', 'click.timeReopen');
+            $buttons[] = $this->actionButton('icon-trash', 'click.timeDelete');
+        } else {
+            $buttons[] = $this->actionButton('icon-stop', 'click.timeStop');
+            $buttons[] = $this->pauseButton($status);
+            $buttons[] = $this->actionButton('icon-trash', 'click.timeDelete');
+        }
         return $this->Html->nestedList($buttons, array('class' => 'button-bar'));
-//        $actionButtons = '<ul class="button-bar">
-//<li><a href="" bind="timeStop"><i class="icon-stop blue timestop"></i></a></li>
-//<li><a href=""><i class="icon-pause timepause"></i></a></li>
-//<li><a href=""><i class="icon-backward timeback"></i></a></li>
-//</ul>';
     }
+    
+    private function actionButton($type, $bind = NULL) {
+        $attributes = array(
+            'escape' => FALSE, 
+            'index' => $this->index);
+        if($bind != NULL){
+            $attributes['bind'] = $bind;
+        }
+        return $this->Html->link($this->Html->tag('i', '', array('class' => $type)), '', $attributes);
+    }
+    
+    private function pauseButton($status) {
+        if($status & OPEN){
+            $button = $this->actionButton('icon-pause', 'click.timePause');
+        } else {
+            $button = $this->actionButton('icon-play', 'click.timeRestart');
+        }
+        return $button;
+    }
+    
+//    $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-info-sign')), '', array('bind' => 'click.timeInfo', 'escape' => FALSE, 'index' => $index)),
+
 
 }

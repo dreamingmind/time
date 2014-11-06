@@ -14,3 +14,17 @@ table.striped tbody th{
 textarea {
     height: 30px;
 }
+
+table.striped tr.open.alt {
+    background-color: rgb(122,232,150);
+}
+table.striped tr.open {
+    background-color: rgb(184,243,199);
+}
+
+table.striped tr.paused.alt {
+    background-color: rgb(255,160,138);
+}
+table.striped tr.paused {
+    background-color: rgb(255,198,185);
+}

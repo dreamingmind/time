@@ -33,16 +33,43 @@ function AdjustSelect(e) {
     $(this).parents('form').find('#TimeTimeOut').attr('value', dstring);
 }
 
+function timeChange(e, action) {
+    var id = $(e.currentTarget).attr('index');
+    $.ajax({
+        type: "GET",
+        url: webroot + controller + action + "/" + id,
+        dataType: "HTML",
+        success: function (data) {
+            if (data.match(/<tr/) != null) {
+                replaceRow(data, id);
+            } else {
+                $('#row_' + id).before('<tr><td colspan="5" class="flashmessage"' + data + '</td></tr>');
+            }
+        },
+        error: function () {
+            alert('Error adding the time row.')
+        }
+    });
+}
+
 function timeStop(e) {
     e.preventDefault();
+    timeChange(e, 'timeStop');
 }
 
 function timePause(e) {
     e.preventDefault();
+    timeChange(e, 'timePause');
 }
 
-function timeBack(e) {
+function timeRestart(e) {
     e.preventDefault();
+    timeChange(e, 'timeRestart');
+}
+
+function timeReopen(e) {
+    e.preventDefault();
+    timeChange(e, 'timeRestart');
 }
 
 function timeDelete(e) {
@@ -75,56 +102,62 @@ function newTime(e) {
 }
 
 function timeInfo(e) {
-	e.preventDefault();
-	var target = e.currentTarget;
-	var id = $(target).attr('index');
-	$.ajax({
-		type: "GET",
-		dataType: "HTML",
-		url: webroot + controller + 'edit/' + id + '/true',
-		success: function (data) {
-			$('div.times.form').remove();
-			$(target).parents('td').prepend(data);
-			bindHandlers('div.times.form');
-			$('div.times.form').draggable();
-		},
-		error: function (data) {
-			alert('There was an error on the server. Please try again');
-		}
-	})
+    e.preventDefault();
+    var target = e.currentTarget;
+    var id = $(target).attr('index');
+    $.ajax({
+        type: "GET",
+        dataType: "HTML",
+        url: webroot + controller + 'edit/' + id + '/true',
+        success: function (data) {
+            $('div.times.form').remove();
+            $(target).parents('td').prepend(data);
+            bindHandlers('div.times.form');
+            $('div.times.form').draggable();
+        },
+        error: function (data) {
+            alert('There was an error on the server. Please try again');
+        }
+    })
 }
 
-function cancelTimeEdit(e){
-	e.stopPropagation();
-	$('div.times.form').remove();
+function cancelTimeEdit(e) {
+    e.stopPropagation();
+    $('div.times.form').remove();
 }
 
 function saveTimeEdit(e) {
-	e.preventDefault();
-	e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
+    var id = $(e.currentTarget).attr('index');
 //	var formData = $('form#TimeEditForm').serialize();
-	$.ajax({
-		type: "PUT",
-		dataType: "HTML",
-		data: $('form#TimeEditForm').serialize(),
-		url: $('form#TimeEditForm').attr('action'),
-		success: function (data) {
-			if (data.match(/<tr><td>/)[0] == '<tr><td>') {
-				var id = Date.now();
-				data = data.replace('tr', 'tr id="' + id + '"');
-				var row = $('div.times.form').parents('tr');
-				$(row).replaceWith(data);
-				bindHandlers('tr#'+id);
-				initToggles();
-				updateTableClassing();
-				updateTableSortability();
-//				HAVE BIND THE HANDLERS HERE. HOW DO WE TARGET THE ROW?
-			}
-		},
-		error: function (data) {
-			alert('failure');
-		}
-	})
+    $.ajax({
+        type: "PUT",
+        dataType: "HTML",
+        data: $('form#TimeEditForm').serialize(),
+        url: $('form#TimeEditForm').attr('action'),
+        success: function (data) {
+            if (data.match(/<tr/) != null) {
+                replaceRow(data, id);
+            } else {
+                $('div.times form').prepend(data);
+            }
+        },
+        error: function (data) {
+            alert('failure');
+        }
+    })
+}
+
+/**
+ * Replace the row contents with returned row
+ */
+function replaceRow(data, id) {
+    $('#row_'+id).replaceWith(data);
+    bindHandlers('#row_' + id);
+    initToggles('#row_' + id);
+    updateTableClassing();
+    updateTableSortability();
 }
 
 /**
@@ -187,15 +220,15 @@ function saveField(e) {
     var id = $(e.currentTarget).attr('index');
     var fieldName = $(e.currentTarget).attr('fieldName');
     var value = $(e.currentTarget).val();
-    var postData = {'id':id,'fieldName':fieldName, 'value':value}; 
+    var postData = {'id': id, 'fieldName': fieldName, 'value': value};
     $.ajax({
         type: "POST",
         url: webroot + controller + "saveField",
         data: postData,
         dataType: "JSON",
         success: function (data) {
-            if(fieldName == 'duration'){
-                $('#'+id+'duration').html(data.duration).trigger('click');
+            if (fieldName == 'duration') {
+                $('#' + id + 'duration').html(data.duration).trigger('click');
             }
             updateTableClassing();
             updateTableSortability();
