@@ -11,16 +11,6 @@
 			<?php echo h($group['Group']['name']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-			<?php echo h($group['Group']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Modified'); ?></dt>
-		<dd>
-			<?php echo h($group['Group']['modified']); ?>
-			&nbsp;
-		</dd>
 	</dl>
 </div>
 <div class="related">
@@ -29,8 +19,6 @@
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Modified'); ?></th>
 		<th><?php echo __('User Id'); ?></th>
 		<th><?php echo __('Project Id'); ?></th>
 		<th><?php echo __('Time In'); ?></th>
@@ -47,8 +35,6 @@
 		foreach ($group['Time'] as $time): ?>
 		<tr>
 			<td><?php echo $time['id']; ?></td>
-			<td><?php echo $time['created']; ?></td>
-			<td><?php echo $time['modified']; ?></td>
 			<td><?php echo $time['user_id']; ?></td>
 			<td><?php echo $time['project_id']; ?></td>
 			<td><?php echo $time['time_in']; ?></td>
@@ -83,8 +69,6 @@
 		<th><?php echo __('Username'); ?></th>
 		<th><?php echo __('Password'); ?></th>
 		<th><?php echo __('Group Id'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Modified'); ?></th>
 		<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php
@@ -95,8 +79,6 @@
 			<td><?php echo $user['username']; ?></td>
 			<td><?php echo $user['password']; ?></td>
 			<td><?php echo $user['group_id']; ?></td>
-			<td><?php echo $user['created']; ?></td>
-			<td><?php echo $user['modified']; ?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View'), array('controller' => 'users', 'action' => 'view', $user['id'])); ?>
 				<?php echo $this->Html->link(__('Edit'), array('controller' => 'users', 'action' => 'edit', $user['id'])); ?>

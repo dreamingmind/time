@@ -21,16 +21,6 @@
 			<?php echo $this->Html->link($user['Group']['name'], array('controller' => 'groups', 'action' => 'view', $user['Group']['id'])); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-			<?php echo h($user['User']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Modified'); ?></dt>
-		<dd>
-			<?php echo h($user['User']['modified']); ?>
-			&nbsp;
-		</dd>
 	</dl>
 </div>
 <div class="actions">
@@ -52,8 +42,6 @@
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Modified'); ?></th>
 		<th><?php echo __('User Id'); ?></th>
 		<th><?php echo __('Project Id'); ?></th>
 		<th><?php echo __('Time In'); ?></th>
@@ -70,8 +58,6 @@
 		foreach ($user['Time'] as $time): ?>
 		<tr>
 			<td><?php echo $time['id']; ?></td>
-			<td><?php echo $time['created']; ?></td>
-			<td><?php echo $time['modified']; ?></td>
 			<td><?php echo $time['user_id']; ?></td>
 			<td><?php echo $time['project_id']; ?></td>
 			<td><?php echo $time['time_in']; ?></td>

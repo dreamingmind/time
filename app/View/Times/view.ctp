@@ -6,26 +6,6 @@
 			<?php echo h($time['Time']['id']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-			<?php echo h($time['Time']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Modified'); ?></dt>
-		<dd>
-			<?php echo h($time['Time']['modified']); ?>
-			&nbsp;
-		</dd>
-<!--		<dt><?php // echo __('User Id'); ?></dt>
-		<dd>
-			<?php // echo h($time['Time']['user_id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php // echo __('Project Id'); ?></dt>
-		<dd>
-			<?php // echo h($time['Time']['project_id']); ?>
-			&nbsp;
-		</dd>-->
 		<dt><?php echo __('Time In'); ?></dt>
 		<dd>
 			<?php echo h($time['Time']['time_in']); ?>

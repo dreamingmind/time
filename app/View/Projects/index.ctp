@@ -6,8 +6,6 @@
 			<th><?php echo $this->Paginator->sort('client_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('name'); ?></th>
 			<th><?php echo $this->Paginator->sort('note'); ?></th>
-			<th><?php echo $this->Paginator->sort('created'); ?></th>
-			<th><?php echo $this->Paginator->sort('modified'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($projects as $project): ?>
@@ -18,8 +16,6 @@
 		</td>
 		<td><?php echo h($project['Project']['name']); ?>&nbsp;</td>
 		<td><?php echo h($project['Project']['note']); ?>&nbsp;</td>
-		<td><?php echo h($project['Project']['created']); ?>&nbsp;</td>
-		<td><?php echo h($project['Project']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $project['Project']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $project['Project']['id'])); ?>
