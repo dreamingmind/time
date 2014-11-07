@@ -14,7 +14,7 @@
 	</dl>
 </div>
 <div class="related">
-	<h3><?php echo __('Related Projects'); ?></h3>
+	<h6><?php echo __('Related Projects'); ?></h6>
 	<?php if (!empty($client['Project'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>

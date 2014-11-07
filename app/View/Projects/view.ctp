@@ -24,7 +24,7 @@
 	</dl>
 </div>
 <div class="related">
-	<h3><?php echo __('Related Times'); ?></h3>
+	<h6><?php echo __('Related Times'); ?></h6>
 	<?php if (!empty($project['Time'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>

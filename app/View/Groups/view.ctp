@@ -14,7 +14,7 @@
 	</dl>
 </div>
 <div class="related">
-	<h3><?php echo __('Related Times'); ?></h3>
+	<h6><?php echo __('Related Times'); ?></h6>
 	<?php if (!empty($group['Time'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
@@ -61,7 +61,7 @@
 	</div>
 </div>
 <div class="related">
-	<h3><?php echo __('Related Users'); ?></h3>
+	<h6><?php echo __('Related Users'); ?></h6>
 	<?php if (!empty($group['User'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>

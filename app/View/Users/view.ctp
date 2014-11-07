@@ -24,7 +24,7 @@
 	</dl>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
+	<h6><?php echo __('Actions'); ?></h6>
 	<ul>
 		<li><?php echo $this->Html->link(__('Edit User'), array('action' => 'edit', $user['User']['id'])); ?> </li>
 		<li><?php echo $this->Form->postLink(__('Delete User'), array('action' => 'delete', $user['User']['id']), null, __('Are you sure you want to delete # %s?', $user['User']['id'])); ?> </li>
@@ -37,7 +37,7 @@
 	</ul>
 </div>
 <div class="related">
-	<h3><?php echo __('Related Times'); ?></h3>
+	<h6><?php echo __('Related Times'); ?></h6>
 	<?php if (!empty($user['Time'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>

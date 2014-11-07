@@ -151,7 +151,7 @@ if (isset($filePresent)):
 	?>
 </p>
 
-<h3><?php echo __d('cake_dev', 'Editing this Page'); ?></h3>
+<h6><?php echo __d('cake_dev', 'Editing this Page'); ?></h6>
 <p>
 <?php
 echo __d('cake_dev', 'To change the content of this page, edit: APP/View/Pages/home.ctp.<br />
@@ -160,7 +160,7 @@ You can also add some CSS styles for your pages at: APP/webroot/css.');
 ?>
 </p>
 
-<h3><?php echo __d('cake_dev', 'Getting Started'); ?></h3>
+<h6><?php echo __d('cake_dev', 'Getting Started'); ?></h6>
 <p>
 	<?php
 		echo $this->Html->link(
@@ -180,7 +180,7 @@ You can also add some CSS styles for your pages at: APP/webroot/css.');
 	?>
 </p>
 
-<h3><?php echo __d('cake_dev', 'Official Plugins'); ?></h3>
+<h6><?php echo __d('cake_dev', 'Official Plugins'); ?></h6>
 <p>
 <ul>
 	<li>
@@ -194,7 +194,7 @@ You can also add some CSS styles for your pages at: APP/webroot/css.');
 </ul>
 </p>
 
-<h3><?php echo __d('cake_dev', 'More about Cake'); ?></h3>
+<h6><?php echo __d('cake_dev', 'More about Cake'); ?></h6>
 <p>
 <?php echo __d('cake_dev', 'CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Active Record, Association Data Mapping, Front Controller and MVC.'); ?>
 </p>
