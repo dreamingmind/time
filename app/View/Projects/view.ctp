@@ -1,5 +1,5 @@
 <div class="projects view">
-<h2><?php  echo __('Project'); ?></h2>
+<h5><?php  echo __('Project'); ?></h5>
 	<dl>
 		<dt><?php echo __('Id'); ?></dt>
 		<dd>
@@ -32,19 +32,6 @@
 			&nbsp;
 		</dd>
 	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Project'), array('action' => 'edit', $project['Project']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Project'), array('action' => 'delete', $project['Project']['id']), null, __('Are you sure you want to delete # %s?', $project['Project']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Projects'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Project'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Clients'), array('controller' => 'clients', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Client'), array('controller' => 'clients', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Times'), array('controller' => 'times', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Time'), array('controller' => 'times', 'action' => 'add')); ?> </li>
-	</ul>
 </div>
 <div class="related">
 	<h3><?php echo __('Related Times'); ?></h3>

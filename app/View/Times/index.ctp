@@ -1,5 +1,5 @@
 <div class="times index">
-	<h2><?php echo __('Times'); ?></h2>
+	<h5><?php echo __('Times'); ?></h5>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
@@ -41,10 +41,4 @@
 		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
 	</div>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Time'), array('action' => 'add')); ?></li>
-	</ul>
 </div>

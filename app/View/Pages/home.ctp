@@ -21,7 +21,7 @@ if (!Configure::read('debug')):
 endif;
 App::uses('Debugger', 'Utility');
 ?>
-<h2><?php echo __d('cake_dev', 'Release Notes for CakePHP %s.', Configure::version()); ?></h2>
+<h5><?php echo __d('cake_dev', 'Release Notes for CakePHP %s.', Configure::version()); ?></h5>
 <p>
 	<a href="http://cakephp.org/changelogs/<?php echo Configure::version(); ?>"><?php echo __d('cake_dev', 'Read the changelog'); ?> </a>
 </p>
