@@ -55,7 +55,8 @@ $this->end();
     <body>
         <div id="container">
             <div id="header">
-                <h3>Project Time Keeping</h3>
+                <!--<h3>Project Time Keeping</h3>-->
+                <?php echo $this->element('menu') ?>
             </div>
             <div id="content">
 

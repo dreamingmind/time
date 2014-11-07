@@ -14,23 +14,4 @@ echo $this->Form->create('Time');
 echo '</form>';
 
 echo $this->Form->button($this->Html->tag('i', '', array('class' => 'icon-plus-sign')) . ' New', array('class' => 'orange', 'bind' => 'click.newTimeRow'));
-
-echo $this->Form->button($this->Html->tag('i', '', array('class' => 'icon-plus-sign')) . ' Project', array('class' => 'blue', 'bind' => 'click.newProject'));
-
-echo $this->Form->create('Project');
 ?>
-<table class="tight project">
-<tr>
-    <td>
-        <?php echo $this->Form->input('Project.name'); ?>
-    </td>
-    <td>
-        <?php echo $this->Form->input('Project.client_id'); ?>
-    </td>
-    <td>
-        <?php echo $this->Form->button('Add', array('class' => 'small green', 'bind' => 'click.addProject')) . ' '
-                . $this->Form->button('Cancel', array('class' => 'small red', 'bind' => 'click.cancelProject')); ?>
-    </td>
-</tr>
-</table>
-</form>

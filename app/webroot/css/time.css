@@ -28,3 +28,15 @@ table.striped tr.paused.alt {
 table.striped tr.paused {
     background-color: rgb(255,198,185);
 }
+ul.menu {
+    width: 120px;
+    z-index: 10000;
+    margin-bottom: 9px;
+}
+.menu li.has-menu a{
+    padding: 5px;
+}
+.has-menu.last > a {
+    color: black;
+    font-weight: bold;
+}
