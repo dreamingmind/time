@@ -21,6 +21,15 @@
 			<?php echo h($project['Project']['note']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Times'); ?></dt>
+		<dd>
+			<?php
+				foreach($staff as $member => $seconds) {
+					$hours = $seconds / HOUR;
+					echo "$member: $hours<br />";
+				}
+			?>
+		</dd>
 	</dl>
 </div>
 <div class="related">

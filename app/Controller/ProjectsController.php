@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('CakeTime', 'Utility');
 /**
  * Projects Controller
  *
@@ -34,7 +35,20 @@ class ProjectsController extends AppController {
 			throw new NotFoundException(__('Invalid project'));
 		}
 		$options = array('conditions' => array('Project.' . $this->Project->primaryKey => $id));
-		$this->set('project', $this->Project->find('first', $options));
+		$project = $this->Project->find('first', $options);
+		$staff = array();
+		if (isset($project['Time'])) {
+			foreach ($project['Time'] as $time) {
+				if (!isset($staff[$time['user_id']])) {
+					$staff[$time['user_id']] = 0;
+				}
+				$dur = explode(':', $time['duration']);
+				$d = ($dur[0] * HOUR) + ($dur[1] * MINUTE) + $dur[2];
+				$staff[$time['user_id']] += $d;
+			}
+		}
+		$this->set(compact('project', 'staff'));
+		
 	}
 
 /**
