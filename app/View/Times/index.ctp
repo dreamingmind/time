@@ -7,8 +7,8 @@
 			<th><?php echo $this->Paginator->sort('time_out'); ?></th>
 			<th><?php echo $this->Paginator->sort('duration'); ?></th>
 			<th><?php echo $this->Paginator->sort('activity'); ?></th>
-			<th><?php echo $this->Paginator->sort('user'); ?></th>
-			<th><?php echo $this->Paginator->sort('project'); ?></th>
+			<th><?php echo $this->Paginator->sort('user_id'); ?></th>
+			<th><?php echo $this->Paginator->sort('project_id'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($times as $time): ?>
@@ -18,8 +18,8 @@
 		<td><?php echo h($time['Time']['time_out']); ?>&nbsp;</td>
 		<td><?php echo h($time['Time']['duration']); ?>&nbsp;</td>
 		<td><?php echo h($time['Time']['activity']); ?>&nbsp;</td>
-		<td><?php echo h($time['Time']['user']); ?>&nbsp;</td>
-		<td><?php echo h($time['Time']['project']); ?>&nbsp;</td>
+		<td><?php echo h($time['Time']['user_id']); ?>&nbsp;</td>
+		<td><?php echo h($time['Time']['project_id']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $time['Time']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $time['Time']['id'])); ?>
