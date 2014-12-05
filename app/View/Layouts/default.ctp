@@ -69,4 +69,5 @@ $this->end();
         </div>
         <?php echo $this->element('sql_dump'); ?>
     </body>
+    <footer>Copyright 2014 Curly Mind</footer>
 </html>
