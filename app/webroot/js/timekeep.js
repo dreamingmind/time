@@ -228,7 +228,7 @@ function saveField(e) {
         data: postData,
         dataType: "JSON",
         success: function (data) {
-			if (fieldName = 'project_id') {
+			if (fieldName == 'project_id') {
 				location.replace(location.href);
 			}
             if (fieldName == 'duration') {
@@ -294,6 +294,8 @@ function hideDurationInput(e) {
 
 				}
 			}
+		} else {
+			saveField(e);
 		}
 	}
 

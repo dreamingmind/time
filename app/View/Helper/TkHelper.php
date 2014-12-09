@@ -131,7 +131,9 @@ class TkHelper extends AppHelper {
 			'options' => $task,
 			'empty' => 'Choose a task',
 			'bind' => 'change.taskChoice',
-			'project_id' => $projectId
+			'project_id' => $projectId,
+			'fieldname' => 'task_id',
+			'index' => (isset($data['Time']['id'])) ? $data['Time']['id'] : ''
 		);
 		if ($options) {
 			$attributes = array_merge($options, $attributes);
