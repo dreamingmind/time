@@ -275,8 +275,6 @@ function hideDurationInput(e) {
 				if (proj == '' || typeof(proj) == 'undefined') {
 					alert('You can\'t make new tasks until you specify a project.');
 				} else {
-					alert('You entered '+task+'. PID: '+ proj);
-	//				$('select[id*="TimeTaskId"][project_id="11"]');
 				$.ajax({
 					type: "POST",
 					dataType: "HTML",
@@ -285,6 +283,8 @@ function hideDurationInput(e) {
 					success: function (data) {
 						if(data.match(/could not/) != 'could not') {
 							location.replace(location.href);
+						} else {
+							alert('The new task was not saved.');
 						}
 					},
 					error: function (data) {
