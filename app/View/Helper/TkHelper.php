@@ -82,5 +82,23 @@ class TkHelper extends AppHelper {
     
 //    $this->Html->link($this->Html->tag('i', '', array('class' => 'icon-info-sign')), '', array('bind' => 'click.timeInfo', 'escape' => FALSE, 'index' => $index)),
 
+	/**
+	 * Extract the correct task list for a project
+	 * 
+	 * given a Time record (with project_id field) and 
+	 * the full task list (grouped by project id), return the 
+	 * tasks for the project with a 'New task' choice prepended. 
+	 * Or return just the 'New task' choice if the project has no tasks.
+	 * 
+	 * @param array $record
+	 * @param array $tasks
+	 * @return array
+	 */
+	public function task($record, $tasks) {
+		if ($record['Time']['project_id'] != '') {
+			$task = (isset($tasks[$record['Time']['project_id']])) ? array_merge(array('newtask' => 'New task'), $tasks[$record['Time']['project_id']]) : array('newtask' => 'New task');
+		}
+		return $task;
+	}
 
 }

@@ -41,4 +41,8 @@ class Task extends AppModel {
 			'order' => ''
 		)
 	);
+	
+	public function groupedTaskList() {
+		return $this->find('list', array('fields' => array('Task.id', 'Task.name', 'Task.project_id')));
+	}
 }

@@ -46,8 +46,19 @@ echo $this->Html->tableCells(array(
         ))
         . '&nbsp;' 
         . $this->Tk->setProjectDefaultButton($this->request->data[$index]['Time']['project_id']),
+		
+		$this->Form->input("$index.Time.task_id", array(
+			'options' => $task,
+			'label' => FALSE,
+			'div' => FALSE,
+			'empty' => 'Choose a task',
+			'bind' => 'change.taskChoice'
+		)),
+		
         $this->Time->format($this->request->data[$index]['Time']['time_in'], '%m.%d.%y --- %I:%M %p'),
+		
         $duration,
+		
         $this->Form->input("$index.Time.activity", array(
             'label' => FALSE,
             'div' => FALSE,
@@ -55,5 +66,7 @@ echo $this->Html->tableCells(array(
             'fieldName' => 'activity',
             'index' => $index
         )),
+		
         $this->Tk->timeFormActionButtons($index, $this->request->data("$index.Time.status")))
+	
 ), $rowAttr, $rowAttr);

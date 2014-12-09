@@ -253,5 +253,25 @@ function hideDurationInput(e) {
     if($(e.currentTarget).css('display') != 'none'){
         $('#' + id + 'duration').trigger('click');
     }
+	
 }
+
+	/**
+	 * Handle request to create a new task for a project
+	 * 
+	 * When the task "New task" is selected, prompt the 
+	 * ust for the new task, then save and set it.
+	 * 
+	 * @param {event} e
+	 */
+	function taskChoice(e) {
+		if ($(e.currentTarget).val() === 'newtask') {
+			var task = window.prompt('Enter the new task.');
+			if (task != null) {
+				var id = parseInt($(e.currentTarget).attr('id'));
+				var proj = $('#'+id+'TimeProjectId').val();
+				alert('You entered '+task+'. ID:'+id+' PID: '+proj);
+			}
+		}
+	}
 

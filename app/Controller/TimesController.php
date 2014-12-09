@@ -193,8 +193,11 @@ class TimesController extends AppController {
         $this->request->data = $this->Time->openRecords($this->userId);
         $this->request->data = $this->Time->reindex($this->request->data);
         $projectInList = $this->Time->Project->fetchList($this->Auth->user('id'));
+		$Task = ClassRegistry::init('Task');
+		$tasks = $Task->groupedTaskList();
+		dmDebug::ddd($tasks, 'tasks');
         $userId = $this->userId;
-        $this->set(compact('projectInList', 'userId'));
+        $this->set(compact('projectInList', 'userId', 'tasks'));
     }
 
     public function newTime() {
