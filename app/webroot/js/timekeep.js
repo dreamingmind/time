@@ -228,6 +228,9 @@ function saveField(e) {
         data: postData,
         dataType: "JSON",
         success: function (data) {
+			if (fieldName = 'project_id') {
+				location.replace(location.href);
+			}
             if (fieldName == 'duration') {
                 $('#' + id + 'duration').html(data.duration)
                 if ($('#'+id+'TimeDuration').css('display') != 'none') {
@@ -269,11 +272,27 @@ function hideDurationInput(e) {
 			var task = window.prompt('Enter the new task.');
 			if (task != null) {
 				var proj = $(e.currentTarget).attr('project_id');
-				if (proj == '') {
+				if (proj == '' || typeof(proj) == 'undefined') {
 					alert('You can\'t make new tasks until you specify a project.');
+				} else {
+					alert('You entered '+task+'. PID: '+ proj);
+	//				$('select[id*="TimeTaskId"][project_id="11"]');
+				$.ajax({
+					type: "POST",
+					dataType: "HTML",
+					data: {Task : {project_id: proj, name: task}},
+					url: webroot+'tasks/add',
+					success: function (data) {
+						if(data.match(/could not/) != 'could not') {
+							location.replace(location.href);
+						}
+					},
+					error: function (data) {
+						alert('ajax failure');
+					}
+				})
+
 				}
-				alert('You entered '+task+'. PID: '+ proj);
-//				$('select[id*="TimeTaskId"][project_id="11"]');
 			}
 		}
 	}

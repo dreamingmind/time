@@ -45,4 +45,10 @@ class Task extends AppModel {
 	public function groupedTaskList() {
 		return $this->find('list', array('fields' => array('Task.id', 'Task.name', 'Task.project_id')));
 	}
+	
+	public function projectTasks($projectId) {
+		$task = $this->find('list', array('conditions' => array('project_id' => $projectId)));
+		$task = array('newtask' => 'New task') + $task;
+		return $task;
+	}
 }

@@ -1,5 +1,5 @@
 <?php
-$task = $this->Tk->task($this->request->data[$index], $tasks);
+//$task = $this->Tk->task($this->request->data[$index], $tasks);
 $duration = $this->Html->tag('span', substr($this->request->data[$index]['Time']['duration'],0,5), array(
     'id' => $index.'duration', 
     'class' => "toggle {$index}duration"));
@@ -48,14 +48,15 @@ echo $this->Html->tableCells(array(
         . '&nbsp;' 
         . $this->Tk->setProjectDefaultButton($this->request->data[$index]['Time']['project_id']),
 		
-		$this->Form->input("$index.Time.task_id", array(
-			'options' => $task,
-			'label' => FALSE,
-			'div' => FALSE,
-			'empty' => 'Choose a task',
-			'bind' => 'change.taskChoice',
-			'project_id' => $this->request->data[$index]['Time']['project_id']
-		)),
+//		$this->Form->input("$index.Time.task_id", array(
+//			'options' => $task,
+//			'label' => FALSE,
+//			'div' => FALSE,
+//			'empty' => 'Choose a task',
+//			'bind' => 'change.taskChoice',
+//			'project_id' => $this->request->data[$index]['Time']['project_id']
+//		))
+		$this->Tk->taskSelect("$index.Time.task_id", $this->request->data[$index], array('label' => FALSE, 'div' => FALSE)),
 		
         $this->Time->format($this->request->data[$index]['Time']['time_in'], '%m.%d.%y --- %I:%M %p'),
 		

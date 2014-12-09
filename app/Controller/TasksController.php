@@ -7,7 +7,12 @@ App::uses('AppController', 'Controller');
  */
 class TasksController extends AppController {
 
-/**
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('add');
+	}
+
+	/**
  * index method
  *
  * @return void
@@ -38,17 +43,29 @@ class TasksController extends AppController {
  * @return void
  */
 	public function add() {
+//		dmDebug::ddd($this->request->data, 'trd');die;
 		if ($this->request->is('post')) {
 			$this->Task->create();
 			if ($this->Task->save($this->request->data)) {
 				$this->Session->setFlash(__('The task has been saved'));
-				$this->redirect(array('action' => 'index'));
+				if (!$this->request->is('ajax')) {
+					$this->redirect(array('action' => 'index'));
+				}				
 			} else {
 				$this->Session->setFlash(__('The task could not be saved. Please, try again.'));
 			}
 		}
-		$projects = $this->Task->Project->find('list');
-		$this->set(compact('projects'));
+		if ($this->request->is('ajax')) {
+			$tasks = $this->Task->groupedTaskList();
+			$this->request->data['Time'] = $this->request->data['Task'];
+			$this->set($task = $this->Task->projectTasks($this->request->data['Task']['project_id']));
+			$this->layout = 'ajax';
+			$this->render('/Elements/task_select');
+//			exit();
+		} else {
+			$projects = $this->Task->Project->find('list');
+			$this->set(compact('projects'));
+		}
 	}
 
 /**

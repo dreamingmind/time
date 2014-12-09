@@ -102,5 +102,41 @@ class TkHelper extends AppHelper {
 		}
 		return $task;
 	}
+	
+	/*
+	 * 		echo $this->Form->input('task_id', array(
+			'options' => $task,
+			'empty' => 'Choose a task',
+			'bind' => 'change.taskChoice',
+			'project_id' => $this->request->data['Time']['project_id']
+		));		
+
+	 *
+	 * 		$this->Form->input("$index.Time.task_id", array(
+			'options' => $task,
+			'label' => FALSE,
+			'div' => FALSE,
+			'empty' => 'Choose a task',
+			'bind' => 'change.taskChoice',
+			'project_id' => $this->request->data[$index]['Time']['project_id']
+		)),
+
+	 */
+	
+	public function taskSelect($field, $data, $options = FALSE){
+		$projectId = $data['Time']['project_id'];
+		$Task = ClassRegistry::init('Task');
+		$task = $Task->projectTasks($projectId);
+		$attributes = array(
+			'options' => $task,
+			'empty' => 'Choose a task',
+			'bind' => 'change.taskChoice',
+			'project_id' => $projectId
+		);
+		if ($options) {
+			$attributes = array_merge($options, $attributes);
+		}
+		return $this->Form->input($field, $attributes);
+	}
 
 }
