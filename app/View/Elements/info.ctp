@@ -1,4 +1,9 @@
-<?php echo $this->Session->flash(); ?>
+<?php 
+//dmDebug::ddd($this->request->data, 'trd');
+$task = $this->Tk->task($this->request->data, $tasks);
+
+echo $this->Session->flash(); 
+?>
 <div class="times form">
 <?php echo $this->Form->create('Time'); ?>
 	<fieldset>
@@ -7,6 +12,12 @@
 		echo $this->Form->input('id');
 		echo $this->Form->input('user_id');
 		echo $this->Form->input('project_id');
+		echo $this->Form->input('task_id', array(
+			'options' => $task,
+			'empty' => 'Choose a task',
+			'bind' => 'change.taskChoice',
+			'project_id' => $this->request->data['Time']['project_id']
+		));		
 		echo $this->Form->input('time_in');
 		echo $this->Form->input('time_out');
 		echo $this->Form->input('duration', array('disabled' => TRUE));

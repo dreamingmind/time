@@ -53,7 +53,8 @@ echo $this->Html->tableCells(array(
 			'label' => FALSE,
 			'div' => FALSE,
 			'empty' => 'Choose a task',
-			'bind' => 'change.taskChoice'
+			'bind' => 'change.taskChoice',
+			'project_id' => $this->request->data[$index]['Time']['project_id']
 		)),
 		
         $this->Time->format($this->request->data[$index]['Time']['time_in'], '%m.%d.%y --- %I:%M %p'),

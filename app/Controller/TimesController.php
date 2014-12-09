@@ -102,9 +102,11 @@ class TimesController extends AppController {
             $this->request->data = $this->Time->find('first', $options);
         }
 		// first visit, failed normal save, succesful of failed ajax save all run through here
+		$Task = ClassRegistry::init('Task');
+		$tasks = $Task->groupedTaskList();
 		$users = $this->Time->User->find('list');
 		$projects = $this->Time->Project->find('list');
-        $this->set(compact('users', 'projects'));
+        $this->set(compact('users', 'projects', 'tasks'));
 		if ($info) {
 			// This runs if the info button was clicked on the track page
 			$this->layout = 'ajax';
@@ -336,7 +338,9 @@ class TimesController extends AppController {
             $users = $this->Time->User->fetchList($this->Auth->user('id'));
             $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
             $index = $id;
-            $this->set(compact('users', 'projects', 'index'));
+			$Task = ClassRegistry::init('Task');
+			$tasks = $Task->groupedTaskList();
+            $this->set(compact('users', 'projects', 'index', 'tasks'));
             $element = '/Elements/track_row';
         }
         return $element;

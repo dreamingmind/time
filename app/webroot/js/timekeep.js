@@ -268,12 +268,12 @@ function hideDurationInput(e) {
 		if ($(e.currentTarget).val() === 'newtask') {
 			var task = window.prompt('Enter the new task.');
 			if (task != null) {
-				var id = parseInt($(e.currentTarget).attr('id'));
-				var proj = $('#'+id+'TimeProjectId').val();
-				if (proj = 'undefined') {
+				var proj = $(e.currentTarget).attr('project_id');
+				if (proj == '') {
 					alert('You can\'t make new tasks until you specify a project.');
 				}
-				alert('You entered '+task+'. ID:'+id+' PID: '+proj);
+				alert('You entered '+task+'. PID: '+ proj);
+//				$('select[id*="TimeTaskId"][project_id="11"]');
 			}
 		}
 	}
