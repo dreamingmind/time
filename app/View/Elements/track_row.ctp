@@ -1,4 +1,5 @@
 <?php
+$task = $this->Tk->task($this->request->data[$index], $tasks);
 $duration = $this->Html->tag('span', substr($this->request->data[$index]['Time']['duration'],0,5), array(
     'id' => $index.'duration', 
     'class' => "toggle {$index}duration"));

@@ -270,6 +270,9 @@ function hideDurationInput(e) {
 			if (task != null) {
 				var id = parseInt($(e.currentTarget).attr('id'));
 				var proj = $('#'+id+'TimeProjectId').val();
+				if (proj = 'undefined') {
+					alert('You can\'t make new tasks until you specify a project.');
+				}
 				alert('You entered '+task+'. ID:'+id+' PID: '+proj);
 			}
 		}

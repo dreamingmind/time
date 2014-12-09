@@ -97,6 +97,8 @@ class TkHelper extends AppHelper {
 	public function task($record, $tasks) {
 		if ($record['Time']['project_id'] != '') {
 			$task = (isset($tasks[$record['Time']['project_id']])) ? array_merge(array('newtask' => 'New task'), $tasks[$record['Time']['project_id']]) : array('newtask' => 'New task');
+		} else {
+			$task = array('newtask' => 'New task');
 		}
 		return $task;
 	}

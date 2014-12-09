@@ -188,6 +188,9 @@ class TimesController extends AppController {
         $this->set(compact('line', 'sibling', 'parent'));
     }
 
+	/**
+	 * Main ui
+	 */
     public function track() {
         $this->userId = $this->Session->read('Auth.User.id');
         $this->request->data = $this->Time->openRecords($this->userId);
@@ -195,7 +198,6 @@ class TimesController extends AppController {
         $projectInList = $this->Time->Project->fetchList($this->Auth->user('id'));
 		$Task = ClassRegistry::init('Task');
 		$tasks = $Task->groupedTaskList();
-		dmDebug::ddd($tasks, 'tasks');
         $userId = $this->userId;
         $this->set(compact('projectInList', 'userId', 'tasks'));
     }
@@ -215,11 +217,16 @@ class TimesController extends AppController {
                 $this->Session->setFlash(__('The time could not be saved. Please, try again.'));
             }
         }
+		$Task = ClassRegistry::init('Task');
+		$tasks = $Task->groupedTaskList();
         $users = $this->Time->User->fetchList($this->Auth->user('id'));
         $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
-        $this->set(compact('users', 'projects'));
+        $this->set(compact('users', 'projects', 'tasks'));
     }
 
+	/**
+	 * Request for new time record from main ui
+	 */
     public function newTimeRow() {
         $this->layout = 'ajax';
         $this->request->data('Time.user_id', $this->Auth->user('id'))
@@ -235,7 +242,9 @@ class TimesController extends AppController {
         $index = $result['Time']['id'];
         $users = $this->Time->User->fetchList($this->Auth->user('id'));
         $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
-        $this->set(compact('users', 'projects', 'userId', 'index'));
+		$Task = ClassRegistry::init('Task');
+		$tasks = $Task->groupedTaskList();
+        $this->set(compact('users', 'projects', 'userId', 'index', 'tasks'));
         $this->render('/Elements/track_row');
     }
     
