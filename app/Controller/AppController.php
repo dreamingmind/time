@@ -46,6 +46,16 @@ class AppController extends Controller {
 	
     public $helpers = array('Html', 'Form', 'Session', 'Js');
     
+    /**
+	 * Session timeout limits
+	 * 
+	 * @var array The idle and warning limits 
+	 */
+	public $timerParams = array(
+		'idleLimit' => 1200, //enter seconds (20 minutes)
+		'warningLimit' => 120 //enter seconds (2 minutes)
+	);
+
     function beforeFilter() {
         parent::beforeFilter();
         $this->set('title_for_layout', 'DMTime');
@@ -63,5 +73,8 @@ class AppController extends Controller {
           'controller' => 'times',
           'action' => 'track'
         );
+        
+        //set the timerParams variable to property for automatic timeouts
+		$this->set('timerParams', $this->timerParams);
     }
 }
