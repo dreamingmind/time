@@ -1,5 +1,6 @@
-<?php
 
+<!-- View/Emements/menu.ctp -->
+<?php
 $menu = array(
     $this->Html->link('Time Keeper', array('controller' => 'times', 'action' => 'track')) => array(
         $this->Html->link('Clients', array('controller' => 'clients', 'action' => 'index')) => array(
@@ -23,3 +24,7 @@ $menu = array(
 echo $this->Html->div('menuDiv', NULL);
 echo $this->Html->nestedList($menu, array('class' => 'menu vertical'));
 echo '</div>';
+?>
+
+<!-- END View/Emements/menu.ctp -->
+

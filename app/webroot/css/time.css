@@ -47,3 +47,11 @@ footer {
     padding: 2px;
     text-align: right;
 }
+button.minus, button.plus {
+    height: 20px;
+    padding: 0;
+    width: 20px;
+}
+div#scale_width, div#scale_height, div#scale_width p, div#scale_height p {
+	display: inline;
+}

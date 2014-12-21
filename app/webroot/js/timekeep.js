@@ -1,7 +1,3 @@
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 $(document).ready(function () {
 })
 function OutNow(e) {
@@ -297,5 +293,22 @@ function hideDurationInput(e) {
 		} else {
 			saveField(e);
 		}
+	}
+	
+	function plus(e) {
+		var delta = 10;
+		changeSize(e, delta);
+	}
+	
+	function minus(e) {
+		var delta = -10
+		changeSize(e, delta);
+	}
+	
+	function changeSize(e, delta) {
+		var targets = $('textarea[id*="TimeActivity"]');
+		var axis = $(e.currentTarget).hasClass('height') ? 'height' : 'width';
+		var start_size = parseInt($(targets[0]).css(axis));
+		$(targets).css(axis, start_size + delta);
 	}
 

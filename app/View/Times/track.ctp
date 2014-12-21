@@ -1,4 +1,5 @@
 <?php
+echo "\n" . $this->element('scale_textarea_ui');
 echo $this->Form->create('Time');
     echo $this->Html->tag('Table', NULL, array('class' => 'striped tight sortable'));
         echo $this->Html->tableHeaders(array('Project', 'Task', 'Time In', 'Duration', 'Activity', 'Tools'), array('class' => 'thead'));
