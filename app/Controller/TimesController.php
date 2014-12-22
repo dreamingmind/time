@@ -15,6 +15,7 @@ class TimesController extends AppController {
     public $userId;
 
     public function beforeFilter() {
+		$this->Auth->allow('duplicateTimeRow');
         parent::beforeFilter();
 //		$this->Auth->allow('index', 'view');
 //        $this->Auth->allow();
@@ -235,6 +236,31 @@ class TimesController extends AppController {
                 ->data('Time.time_in', date('Y-m-d H:i:s'))
                 ->data('Time.time_out', date('Y-m-d H:i:s'))
                 ->data('Time.project_id', NULL)
+                ->data('Time.duration', '00:00')
+                ->data('Time.status', OPEN);
+        $this->Time->create($this->request->data);
+        $result = $this->Time->save($this->request->data);
+        $this->request->data = array($result['Time']['id'] => $result);
+        $userId = $result['Time']['user_id'];
+        $index = $result['Time']['id'];
+        $users = $this->Time->User->fetchList($this->Auth->user('id'));
+        $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
+		$Task = ClassRegistry::init('Task');
+		$tasks = $Task->groupedTaskList();
+        $this->set(compact('users', 'projects', 'userId', 'index', 'tasks'));
+        $this->render('/Elements/track_row');
+    }
+    
+	/**
+	 * Duplicate a recor for a new time record
+	 */
+    public function duplicateTimeRow($id) {
+        $this->layout = 'ajax';
+		$this->request->data = $this->Time->find('first', array('conditions' => array('Time.id' => $id)));
+        $this->request->data('Time.user_id', $this->Auth->user('id'))
+				->data('Time.id', NULL)
+                ->data('Time.time_in', date('Y-m-d H:i:s'))
+                ->data('Time.time_out', date('Y-m-d H:i:s'))
                 ->data('Time.duration', '00:00')
                 ->data('Time.status', OPEN);
         $this->Time->create($this->request->data);

@@ -48,6 +48,7 @@ class TkHelper extends AppHelper {
     public function timeFormActionButtons($index, $status) {
         $this->index = $index;
         $buttons = array(
+			$this->duplicateButton(),
             $this->actionButton('icon-info-sign', 'click.timeInfo')
         );
         if($status & CLOSED){
@@ -70,6 +71,14 @@ class TkHelper extends AppHelper {
         }
         return $this->Html->link($this->Html->tag('i', '', array('class' => $type)), '', $attributes);
     }
+	
+	private function duplicateButton() {
+        return $this->Html->link(
+				$this->Html->tag('i', '', array('class' => 'icon-plus'))
+				.$this->Html->tag('i', '', array('class' => 'icon-plus')),
+				'', 
+				array('bind' => 'click.timeDuplicate', 'escape' => FALSE, 'index' => $this->index, 'title' => 'Dup to a new record'));
+	}
     
     private function pauseButton($status) {
         if($status & OPEN){

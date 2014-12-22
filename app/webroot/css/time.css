@@ -55,3 +55,7 @@ button.minus, button.plus {
 div#scale_width, div#scale_height, div#scale_width p, div#scale_height p {
 	display: inline;
 }
+li > a > i.icon-plus {
+	width: 9px;
+	font-size: 50%;
+}

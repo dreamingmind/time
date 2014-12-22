@@ -296,12 +296,12 @@ function hideDurationInput(e) {
 	}
 	
 	function plus(e) {
-		var delta = 10;
+		var delta = 20;
 		changeSize(e, delta);
 	}
 	
 	function minus(e) {
-		var delta = -10
+		var delta = -20
 		changeSize(e, delta);
 	}
 	
@@ -312,3 +312,21 @@ function hideDurationInput(e) {
 		$(targets).css(axis, start_size + delta);
 	}
 
+	function timeDuplicate(e) {
+    e.preventDefault();
+    $.ajax({
+        type: "GET",
+        url: webroot + controller + "duplicateTimeRow/" + $(e.currentTarget).attr('index'),
+        dataType: "html",
+        success: function (data) {
+            $('#TimeTrackForm tbody').append(data);
+            updateTableClassing();
+            updateTableSortability();
+            bindHandlers('table.sortable tr.last');
+            initToggles();
+        },
+        error: function () {
+            alert('Error adding the time row.')
+        }
+    });
+	}
