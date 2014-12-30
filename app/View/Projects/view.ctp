@@ -24,10 +24,11 @@
 		<dt><?php echo __('Times'); ?></dt>
 		<dd>
 			<?php
-				foreach($staff as $member => $seconds) {
-					$hours = $seconds / HOUR;
-					echo "$member: $hours<br />";
-				}
+			echo $this->Tk->nestedList($projectTime);
+//				foreach($staff as $member => $seconds) {
+//					$hours = $seconds / HOUR;
+//					echo "$member: $hours<br />";
+//				}
 			?>
 		</dd>
 	</dl>
