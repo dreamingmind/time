@@ -1,19 +1,14 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * CakePHP ReportComponent
+ * ReportComponent
+ * 
+ * Provide report analyses for time records
+ * 
  * @author dondrake
  */
 class ReportComponent extends Component {
 
 	public $components = array();
-	
 
 	/**
 	 * The current time record of interest
