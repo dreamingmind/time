@@ -1,12 +1,15 @@
 <?php
 App::uses('AppController', 'Controller');
 App::uses('CakeTime', 'Utility');
+App::uses('ReportComponent', 'Controller/Component');
 /**
  * Projects Controller
  *
  * @property Project $Project
  */
 class ProjectsController extends AppController {
+	
+	public $components = array('Report');
 
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -38,20 +41,14 @@ class ProjectsController extends AppController {
 		$project = $this->Project->find('first', $options);
 		$staff = array();
 		if (isset($project['Time'])) {
-			foreach ($project['Time'] as $time) {
-				if (!isset($staff[$time['user_id']])) {
-					$staff[$time['user_id']] = 0;
-				}
-				$dur = explode(':', $time['duration']);
-				$d = ($dur[0] * HOUR) + ($dur[1] * MINUTE) + $dur[2];
-				$staff[$time['user_id']] += $d;
-			}
+			$this->Report->summarize($project['Time']);
 		}
+		$this->set('projectTime', $this->Report->projectTime());
 		$this->set(compact('project', 'staff'));
 		
 	}
-
-/**
+	
+	/**
  * add method
  *
  * @return void

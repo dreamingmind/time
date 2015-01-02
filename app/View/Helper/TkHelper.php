@@ -149,5 +149,56 @@ class TkHelper extends AppHelper {
 		}
 		return $this->Form->input($field, $attributes);
 	}
+/**
+ * Build a nested list (UL/OL) out of an associative array.
+ *
+ * @param array $list Set of elements to list
+ * @param array $options Additional HTML attributes of the list (ol/ul) tag or if ul/ol use that as tag
+ * @param array $itemOptions Additional HTML attributes of the list item (LI) tag
+ * @param string $tag Type of list tag to use (ol/ul)
+ * @return string The nested list
+ * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/html.html#HtmlHelper::nestedList
+ */
+	public function nestedList($list, $options = array(), $itemOptions = array(), $tag = 'ul') {
+		if (is_string($options)) {
+			$tag = $options;
+			$options = array();
+		}
+		$items = $this->_nestedListItem($list, $options, $itemOptions, $tag);
+		return sprintf($this->Html->_tags[$tag], $this->Html->_parseAttributes($options, null, ' ', ''), $items);
+	}
+
+/**
+ * Internal function to build a nested list (UL/OL) out of an associative array.
+ *
+ * @param array $items Set of elements to list
+ * @param array $options Additional HTML attributes of the list (ol/ul) tag
+ * @param array $itemOptions Additional HTML attributes of the list item (LI) tag
+ * @param string $tag Type of list tag to use (ol/ul)
+ * @return string The nested list element
+ * @see HtmlHelper::nestedList()
+ */
+	protected function _nestedListItem($items, $options, $itemOptions, $tag) {
+		$out = '';
+
+		$index = 1;
+		foreach ($items as $key => $item) {
+			if (is_array($item)) {
+				$item = $key . $this->nestedList($item, $options, $itemOptions, $tag);
+			}
+			if (isset($itemOptions['even']) && $index % 2 === 0) {
+				$itemOptions['class'] = $itemOptions['even'];
+			} elseif (isset($itemOptions['odd']) && $index % 2 !== 0) {
+				$itemOptions['class'] = $itemOptions['odd'];
+			}
+			if (strpos($item, $key) === 0) {
+				$out .= sprintf($this->Html->_tags['li'], $this->Html->_parseAttributes($itemOptions, array('even', 'odd'), ' ', ''), $item);
+			} else {
+				$out .= sprintf($this->Html->_tags['li'], $this->Html->_parseAttributes($itemOptions, array('even', 'odd'), ' ', ''), "$key : $item");
+			}
+			$index++;
+		}
+		return $out;
+	}
 
 }

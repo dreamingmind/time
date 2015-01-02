@@ -9,8 +9,8 @@ App::uses('AppModel', 'Model');
  * @property Project $Project
  */
 class Time extends AppModel {
-
-    /**
+	
+	/**
      * Validation rules
      *
      * @var array
@@ -53,7 +53,15 @@ class Time extends AppModel {
             'conditions' => '',
             'fields' => '',
             'order' => ''
+        ),
+        'Task' => array(
+            'className' => 'Task',
+            'foreignKey' => 'task_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
         )
+
     );
     
     public $virtualFields = array(
