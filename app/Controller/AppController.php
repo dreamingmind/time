@@ -52,7 +52,7 @@ class AppController extends Controller {
 	 * @var array The idle and warning limits 
 	 */
 	public $timerParams = array(
-		'idleLimit' => 1200, //enter seconds (20 minutes)
+		'idleLimit' => 3600, //enter seconds (20 minutes)
 		'warningLimit' => 120 //enter seconds (2 minutes)
 	);
 
