@@ -7,6 +7,8 @@ App::uses('AppModel', 'Model');
  */
 class Task extends AppModel {
 
+	public $actsAs = array('WorkList');
+
 /**
  * Validation rules
  *
@@ -42,8 +44,9 @@ class Task extends AppModel {
 		)
 	);
 	
-	public function groupedTaskList() {
-		return $this->find('list', array('fields' => array('Task.id', 'Task.name', 'Task.project_id')));
+	public function groupedTaskList($type = 'all') {
+		$conditions = $this->typeConditions($type);
+		return $this->find('list', array('fields' => array('Task.id', 'Task.name', 'Task.project_id'), 'conditions' => $conditions));
 	}
 	
 	public function projectTasks($projectId) {

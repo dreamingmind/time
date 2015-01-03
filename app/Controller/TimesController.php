@@ -13,9 +13,18 @@ class TimesController extends AppController {
     public $helpers = array('Tk');
 
     public $userId;
+	
+	/**
+	 * The Task Model
+	 *
+	 * @var obj
+	 */
+	protected $Task; 
 
-    public function beforeFilter() {
+	public function beforeFilter() {
 		$this->Auth->allow('duplicateTimeRow');
+		$this->Task = ClassRegistry::init('Task');
+
         parent::beforeFilter();
 //		$this->Auth->allow('index', 'view');
 //        $this->Auth->allow();
@@ -103,11 +112,8 @@ class TimesController extends AppController {
             $this->request->data = $this->Time->find('first', $options);
         }
 		// first visit, failed normal save, succesful of failed ajax save all run through here
-		$Task = ClassRegistry::init('Task');
-		$tasks = $Task->groupedTaskList();
-		$users = $this->Time->User->find('list');
-		$projects = $this->Time->Project->find('list');
-        $this->set(compact('users', 'projects', 'tasks'));
+		$this->setUiSelects();
+		
 		if ($info) {
 			// This runs if the info button was clicked on the track page
 			$this->layout = 'ajax';
@@ -146,85 +152,16 @@ class TimesController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
-    /**
-     * Main time keeping interface
-     * 
-     * Shows one record for each user.
-     * A record with time_in and time_out == 0 will be loaded if it exists
-     * An empty record presented if no partial (open) record exists
-     */
-    public function timekeep() {
-        // Save data if some is posted
-        $message = 'No save attempted.';
-        if ($this->request->is('post')) {
-            $message = $this->Time->saveTime($this->request->data);
-        }
-        // get array of total project and individual time
-        $duration = $this->Time->getTimeTotals();
-        // get any open records
-        $open = $this->Time->getOpenRecord();
-        // get a list of all projects
-        $projects = $this->Time->find('list', array('fields' => array('Time.project', 'Time.project')));
-        // get a list of all users
-        $users = $this->Time->getNames();
-
-        // send all the vars to the view
-        $this->set(compact('open', 'projects', 'users', 'duration'));
-        debug($message);
-    }
-
-    public function insert() {
-        $sequence = array();
-        $low = 1;
-        $high = 2;
-        for ($i = 0; $i < 41; $i++) {
-            $sequence[$i]['low'] = $low;
-            $sequence[$i]['tween'] = $low + (($high - $low) / 2);
-            $sequence[$i]['high'] = $high;
-            $low = $sequence[$i]['tween'];
-        }
-        $this->set('sequence', $sequence);
-    }
-
-    public function tree_jax($line, $sibling, $parent) {
-        $this->layout = 'ajax';
-        $this->set(compact('line', 'sibling', 'parent'));
-    }
-
 	/**
 	 * Main ui
 	 */
     public function track() {
         $this->userId = $this->Session->read('Auth.User.id');
+		
         $this->request->data = $this->Time->openRecords($this->userId);
         $this->request->data = $this->Time->reindex($this->request->data);
-        $projectInList = $this->Time->Project->fetchList($this->Auth->user('id'));
-		$Task = ClassRegistry::init('Task');
-		$tasks = $Task->groupedTaskList();
-        $userId = $this->userId;
-        $this->set(compact('projectInList', 'userId', 'tasks'));
-    }
-
-    public function newTime() {
-        if ($this->request->is('post')) {
-            $this->Time->create();
-            $this->request->data['Time']['time_in'] = date('Y-m-d H:i:s');
-            $this->request->data['Time']['time_out'] = date('Y-m-d H:i:s');
-            $this->request->data['Time']['status'] = OPEN;
-//            dmDebug::ddd($this->request->data, 'trd');
-//            die;
-            if ($this->Time->save($this->request->data)) {
-                $this->Session->setFlash(__('The time has been saved'));
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The time could not be saved. Please, try again.'));
-            }
-        }
-		$Task = ClassRegistry::init('Task');
-		$tasks = $Task->groupedTaskList();
-        $users = $this->Time->User->fetchList($this->Auth->user('id'));
-        $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
-        $this->set(compact('users', 'projects', 'tasks'));
+		
+		$this->setUiSelects('jobs');
     }
 
 	/**
@@ -241,13 +178,11 @@ class TimesController extends AppController {
         $this->Time->create($this->request->data);
         $result = $this->Time->save($this->request->data);
         $this->request->data = array($result['Time']['id'] => $result);
-        $userId = $result['Time']['user_id'];
-        $index = $result['Time']['id'];
-        $users = $this->Time->User->fetchList($this->Auth->user('id'));
-        $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
-		$Task = ClassRegistry::init('Task');
-		$tasks = $Task->groupedTaskList();
-        $this->set(compact('users', 'projects', 'userId', 'index', 'tasks'));
+		
+        $this->set('userId', $result['Time']['user_id']);
+		$this->set('index', $result['Time']['id']);
+		$this->setUiSelects('jobs');
+		
         $this->render('/Elements/track_row');
     }
     
@@ -266,13 +201,11 @@ class TimesController extends AppController {
         $this->Time->create($this->request->data);
         $result = $this->Time->save($this->request->data);
         $this->request->data = array($result['Time']['id'] => $result);
-        $userId = $result['Time']['user_id'];
-        $index = $result['Time']['id'];
-        $users = $this->Time->User->fetchList($this->Auth->user('id'));
-        $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
-		$Task = ClassRegistry::init('Task');
-		$tasks = $Task->groupedTaskList();
-        $this->set(compact('users', 'projects', 'userId', 'index', 'tasks'));
+		
+        $this->set('userId', $result['Time']['user_id']);
+		$this->set('index', $result['Time']['id']);
+		$this->setUiSelects('jobs');
+		
         $this->render('/Elements/track_row');
     }
     
@@ -324,26 +257,38 @@ class TimesController extends AppController {
         ));
     }
     
-    public function timeStop($id) {
+	/**
+	 * Close a time record
+	 * 
+	 * Same as pause, but with a different state
+	 * 
+	 * @param string $id
+	 * @param int $state
+	 */
+    public function timeStop($id, $state = CLOSED) {
         $this->layout = 'ajax';
         $time = date('Y-m-d H:i:s');
         $this->request->data('Time.time_out', $time)
                 ->data('Time.id', $id)
-                ->data('Time.status', CLOSED);
+                ->data('Time.status', $state);
         $element = $this->saveTimeChange($id);
         $this->render($element);
     }
     
+	/**
+	 * Pause a time record
+	 * 
+	 * @param string $id
+	 */
     public function timePause($id) {
-        $this->layout = 'ajax';
-        $time = date('Y-m-d H:i:s');
-        $this->request->data('Time.time_out', $time)
-                ->data('Time.id', $id)
-                ->data('Time.status', PAUSED);
-        $element = $this->saveTimeChange($id);
-        $this->render($element);
+		$this->timeStop($id, PAUSED);
     }
     
+	/**
+	 * Restart a stopped or paused time record
+	 * 
+	 * @param string $id
+	 */
     public function timeRestart($id) {
         $this->layout = 'ajax';
         $duration = $this->Time->field('duration', array('Time.id' => $id));
@@ -355,20 +300,35 @@ class TimesController extends AppController {
         $this->render($element);
     }
     
+	/**
+	 * Save time record and choose prepare view based on save result
+	 * 
+	 * @param string $id
+	 * @return string The element to render
+	 */
     private function saveTimeChange($id) {
         if(!$this->Time->save($this->request->data)){
             $this->Session->setFlash('The record update failed, please try again.');
             $element = '/Elements/ajax_flash';
         } else {
             $this->request->data[$id] = $this->Time->find('first', array('conditions' => array('Time.id' => $id)));
-            $users = $this->Time->User->fetchList($this->Auth->user('id'));
-            $projects = $this->Time->Project->fetchList($this->Auth->user('id'));
-            $index = $id;
-			$Task = ClassRegistry::init('Task');
-			$tasks = $Task->groupedTaskList();
-            $this->set(compact('users', 'projects', 'index', 'tasks'));
+            $this->set('index', $id);
+			$this->setUiSelects('jobs');
             $element = '/Elements/track_row';
         }
         return $element;
     }
+	
+	/**
+	 * Set the users, projects and tasks viewVars for UI forms
+	 * 
+	 * @param string $type filtering desired for project/task lists
+	 */
+	private function setUiSelects($type = 'all') {
+	    $users = $this->Time->User->fetchList();
+		$projects = $this->Time->Project->selectList($type);
+		$tasks = $this->Task->groupedTaskList($type);
+        $this->set(compact('users', 'projects', 'tasks'));
+		
+	}
 }

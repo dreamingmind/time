@@ -6,7 +6,7 @@ echo $this->Form->create('Time');
         if (!empty($this->request->data)) {
             foreach ($this->request->data as $index => $record) {
                 echo $this->element('track_row', array(
-                    'projects' => $projectInList,
+                    'projects' => $projects,
                     'index' => $index
                 ));
             }

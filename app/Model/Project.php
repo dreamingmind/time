@@ -7,6 +7,8 @@ App::uses('AppModel', 'Model');
  * @property Time $Time
  */
 class Project extends AppModel {
+	
+	public $actsAs = array('WorkList');
 
 	/**
 	 * Validation rules
@@ -61,5 +63,40 @@ class Project extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+	/**
+	 * Get a filtered list of jobs
+	 * 
+	 * jobs, active, maintenance, inactive, all|NULL
+	 * jobs = active || maintenance
+	 * 
+	 * @param string $type 
+	 * @return array The list as id => project_name or project_name => id
+	 */
+	public function selectList($type = 'all') {
+		$conditions = $this->typeConditions($type);
+		return $this->find('list', array(
+			'conditions' => $conditions,
+			'field' => array('id', 'name')
+		));
+	}
+	
+	/**
+	 * Get a filtered list of jobs
+	 * 
+	 * jobs, active, maintenance, inactive, all|NULL
+	 * jobs = active || maintenance
+	 * 
+	 * @param string $type 
+	 * @return array The list as project_name => id
+	 */
+	public function inList($type = 'all') {
+		$conditions = $this->WorkList->typeConditions($type);
+		return $this->find('list', array(
+			'conditions' => $conditions,
+			'field' => array('name', 'id')
+		));
+		
+	}
 	
 }
