@@ -21,6 +21,11 @@
 			<?php echo h($project['Project']['note']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('State'); ?></dt>
+		<dd>
+			<?php echo h($project['Project']['state']); ?>
+			&nbsp;
+		</dd>
 		<dt><?php echo __('Times'); ?></dt>
 		<dd>
 			<?php

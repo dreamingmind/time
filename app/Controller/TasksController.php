@@ -9,7 +9,7 @@ class TasksController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('add');
+		$this->Auth->allow('index', 'view', 'edit', 'delete', 'add');
 	}
 
 	/**
@@ -18,8 +18,19 @@ class TasksController extends AppController {
  * @return void
  */
 	public function index() {
+		$conditions = array();
+		if ($this->isPostPut()) {
+			$conditions = array();
+			$c = $this->postConditions($this->request->data);
+			foreach ($c as $field => $value) {
+				$conditions["$field LIKE"] = "%$value%";
+			}
+			$this->set('tasks', $this->paginate($conditions));			
+		} else {
+			$this->set('tasks', $this->paginate());			
+		}
 		$this->Task->recursive = 0;
-		$this->set('tasks', $this->paginate());
+		$this->set('projects', $this->Task->Project->selectList());
 	}
 
 /**

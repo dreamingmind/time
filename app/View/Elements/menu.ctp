@@ -9,6 +9,9 @@ $menu = array(
         $this->Html->link('Projects', array('controller' => 'projects', 'action' => 'index')) => array(
             $this->Html->link(__('New Project'), array('controller' => 'projects', 'action' => 'add'))
         ),
+        $this->Html->link('Tasks', array('controller' => 'tasks', 'action' => 'index')) => array(
+            $this->Html->link(__('New Task'), array('controller' => 'tasks', 'action' => 'add'))
+        ),
         $this->Html->link('Users', array('controller' => 'users', 'action' => 'index')) => array(
             $this->Html->link(__('New User'), array('action' => 'add')),
             $this->Html->link(__('List Groups'), array('controller' => 'groups', 'action' => 'index')),

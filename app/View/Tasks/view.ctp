@@ -21,9 +21,9 @@
 			<?php echo h($task['Task']['note']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Created'); ?></dt>
+		<dt><?php echo __('State'); ?></dt>
 		<dd>
-			<?php echo h($task['Task']['created']); ?>
+			<?php echo h($task['Task']['state']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Modified'); ?></dt>

@@ -1,4 +1,11 @@
 <div class="projects index">
+	<?php 
+	echo $this->Form->create();
+	echo $this->Form->input('client_id', array('empty' => 'select'));
+	echo $this->Form->input('name', array('required' => FALSE));
+	echo $this->Form->input('note');
+	echo $this->Form->end('Submit');
+	?>
 	<h5><?php echo __('Projects'); ?></h5>
 	<table cellpadding="0" cellspacing="0">
 	<tr>

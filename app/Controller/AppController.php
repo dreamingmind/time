@@ -77,4 +77,8 @@ class AppController extends Controller {
         //set the timerParams variable to property for automatic timeouts
 		$this->set('timerParams', $this->timerParams);
     }
+	
+	public function isPostPut() {
+		return ($this->request->is('post') || $this->request->is('put'));
+	}
 }

@@ -22,8 +22,19 @@ class ProjectsController extends AppController {
  * @return void
  */
 	public function index() {
+		$conditions = array();
+		if ($this->isPostPut()) {
+			$conditions = array();
+			$c = $this->postConditions($this->request->data);
+			foreach ($c as $field => $value) {
+				$conditions["$field LIKE"] = "%$value%";
+			}
+			$this->set('projects', $this->paginate($conditions));			
+		} else {
+			$this->set('projects', $this->paginate());			
+		}
 		$this->Project->recursive = 0;
-		$this->set('projects', $this->paginate());
+		$this->set('clients', $this->Project->Client->find('list'));
 	}
 
 /**

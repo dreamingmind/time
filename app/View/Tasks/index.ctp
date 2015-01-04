@@ -1,4 +1,11 @@
 <div class="tasks index">
+	<?php 
+	echo $this->Form->create();
+	echo $this->Form->input('project_id', array('empty' => 'select'));
+	echo $this->Form->input('name', array('required' => FALSE));
+	echo $this->Form->input('note');
+	echo $this->Form->end('Submit');
+	?>
 	<h2><?php echo __('Tasks'); ?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
@@ -6,7 +13,7 @@
 			<th><?php echo $this->Paginator->sort('project_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('name'); ?></th>
 			<th><?php echo $this->Paginator->sort('note'); ?></th>
-			<th><?php echo $this->Paginator->sort('created'); ?></th>
+			<th><?php echo $this->Paginator->sort('state'); ?></th>
 			<th><?php echo $this->Paginator->sort('modified'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
@@ -18,7 +25,7 @@
 		</td>
 		<td><?php echo h($task['Task']['name']); ?>&nbsp;</td>
 		<td><?php echo h($task['Task']['note']); ?>&nbsp;</td>
-		<td><?php echo h($task['Task']['created']); ?>&nbsp;</td>
+		<td><?php echo h($task['Task']['state']); ?>&nbsp;</td>
 		<td><?php echo h($task['Task']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $task['Task']['id'])); ?>

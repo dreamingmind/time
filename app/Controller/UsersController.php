@@ -24,6 +24,7 @@ class UsersController extends AppController {
 		$this->Acl->deny($group, 'controllers');
 		$this->Acl->allow($group, 'controllers/Times');
 		$this->Acl->allow($group, 'controllers/Projects');
+		$this->Acl->allow($group, 'controllers/Tasks');
 		$this->Acl->allow($group, 'controllers/Clients');
 
 		// allow users to only add and edit on posts and widgets

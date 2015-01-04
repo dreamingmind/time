@@ -6,6 +6,7 @@
 		echo $this->Form->input('project_id');
 		echo $this->Form->input('name');
 		echo $this->Form->input('note');
+		echo $this->Form->input('state');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
