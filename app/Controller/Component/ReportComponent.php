@@ -22,6 +22,20 @@ class ReportComponent extends Component {
 	
 	/**
 	 * Total time for users given current found Time records
+	 * 
+	 * User A
+	 *	Time : total
+	 *	Projects
+	 *		project a
+	 *			time : total
+	 *			task a : total
+	 *			task b : total
+	 *		project b
+	 *			time : total
+	 * User B
+	 *	.
+	 *	.
+	 *	.
 	 *
 	 * @var array
 	 */
@@ -108,7 +122,38 @@ class ReportComponent extends Component {
 	 * 
 	 * @param array $timeEntries
 	 */
-	public function summarize($timeEntries) {
+	public function summarizeUsers($timeEntries) {
+		// build id=>name lookup properties;
+		$this->initProperties();
+		
+		foreach ($timeEntries as $time) {
+			$this->time = $time;
+			$duration = $this->duration($time);
+//			$this->userCumm($duration);
+//			$this->projectCumm($duration);
+//			$this->projectUserCumm($duration);
+//			$this->taskCumm($duration);
+//			$this->taskUserCumm($duration);
+		}
+	}
+	
+	/**
+	 * Summarize the times for this set of time records
+	 * 
+	 * Numerically indexed set of time records. 
+	 * 0 => array(
+	 *	field => value
+	 *	field => value
+	 * 1 => array(
+	 *	.
+	 *	.
+	 *	.
+	 * 
+	 * sets userCumm and projectCumm
+	 * 
+	 * @param array $timeEntries
+	 */
+	public function summarizeProjects($timeEntries) {
 		// build id=>name lookup properties;
 		$this->initProperties();
 		

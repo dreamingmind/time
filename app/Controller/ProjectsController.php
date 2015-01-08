@@ -52,7 +52,7 @@ class ProjectsController extends AppController {
 		$project = $this->Project->find('first', $options);
 		$staff = array();
 		if (isset($project['Time'])) {
-			$this->Report->summarize($project['Time']);
+			$this->Report->summarizeProjects($project['Time']);
 		}
 		$this->set('projectTime', $this->Report->projectTime());
 		$this->set(compact('project', 'staff'));
