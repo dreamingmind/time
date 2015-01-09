@@ -11,18 +11,20 @@
 			<?php echo h($user['User']['username']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Password'); ?></dt>
-		<dd>
-			<?php echo h($user['User']['password']); ?>
-			&nbsp;
-		</dd>
 		<dt><?php echo __('Group'); ?></dt>
 		<dd>
 			<?php echo $this->Html->link($user['Group']['name'], array('controller' => 'groups', 'action' => 'view', $user['Group']['id'])); ?>
 			&nbsp;
 		</dd>
         <dt> <?php echo __('Times'); ?></dt>
-        <dd> <?php echo $this->Tk->nestedList($userTime); ?>
+        <dd> <?php 
+        
+        echo $this->Html->tag('h5', 'User Time Report', array('id' => 'utReport', 'class' => 'toggle'));
+        echo $this->Html->div('utReport hide', NULL);
+            echo $this->Tk->nestedList($userTime); 
+        echo '</div>';
+        
+        ?>
         </dd>
 	</dl>
 </div>
@@ -62,7 +64,7 @@
 		<tr>
 			<td><?php echo $time['id']; ?></td>
 			<td><?php echo $time['user_id']; ?></td>
-			<td><?php echo $time['project_id']; ?></td>
+			<td><?php echo $this->Html->link(__($projects[$time['project_id']]), array('controller' => 'projects', 'action' => 'view', $time['project_id'])); ?></td>
 			<td><?php echo $time['time_in']; ?></td>
 			<td><?php echo $time['time_out']; ?></td>
 			<td><?php echo $time['activity']; ?></td>

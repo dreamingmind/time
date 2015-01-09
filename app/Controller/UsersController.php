@@ -98,6 +98,8 @@ class UsersController extends AppController {
 			$this->Report->summarizeUsers($user['Time']);
 		}
 		$this->set('userTime', $this->Report->userTime());
+        $project = ClassRegistry::init('Project');
+        $this->set('projects', $project->find('list'));
 		$this->set('user', $user);
 	}
 
@@ -185,5 +187,5 @@ class UsersController extends AppController {
 		$this->Session->setFlash('Good-Bye');
 		$this->redirect($this->Auth->logout());
 	}
-
+    
 }
