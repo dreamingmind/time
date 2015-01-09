@@ -62,3 +62,6 @@ li > a > i.icon-plus {
 table[id*="cakeSqlLog"] {
     display: block;
 }
+.toggle{
+    cursor: pointer;
+}

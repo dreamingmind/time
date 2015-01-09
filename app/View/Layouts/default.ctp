@@ -71,7 +71,12 @@ $this->end();
             <div id="footer">
             </div>
         </div>
-        <?php echo $this->element('sql_dump'); ?>
+        <?php 
+        echo $this->Html->tag('h5', 'SQL Dump', array('id' => 'sqlD', 'class' => 'toggle'));
+        echo $this->Html->div('sqlD hide', NULL);
+            echo $this->element('sql_dump'); 
+        echo '</div>';
+        ?>
     </body>
     <footer>Copyright 2014 Curly Mind</footer>
 </html>
