@@ -9,6 +9,34 @@ App::uses('AuthComponent', 'Controller/Component');
  * @property Time $Time
  */
 class User extends AppModel {
+    
+    public function hasMany_TimeLastDay() {
+        $this->hasMany_TimeScope(DAY);
+    }
+    
+    public function hasMany_TimeLastWeek() {
+        $this->hasMany_TimeScope(WEEK);
+    }
+    
+    public function hasMany_TimeLastMonth() {
+        $this->hasMany_TimeScope(MONTH);
+    }
+    
+    /**
+    * Associate Time on provided scope
+    *
+    * @param string $scope
+    */
+    public function hasMany_TimeScope($scope) {
+        $this->bindModel(array('hasMany' => array(
+            'Time' => array(
+            'className' => 'Time',
+            'foreignKey' => 'user_id',
+            'conditions' => array('Time.time_in BETWEEN ? AND ?' => array(date('Y-m-d H:i:s',(time() - $scope)), date('Y-m-d H:i:s', time()))),
+            'fields' => '',
+            'order' => ''
+        ))));
+    }
 
 	/**
 	 * Validation rules

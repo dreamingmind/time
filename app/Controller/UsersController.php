@@ -1,11 +1,14 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('ReportComponent', 'Controller/Component');
 /**
  * Users Controller
  *
  * @property User $User
  */
 class UsersController extends AppController {
+    
+	public $components = array('Report');
 	
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -60,12 +63,42 @@ class UsersController extends AppController {
 	 * @param string $id
 	 * @return void
 	 */
-	public function view($id = null) {
+	public function view($id = null, $scope = 'all') {
 		if (!$this->User->exists($id)) {
 			throw new NotFoundException(__('Invalid user'));
 		}
-		$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
-		$this->set('user', $this->User->find('first', $options));
+        switch ($scope) {
+            case 'day':
+                $this->User->hasMany_TimeLastDay();
+                break;
+            
+            case 'week':
+                $this->User->hasMany_TimeLastWeek();
+                break;
+
+            case 'month':
+                $this->User->hasMany_TimeLastMonth();
+                break;
+            
+            default:
+                break;
+        }
+		$options = array(
+            'conditions' => array(
+                'User.' . $this->User->primaryKey => $id
+                ),
+            'contain' => array(
+                'Group',
+                'Time'
+            ));
+        $user = $this->User->find('first', $options);
+//        dmDebug::ddd($user, 'user');
+//        die;
+		if (isset($user['Time'])) {
+			$this->Report->summarizeUsers($user['Time']);
+		}
+		$this->set('userTime', $this->Report->userTime());
+		$this->set('user', $user);
 	}
 
 	/**

@@ -59,3 +59,6 @@ li > a > i.icon-plus {
 	width: 9px;
 	font-size: 50%;
 }
+table[id*="cakeSqlLog"] {
+    display: block;
+}

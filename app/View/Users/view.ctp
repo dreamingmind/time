@@ -21,6 +21,9 @@
 			<?php echo $this->Html->link($user['Group']['name'], array('controller' => 'groups', 'action' => 'view', $user['Group']['id'])); ?>
 			&nbsp;
 		</dd>
+        <dt> <?php echo __('Times'); ?></dt>
+        <dd> <?php echo $this->Tk->nestedList($userTime); ?>
+        </dd>
 	</dl>
 </div>
 <div class="actions">

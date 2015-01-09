@@ -36,5 +36,6 @@ class AppModel extends Model {
 	public function fetchList() {
 		return $this->find('list');
 	}
+	public $actsAs = array('Containable');
 
 }

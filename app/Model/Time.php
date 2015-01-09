@@ -64,12 +64,17 @@ class Time extends AppModel {
 
     );
     
-    public $virtualFields = array(
-        'duration' => 'TIMEDIFF(Time.time_out,Time.time_in)'
-    );
+//    public $virtualFields = array(
+//        'duration' => 'TIMEDIFF(Time.time_out,Time.time_in)'
+//    );
 
     public function beforeSave($options = array()) {
         parent::beforeSave($options);
+    }
+    
+    public function __construct($id = false, $table = null, $ds = null) {
+        parent::__construct($id, $table, $ds);
+        $this->virtualFields['duration'] = "TIMEDIFF($this->alias.time_out, $this->alias.time_in)";
     }
     
     /**

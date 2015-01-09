@@ -129,11 +129,9 @@ class ReportComponent extends Component {
 		foreach ($timeEntries as $time) {
 			$this->time = $time;
 			$duration = $this->duration($time);
-//			$this->userCumm($duration);
-//			$this->projectCumm($duration);
-//			$this->projectUserCumm($duration);
-//			$this->taskCumm($duration);
-//			$this->taskUserCumm($duration);
+            $this->userUserCumm($duration);
+            $this->userProjectCumm($duration);
+            $this->userProjectTaskCumm($duration);
 		}
 	}
 	
@@ -160,11 +158,11 @@ class ReportComponent extends Component {
 		foreach ($timeEntries as $time) {
 			$this->time = $time;
 			$duration = $this->duration($time);
-			$this->userCumm($duration);
-			$this->projectCumm($duration);
 			$this->projectUserCumm($duration);
-			$this->taskCumm($duration);
-			$this->taskUserCumm($duration);
+			$this->projectProjectCumm($duration);
+			$this->projectProjectUserCumm($duration);
+			$this->projectTaskCumm($duration);
+			$this->projectTaskUserCumm($duration);
 		}
 	}
 	
@@ -215,11 +213,25 @@ class ReportComponent extends Component {
 	 * 
 	 * @param float $duration
 	 */
-	private function userCumm($duration){
+	private function projectUserCumm($duration){
 		if (!isset($this->userCumm[ $this->userName() ])) {
 			$this->userCumm[ $this->userName() ] = 0;
 		}
 		$this->userCumm[ $this->userName() ] += $duration;
+	}
+	
+	/**
+	 * Accummulate total time for a user
+	 * 
+	 * Works from this->time, saves to this->userCumm
+	 * 
+	 * @param float $duration
+	 */
+	private function userUserCumm($duration){
+		if (!isset($this->userCumm['User'][ $this->userName() ])) {
+			$this->userCumm['User'][ $this->userName() ]['Time'] = 0;
+		}
+		$this->userCumm['User'][ $this->userName() ]['Time'] += $duration;
 	}
 	
 	/**
@@ -229,7 +241,7 @@ class ReportComponent extends Component {
 	 * 
 	 * @param float $duration
 	 */
-	private function projectCumm($duration) {
+	private function projectProjectCumm($duration) {
 		if (!isset($this->projectCumm['Project'][ $this->projectName() ])) {
 			$this->projectCumm['Project'][ $this->projectName() ]['Time'] = 0;
 		}
@@ -243,7 +255,7 @@ class ReportComponent extends Component {
 	 * 
 	 * @param float $duration
 	 */
-	private function taskCumm($duration){
+	private function projectTaskCumm($duration){
 		if (!isset($this->projectCumm['Project'][ $this->projectName() ]['Task'][ $this->taskName() ])) {
 			$this->projectCumm['Project'][ $this->projectName() ]['Task'][ $this->taskName() ]['Time'] = 0;
 		}
@@ -257,11 +269,25 @@ class ReportComponent extends Component {
 	 * 
 	 * @param float $duration
 	 */
-	private function taskUserCumm($duration) {
+	private function projectTaskUserCumm($duration) {
 		if (!isset($this->projectCumm['Project'][ $this->projectName() ]['Task'][ $this->taskName() ][ $this->userName() ])) {
 			$this->projectCumm['Project'][ $this->projectName() ]['Task'][ $this->taskName() ][ $this->userName() ] = 0;
 		}
 		$this->projectCumm['Project'][ $this->projectName() ]['Task'][ $this->taskName() ][ $this->userName() ] += $duration;
+	}
+	
+	/**
+	 * Accummulate total time for specific project/task by user
+	 * 
+	 * Works from this->time, saves to this->userCumm
+	 * 
+	 * @param float $duration
+	 */
+	private function userProjectTaskCumm($duration) {
+		if (!isset($this->userCumm['User'][ $this->userName() ]['Project'][ $this->projectName() ][ $this->taskName() ])) {
+			$this->userCumm['User'][ $this->userName() ]['Project'][ $this->projectName() ][ $this->taskName() ] = 0;
+		}
+		$this->userCumm['User'][ $this->userName() ]['Project'][ $this->projectName() ][ $this->taskName() ] += $duration;
 	}
 	
 	/**
@@ -271,11 +297,25 @@ class ReportComponent extends Component {
 	 * 
 	 * @param float $duration
 	 */
-	private function projectUserCumm($duration) {
+	private function projectProjectUserCumm($duration) {
 		if (!isset($this->projectCumm['Project'][ $this->projectName() ]['User'][ $this->userName() ]['Time'])) {
 			$this->projectCumm['Project'][ $this->projectName() ]['User'][ $this->userName() ]['Time'] = 0;
 		}
 		$this->projectCumm['Project'][ $this->projectName() ]['User'][ $this->userName() ]['Time'] += $duration;
+	}
+	
+	/**
+	 * Accummulate total time for a project by user
+	 * 
+	 * Works from this->time, saves to this->userCumm
+	 * 
+	 * @param float $duration
+	 */
+	private function userProjectCumm($duration) {
+		if (!isset($this->userCumm['User'][ $this->userName() ]['Project'][ $this->projectName() ]['Time'])) {
+			$this->userCumm['User'][ $this->userName() ]['Project'][ $this->projectName() ]['Time'] = 0;
+		}
+		$this->userCumm['User'][ $this->userName() ]['Project'][ $this->projectName() ]['Time'] += $duration;
 	}
 	
 	/**
