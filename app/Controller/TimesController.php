@@ -11,6 +11,8 @@ App::uses('TkHelper', 'Helper');
 class TimesController extends AppController {
     
     public $helpers = array('Tk');
+	
+	public $components = array('Report');
 
     public $userId;
 	
@@ -160,7 +162,9 @@ class TimesController extends AppController {
 		
         $this->request->data = $this->Time->openRecords($this->userId);
         $this->request->data = $this->Time->reindex($this->request->data);
+//		dmDebug::ddd($this->Time->reportData, 'report data');
 		
+		$this->set('report', $this->Report->summarizeUsers($this->Time->reportData['Time']));
 		$this->setUiSelects('jobs');
     }
 

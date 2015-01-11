@@ -190,10 +190,12 @@ class Time extends AppModel {
 	 * @param type $data EXPECTS!! [0][Alias][field] and [id] in the field set
 	 */
 	public function reindex($data) {
+		$this->reportData = array();
 		$result = array();
 		foreach($data as $record) {
 			if (isset($record['Time']['id'])) {
 				$result[$record['Time']['id']] = $record;
+				$this->reportData['Time'][] = $record['Time'];
 			}			
 		}
 		if (empty($result)) {

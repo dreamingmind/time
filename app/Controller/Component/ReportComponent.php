@@ -133,6 +133,7 @@ class ReportComponent extends Component {
             $this->userProjectCumm($duration);
             $this->userProjectTaskCumm($duration);
 		}
+		return $this->userCumm;
 	}
 	
 	/**
@@ -337,6 +338,9 @@ class ReportComponent extends Component {
 	 * @return string
 	 */
 	private function userName() {
+		if (is_null($this->time['user_id'])) {
+			return ('un-named');
+		}
 		return  $this->users[$this->time['user_id']];
 	}
 
@@ -358,6 +362,9 @@ class ReportComponent extends Component {
 	 * @return string
 	 */
 	private function projectName() {
+		if (is_null($this->time['project_id'])) {
+			return 'un-named';
+		}
 		return  $this->projects[$this->time['project_id']];
 	}
 
