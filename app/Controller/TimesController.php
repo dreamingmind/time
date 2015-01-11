@@ -164,7 +164,10 @@ class TimesController extends AppController {
         $this->request->data = $this->Time->reindex($this->request->data);
 //		dmDebug::ddd($this->Time->reportData, 'report data');
 		
-		$this->set('report', $this->Report->summarizeUsers($this->Time->reportData['Time']));
+		$this->set('report', 
+				isset($this->Time->reportData['Time']) 
+				? $this->Report->summarizeUsers($this->Time->reportData['Time']) 
+				: array());
 		$this->setUiSelects('jobs');
     }
 
