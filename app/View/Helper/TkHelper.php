@@ -194,11 +194,24 @@ class TkHelper extends AppHelper {
 			if (strpos($item, $key) === 0) {
 				$out .= sprintf($this->Html->_tags['li'], $this->Html->_parseAttributes($itemOptions, array('even', 'odd'), ' ', ''), $item);
 			} else {
-				$out .= sprintf($this->Html->_tags['li'], $this->Html->_parseAttributes($itemOptions, array('even', 'odd'), ' ', ''), "$key : $item");
+                $heldIO = $itemOptions;
+                $itemOptions = array_merge($itemOptions, array('class' => 'timerow'));
+				$out .= sprintf($this->Html->_tags['li'], $this->Html->_parseAttributes($itemOptions, array('even', 'odd'), ' ', ''), "$key : {$this->spanTimeItems($item)}");
+                $itemOptions = $heldIO;
 			}
 			$index++;
 		}
 		return $out;
 	}
+    
+    /**
+     * Setup span classing for times
+     * 
+     * @param string $item
+     * @return string
+     */
+    protected function spanTimeItems($item) {
+        return $this->Html->tag('span', $item, array('class' => 'timeInt'));
+    }
 
 }

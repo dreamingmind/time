@@ -65,3 +65,17 @@ table[id*="cakeSqlLog"] {
 .toggle{
     cursor: pointer;
 }
+ul.timereport{
+    font-size: 94%;
+    margin: 0 0 10px 25px;
+    width: 350px;
+}
+ul.timereport > li{
+    padding: 0;
+}
+ul.timereport > li > span{
+    float: right;
+}
+li.timerow{
+    border-bottom: thin solid #ccc;
+}
