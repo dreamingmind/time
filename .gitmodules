@@ -1,3 +1,5 @@
 [submodule "app/Plugin/AddressModule"]
 	path = app/Plugin/AddressModule
 	url = https://curlyjason@github.com/dreamingmind/AddressModule.git
+	fetchRecurseSubmodules = true
+	ignore = all
