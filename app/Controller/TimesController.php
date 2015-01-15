@@ -275,8 +275,10 @@ class TimesController extends AppController {
     public function timeStop($id, $state = CLOSED) {
         $this->layout = 'ajax';
         $time = date('Y-m-d H:i:s');
-        $this->request->data('Time.time_out', $time)
-                ->data('Time.id', $id)
+        if($this->Time->getRecordStatus($id) != PAUSED){
+            $this->request->data('Time.time_out', $time);
+        }
+        $this->request->data('Time.id', $id)
                 ->data('Time.status', $state);
         $element = $this->saveTimeChange($id);
         $this->render($element);

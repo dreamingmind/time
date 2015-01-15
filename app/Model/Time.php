@@ -204,5 +204,16 @@ class Time extends AppModel {
 			return $result;
 		}
 	}
+    
+    /**
+     * Return the current status of the time record
+     * 
+     * @param string $id the id of the time record
+     * @return int the current status
+     */
+    public function getRecordStatus($id) {
+        $this->id = $id;
+        return $this->field('status');
+    }
 
 }
