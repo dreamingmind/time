@@ -8,6 +8,7 @@
 /build
 /dist
 /tags
+/app/Plugins
 
 # OS generated files #
 ######################
@@ -22,3 +23,4 @@ Thumbs.db
 /.editorconfig
 /.htaccess
 /nbproject/
+app/Plugin/
