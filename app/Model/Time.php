@@ -170,13 +170,13 @@ class Time extends AppModel {
      * @param int $userId
      * @return array
      */
-    public function openRecords($userId) {
+    public function openRecords($userId, $days = 1) {
         $records = $this->find('all', array(
             'conditions' => array(
                 'user_id' => $userId,
                 'OR' => array(
                     'status' => OPEN,
-                    'modified >' => date('Y:m:d H:i:s', time()-1*DAY)
+                    'modified >' => date('Y:m:d H:i:s', time()-$days*DAY)
                 )
             ),
             'recursive' => -1
