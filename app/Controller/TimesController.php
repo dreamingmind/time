@@ -157,10 +157,10 @@ class TimesController extends AppController {
 	/**
 	 * Main ui
 	 */
-    public function track() {
+    public function track($days = 1) {
         $this->userId = $this->Session->read('Auth.User.id');
 		
-        $this->request->data = $this->Time->openRecords($this->userId);
+        $this->request->data = $this->Time->openRecords($this->userId, $days);
         $this->request->data = $this->Time->reindex($this->request->data);
 //		dmDebug::ddd($this->Time->reportData, 'report data');
 		
