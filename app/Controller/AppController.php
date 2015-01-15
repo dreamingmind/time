@@ -53,7 +53,7 @@ class AppController extends Controller {
 	 */
 	public $timerParams = array(
 		'idleLimit' => 3600, //enter seconds (20 minutes)
-		'warningLimit' => 120 //enter seconds (2 minutes)
+		'warningLimit' => 3400 //enter seconds (2 minutes)
 	);
 
     function beforeFilter() {
