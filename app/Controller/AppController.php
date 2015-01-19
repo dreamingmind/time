@@ -55,6 +55,11 @@ class AppController extends Controller {
 		'idleLimit' => 3600, //enter seconds (20 minutes)
 		'warningLimit' => 3400 //enter seconds (2 minutes)
 	);
+    
+    public $taskStates = array(
+        'active' => 'active',
+        'inactive' => 'inactive'
+    );
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -76,6 +81,9 @@ class AppController extends Controller {
         
         //set the timerParams variable to property for automatic timeouts
 		$this->set('timerParams', $this->timerParams);
+        
+        //set the taskStates variable for all pages
+        $this->set('taskStates', $this->taskStates);
     }
 	
 	public function isPostPut() {

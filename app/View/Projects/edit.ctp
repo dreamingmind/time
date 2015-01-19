@@ -7,7 +7,7 @@
 		echo $this->Form->input('client_id');
 		echo $this->Form->input('name');
 		echo $this->Form->input('note');
-		echo $this->Form->input('state');
+        echo $this->Form->select('state', $taskStates);
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
