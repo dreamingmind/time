@@ -91,4 +91,25 @@ class AppController extends Controller {
 	public function isPostPut() {
 		return ($this->request->is('post') || $this->request->is('put'));
 	}
+    
+    public function jxEdit() {
+        $this->layout = 'ajax';
+        $alias = array_keys($this->request->data);
+                
+        if($this->$alias[0]->save($this->request->data)){
+            $this->Session->setFlash('Save succeeded!');
+            $response = array(
+                'result' => TRUE,
+                'valid' => ''
+            );
+        } else {
+            $this->Session->setFlash('Data did not save.');
+            $response = array(
+                'result' => FALSE,
+                'valid' => $this->validationErrors
+            );
+        }
+        $this->set('response', $response);
+        $this->render('/Ajax/jx_edit');
+    }
 }

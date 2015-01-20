@@ -29,10 +29,14 @@
         <td><?php 
         echo $this->Form->input('Project.state', array(
             'options' => $taskStates, 
-            'bind' => 'click.saveStateChange', 
+            'bind' => 'change.jxEdit', 
             'selected' => TRUE, 
             'value' => $project['Project']['state'], 
-            'label' => ''));
+            'originalValue' => $project['Project']['state'], 
+            'label' => '',
+            'recordId' => $project['Project']['id'],
+            'alias' => 'Project',
+            'fieldName' => 'state'));
         ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $project['Project']['id'])); ?>

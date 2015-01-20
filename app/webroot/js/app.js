@@ -68,6 +68,33 @@ function initToggles(target) {
     })
 }
 
+function jxEdit(e) {
+    var alias = $(e.currentTarget).attr('alias');
+    var target = $(e.currentTarget);
+    var originalValue = $(e.currentTarget).attr('originalValue');
+    var prepData = {};
+    prepData[alias] = {};
+    prepData[alias]['id'] = $(e.currentTarget).attr('recordId');
+    prepData[alias][$(e.currentTarget).attr('fieldName')] = $(e.currentTarget).val();
+    
+    $.ajax({
+        type: "POST",
+        dataType: "JSON",
+        data: prepData,
+        url: webroot + controller + "jxEdit",
+        success: function (data) {
+            if (data.result) {
+            } else {
+                target.val(originalValue);
+            }
+            target.before(data.flash);
+        },
+        error: function (data) {
+            alert('The call failed, please try again.');
+        }
+    })
+}
+
 
 /* 
  * To change this template, choose Tools | Templates
