@@ -80,6 +80,7 @@ class AppController extends Controller {
           'controller' => 'times',
           'action' => 'track'
         );
+		$this->Auth->allow('jxEdit');
         
         //set the timerParams variable to property for automatic timeouts
 		$this->set('timerParams', $this->timerParams);
@@ -93,6 +94,7 @@ class AppController extends Controller {
 	}
     
     public function jxEdit() {
+		
         $this->layout = 'ajax';
         $alias = array_keys($this->request->data);
                 
