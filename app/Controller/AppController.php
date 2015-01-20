@@ -58,7 +58,9 @@ class AppController extends Controller {
     
     public $taskStates = array(
         'active' => 'active',
-        'inactive' => 'inactive'
+        'inactive' => 'inactive',
+        'maintenance' => 'maintenance',
+        'migrate' => 'migrate'
     );
 
     function beforeFilter() {
