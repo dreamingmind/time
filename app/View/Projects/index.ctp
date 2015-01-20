@@ -27,11 +27,9 @@
 		<td><?php echo h($project['Project']['name']); ?>&nbsp;</td>
 		<td><?php echo h($project['Project']['note']); ?>&nbsp;</td>
         <td><?php 
-                    dmDebug::ddd($project['Project']['state'], 'project');
         echo $this->Form->input('Project.state', array(
             'options' => $taskStates, 
             'bind' => 'click.saveStateChange', 
-//            'selected' => $project['Project']['state'], 
             'selected' => TRUE, 
             'value' => $project['Project']['state'], 
             'label' => ''));
