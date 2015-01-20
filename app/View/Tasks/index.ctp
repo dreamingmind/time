@@ -25,7 +25,20 @@
 		</td>
 		<td><?php echo h($task['Task']['name']); ?>&nbsp;</td>
 		<td><?php echo h($task['Task']['note']); ?>&nbsp;</td>
-		<td><?php echo h($task['Task']['state']); ?>&nbsp;</td>
+		<td><?php
+        $this->Form->create();
+            echo $this->Form->input('Task.state', array(
+            'options' => $taskStates, 
+            'bind' => 'change.jxEdit', 
+            'selected' => TRUE, 
+            'value' => $task['Task']['state'], 
+            'originalValue' => $task['Task']['state'], 
+            'label' => '',
+            'recordId' => $task['Task']['id'],
+            'alias' => 'Task',
+            'fieldName' => 'state'));
+            $this->Form->end();
+            ?>&nbsp;</td>
 		<td><?php echo h($task['Task']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $task['Task']['id'])); ?>
