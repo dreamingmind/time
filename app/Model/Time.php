@@ -176,7 +176,7 @@ class Time extends AppModel {
                 'user_id' => $userId,
                 'OR' => array(
                     'status' => OPEN,
-                    'modified >' => date('Y:m:d H:i:s', time()-$days*DAY)
+                    'time_in >' => date('Y:m:d H:i:s', time()-$days*DAY)
                 )
             ),
             'recursive' => -1
