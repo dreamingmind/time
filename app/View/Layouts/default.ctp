@@ -78,5 +78,5 @@ $this->end();
         echo '</div>';
         ?>
     </body>
-    <footer>Copyright 2014 Curly Mind</footer>
+    <footer><img src="img/crane_black_transparent_400_400.png" alt="the origami crane" width="20px">  Copyright 2014 Origami Structures</footer>
 </html>
