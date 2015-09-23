@@ -112,7 +112,10 @@ class User extends AppModel {
 		)
 	);
 	
-	public $actsAs = array('Acl' => array('type' => 'requester', 'enabled' => false));
+	public $actsAs = array(
+		'Acl' => array('type' => 'requester', 'enabled' => false),
+		'Upload.Upload' => array('photo')
+		);
 	
 	public function beforeSave($options = array()) {
         $this->data['User']['password'] = AuthComponent::password(

@@ -11,6 +11,7 @@
 		echo $this->Form->input('activity');
 		echo $this->Form->input('user');
 		echo $this->Form->input('project');
+		echo $this->Form->input('Tasks.name');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

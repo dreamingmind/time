@@ -188,4 +188,23 @@ class UsersController extends AppController {
 		$this->redirect($this->Auth->logout());
 	}
     
+	public function editPicture($id = null) {
+		$this->User->validate = FALSE;
+		if (!$this->User->exists($id)) {
+			throw new NotFoundException(__('Invalid user'));
+		}
+		if ($this->request->is('post') || $this->request->is('put')) {
+			if ($this->User->save($this->request->data)) {
+				$this->Session->setFlash(__('The user has been saved'));
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+			}
+		} else {
+			$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+			$this->request->data = $this->User->find('first', $options);
+		}
+		$groups = $this->User->Group->find('list');
+		$this->set(compact('groups'));
+	}
 }

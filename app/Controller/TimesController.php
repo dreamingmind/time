@@ -24,7 +24,7 @@ class TimesController extends AppController {
 	protected $Task; 
 
 	public function beforeFilter() {
-		$this->Auth->allow('duplicateTimeRow');
+		$this->Auth->allow('duplicateTimeRow', 'search');
 		$this->Task = ClassRegistry::init('Task');
 
         parent::beforeFilter();
@@ -339,5 +339,26 @@ class TimesController extends AppController {
 		$tasks = $this->Task->groupedTaskList($type);
         $this->set(compact('users', 'projects', 'tasks'));
 		
+	}
+	
+	public function search() {
+		$times = [];
+		if ($this->request->is('post')) {
+			$c = $this->postConditions();
+			$conditions['Time.time_in >='] = $c['Time.time_in']['year'].'-'.$c['Time.time_in']['month'].'-'.$c['Time.time_in']['day'];//;
+			$conditions['Time.time_out <='] = $c['Time.time_out']['year'].'-'.$c['Time.time_out']['month'].'-'.$c['Time.time_out']['day'];
+			$conditions['Time.task_id'] = $c['Time.task_id'];
+			$times = $this->Time->find('all', ['conditions' => $conditions]);
+		}
+		$projects = $this->Time->Project->find('list');
+		$tasks = $this->Time->Task->find('list');
+		$this->Time->reindex($times);
+		$this->set('report', 
+				isset($this->Time->reportData['Time']) 
+				? $this->Report->summarizeUsers($this->Time->reportData['Time']) 
+				: array());
+		$this->setUiSelects('jobs');
+		$this->set(compact('tasks', 'projects', 'times'));
+//		$this->render('edit');
 	}
 }
