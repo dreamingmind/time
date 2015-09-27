@@ -344,11 +344,7 @@ class TimesController extends AppController {
 	public function search() {
 		$times = [];
 		if ($this->request->is('post')) {
-			$c = $this->postConditions();
-			$conditions['Time.time_in >='] = $c['Time.time_in']['year'].'-'.$c['Time.time_in']['month'].'-'.$c['Time.time_in']['day'];//;
-			$conditions['Time.time_out <='] = $c['Time.time_out']['year'].'-'.$c['Time.time_out']['month'].'-'.$c['Time.time_out']['day'];
-			$conditions['Time.task_id'] = $c['Time.task_id'];
-			$times = $this->Time->find('all', ['conditions' => $conditions]);
+			$times = $this->Time->search($this->postConditions());
 		}
 		$projects = $this->Time->Project->find('list');
 		$tasks = $this->Time->Task->find('list');

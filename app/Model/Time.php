@@ -216,4 +216,22 @@ class Time extends AppModel {
         return $this->field('status');
     }
 
+	public function search($data) {
+			$conditions['Time.time_in >='] = $this->sqlDate($data['Time.time_in']);//;
+			$conditions['Time.time_out <='] = $this->sqlDate($data['Time.time_out']);//;
+			if (!empty($data['Time.task_id'])) {
+				$conditions['Time.task_id'] = $data['Time.task_id'];
+			}
+			if (!empty($data['Time.project_id'])) {
+				$conditions['Time.project_id'] = $data['Time.project_id'];
+			}
+			if (!empty($data['Time.activity'])) {
+				$conditions['Time.activity LIKE'] = "%{$data['Time.activity']}%";
+			}
+			return $this->find('all', ['conditions' => $conditions]);
+	}
+	
+	private function sqlDate($time) {
+		return $time['year'].'-'.$time['month'].'-'.$time['day'];
+	}
 }
