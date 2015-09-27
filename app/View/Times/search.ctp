@@ -1,6 +1,10 @@
 <?php
-	$this->Html->script('report');
-	$this->Html->css('report');
+$this->start('css');
+	echo $this->Html->css('report');
+$this->end();
+$this->start('script');
+	echo $this->Html->script('report');
+$this->end();
 ?>
 <div class="times form">
 <?php echo $this->Form->create('Time'); ?>
@@ -23,11 +27,17 @@
 		echo $this->Tk->nestedList($report, array('class' => 'timereport'));
 	?>
 </div>
-<div>
+<div id="record-pool">
 	<?php
 		$result = array_map('synthTime', $times);
 		echo implode('', array_map('timeLine', $result)); 
 	?>
+</div>
+<div id="report">
+<section class="subsummary">
+	<h1>Default</h1>
+	
+</section>
 </div>
 <?php
 
@@ -37,17 +47,17 @@ function synthTime($val) {
 	list($h, $m, $s) = explode(':', $val['Time']['duration']);
 	$time = ($h * HOUR) + ($m * MINUTE) + $s;
 	return [
-		'time' => $time,
-		'duration' => $val['Time']['duration'],
 		'user' => ucwords($val['User']['username']),
 		'project' => $val['Project']['name'],
 		'task' => $val['Task']['name'],
+		'time' => $time,
 		'activity' => $val['Time']['activity']
 	];
 }
 
 function timeLine($time) {
 	$activity = array_pop($time);
+	$seconds = array_pop($time);
 	$pattern = <<<PAT
 		<span class=\"%s\">%s</span>
 
@@ -56,13 +66,13 @@ PAT;
 		return sprintf("\t\t<span class=\"%s\">%s</span>\n", $keys, $vals);
 	}, $time, array_keys($time));
 	$pattern = <<<PAT
-<div>
-	<aside>
+<div class="time" data-seconds="%s">
+	<aside class="keys">
 %s	</aside>
 	<p class="activity">%s</p>
 </div>\n
 PAT;
-	return sprintf($pattern, implode('', $spans), $activity);
+	return sprintf($pattern, $seconds, (implode('', $spans)), $activity);
 }
 
 // </editor-fold>

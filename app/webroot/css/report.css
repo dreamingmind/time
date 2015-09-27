@@ -1,0 +1,38 @@
+
+div.time {
+	width: 700px;
+	border: thin solid #ddd;
+	margin-top: -1px;
+}
+div.time aside {
+	padding: .2rem .5rem;
+	background: #999;
+} 
+div.time p {
+	margin: .5rem;
+}
+div.time aside > span {
+	color: #fff;
+	font-size: 80%;
+	display: inline-block;
+	width: 32%;
+}
+div.time p {
+	
+}
+div#report {
+	min-width: 700px;
+	min-height: 50px;
+	border: thin solid #888;
+}
+section.subsummary > h1 {
+	margin: 0;
+	padding: 1px .5rem 0;
+	background-color: #888;
+	font-size: 1.2rem;
+	color: #fff;
+}
+section.subsummary{
+	min-height: 55px;
+	background-color: linen;
+}
