@@ -96,15 +96,15 @@ Summary.prototype = {
 	 * @param {type} value
 	 * @returns {Boolean|Number}
 	 */
-	indexOf: function(set, value) {
-		var limit = set.length;
-		for(var i = 0; i < limit; i++) {
-			if (set[i].name == value) {
-				return i;
-			}
-		}
-		return false;
-	},
+//	indexOf: function(set, value) {
+//		var limit = set.length;
+//		for(var i = 0; i < limit; i++) {
+//			if (set[i].name == value) {
+//				return i;
+//			}
+//		}
+//		return false;
+//	},
 	
 	/**
 	 * Get the index for a the key that = value
@@ -123,7 +123,7 @@ Summary.prototype = {
 	 * @param string value The value to find an index for
 	 * @returns {Boolean|Number}
 	 */
-	valueIndex: function(key, value) {
+	valueLookup: function(key, value) {
 		if (parseInt(key) != key) {
 			var key = this.keyLookup[key];
 		}
@@ -162,7 +162,7 @@ Summary.prototype = {
 		}
 		if (j === 1) {
 			options[0] = options[0].replace(/(<option )/, '$1selected="selected" ');
-			label.replace(/ /, keys[0]);
+			label = label.replace(/>.*</, '>'+keys[0]+'<');
 		}
 		return label+'<select>'+options.join('')+'</select>';
 	},
@@ -174,7 +174,7 @@ Summary.prototype = {
 		block.find('span.sortkey').html(this.sortSelectList(sum.keys));
 		block.find('select').on('change', this.sortKeyChange.bind(this));
 		// place in the dom
-		$('div#report').append(block);
+		$('div#report').prepend(block);
 
 	},
 	

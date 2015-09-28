@@ -27,13 +27,12 @@ $this->end();
 		echo $this->Tk->nestedList($report, array('class' => 'timereport'));
 	?>
 </div>
-<div id="record-pool">
+
+<div id="report">
 	<?php
 		$result = array_map('synthTime', $times);
 		echo implode('', array_map('timeLine', $result)); 
 	?>
-</div>
-<div id="report">
 
 </div>
 <?php
