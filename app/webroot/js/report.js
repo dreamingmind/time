@@ -1,16 +1,16 @@
 $(document).ready(function () {
 	
 	sum = new Summary('div.time');
-//	sum.newSummaryBlock();
-	var block = $(sum.summaryblock);
-	block.find('span.sortkey').html(sum.sortSelectList(sum.keys));
-	block.find('select').on('change', function(){
-		var index = sum.indexOf(sum.keys, $(this).val());
-		var values = sum.keys[index].values;
-		block.find('span.sortkeyvalue').html(sum.sortSelectList(values));
-	});
-	
-	$('div#report').append(block);
+	sum.newSummaryBlock();
+//	var block = $(sum.summaryblock);
+//	block.find('span.sortkey').html(sum.sortSelectList(sum.keys));
+//	block.find('select').on('change', function(){
+//		var index = sum.indexOf(sum.keys, $(this).val());
+//		var values = sum.keys[index].values;
+//		block.find('span.sortkeyvalue').html(sum.sortSelectList(values));
+//	});
+//	
+//	$('div#report').append(block);
 	
 //	alert(sum.available(sum.keys));
 	
@@ -71,16 +71,19 @@ Summary = function(target) {
 		for (var i = 0; i < j; i++) {
 			var key = $(candidates[i]).attr('class');
 			var values = this.initSummaryValues(key);
+			var lookups = this.lookupTable(values);
 			this.keys.push({
 				'name': key,
 				'used': false, // needs a system to set this
-				'values': values
+				'values': values,
+				'lookup': lookups
 			});
+			// add one last property that is the available (unused) values
 			this.keys[this.keys.length -1].availableValues = this.available(this.keys[this.keys.length -1].values);
 		}
 	};
 				
-				
+	this.keyLookup = this.lookupTable(this.keys);		
 }
 	
 
@@ -109,9 +112,9 @@ Summary.prototype = {
 	 * @param string value The key to find an idex for
 	 * @returns {Boolean|Number}
 	 */
-	keyIndex: function(value) {
-		return this.indexOf(this.keys, value);
-	},
+//	keyIndex: function(value) {
+//		return this.indexOf(this.keys, value);
+//	},
 	
 	/**
 	 * Get the index of a value on a key
@@ -122,9 +125,9 @@ Summary.prototype = {
 	 */
 	valueIndex: function(key, value) {
 		if (parseInt(key) != key) {
-			var key = this.keyIndex(key);
+			var key = this.keyLookup[key];
 		}
-		return this.indexOf(this.keys[key].values);
+		return this.indexOf(this.keys[key].lookup[value]);
 	},
 	
 	available: function(set) {
@@ -152,7 +155,7 @@ Summary.prototype = {
 	sortSelectList: function(set) {
 		var keys = this.available(set);
 		var j = keys.length;
-		var label = '<label> </label>';
+		var label = '<label>Select a subsummary filter.</label>';
 		var options = j === 1 ? [] : ['<option value="">Select a sort key</option>'];
 		for (var i = 0; i < j; i++) {
 			options.push('<option value="'+keys[i]+'">'+keys[i]+'</option>');
@@ -169,7 +172,7 @@ Summary.prototype = {
 		var block = $(sum.summaryblock);
 		// modify it, adding the key select list with its behavior
 		block.find('span.sortkey').html(this.sortSelectList(sum.keys));
-		block.find('select').on('change', this.sortKeyChange);
+		block.find('select').on('change', this.sortKeyChange.bind(this));
 		// place in the dom
 		$('div#report').append(block);
 
@@ -177,15 +180,26 @@ Summary.prototype = {
 	
 	sortKeyChange: function(e){
 		var choice = $(e.currentTarget).val();
-		var index = this.keyIndex(choice);
-		$(e.currentTarget).sibling('label').html(choice);
+		var index = this.keyLookup[choice];
+		this.keys[index].used = true;
+		$($(e.currentTarget).siblings('label')[0]).html(choice.toLocaleUpperCase());
 		var values = this.keys[index].values;
-		block.find('span.sortkeyvalue').html(this.sortSelectList(values));
+		$(e.currentTarget).parents('header').find('span.sortkeyvalue').html(this.sortSelectList(values));
 	},
 	
 	sortValueChange: function(e){
-		var keyIndex = this.keyIndex($(e.currentTarget).sibling('span.sortkey').val());
-		
+		var keyIndex = this.keyLookup($(e.currentTarget).sibling('span.sortkey').val());
+		$($(e.currentTarget).siblings('label')[0]).html(choice);
+
+	},
+	
+	lookupTable: function(subject) {
+		var lookup = {};
+		var j = subject.length;
+		for (var i = 0; i < j; i++) {
+			lookup[subject[i].name] = i;
+		}
+		return lookup;
 	}
 //	<select id="TimeTimeOutMeridian" name="data[Time][time_out][meridian]">
 //<option value="am">am</option>
