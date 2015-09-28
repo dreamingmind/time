@@ -34,10 +34,7 @@ $this->end();
 	?>
 </div>
 <div id="report">
-<section class="subsummary">
-	<h1>Default</h1>
-	
-</section>
+
 </div>
 <?php
 
