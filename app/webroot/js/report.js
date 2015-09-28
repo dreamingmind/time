@@ -2,29 +2,7 @@ $(document).ready(function () {
 	
 	sum = new Summary('div.time');
 	sum.newSummaryBlock();
-//	var block = $(sum.summaryblock);
-//	block.find('span.sortkey').html(sum.sortSelectList(sum.keys));
-//	block.find('select').on('change', function(){
-//		var index = sum.indexOf(sum.keys, $(this).val());
-//		var values = sum.keys[index].values;
-//		block.find('span.sortkeyvalue').html(sum.sortSelectList(values));
-//	});
-//	
-//	$('div#report').append(block);
-	
-//	alert(sum.available(sum.keys));
-	
-//	var target = 'div.time';
-//	var members = [];
-//	var exemplars = $(target);
-//	
-//	if (exemplars.length > 0) {
-//		var candidates = $(exemplars[0]).children('aside.keys').children('span');
-//		var j = candidates.length;
-//		for (var i = 0; i < j; i++) {
-//			members.push($(candidates[i]).attr('class'));
-//		}
-//	}
+
 	var x = 'x';
 	
 });
@@ -88,33 +66,6 @@ Summary = function(target) {
 	
 
 Summary.prototype = {
-	
-	/**
-	 * get the index of a key or key's value
-	 * 
-	 * @param {type} set
-	 * @param {type} value
-	 * @returns {Boolean|Number}
-	 */
-//	indexOf: function(set, value) {
-//		var limit = set.length;
-//		for(var i = 0; i < limit; i++) {
-//			if (set[i].name == value) {
-//				return i;
-//			}
-//		}
-//		return false;
-//	},
-	
-	/**
-	 * Get the index for a the key that = value
-	 * 
-	 * @param string value The key to find an idex for
-	 * @returns {Boolean|Number}
-	 */
-//	keyIndex: function(value) {
-//		return this.indexOf(this.keys, value);
-//	},
 	
 	/**
 	 * Get the index of a value on a key
@@ -185,11 +136,11 @@ Summary.prototype = {
 		$($(e.currentTarget).siblings('label')[0]).html(choice.toLocaleUpperCase());
 		var values = this.keys[index].values;
 		$(e.currentTarget).parents('header').find('span.sortkeyvalue').html(this.sortSelectList(values));
+		$(e.currentTarget).parents('header').find('span.sortkeyvalue select').on('change', this.sortValueChange.bind(this));
 	},
 	
 	sortValueChange: function(e){
-		var keyIndex = this.keyLookup($(e.currentTarget).sibling('span.sortkey').val());
-		$($(e.currentTarget).siblings('label')[0]).html(choice);
+		$($(e.currentTarget).siblings('label')[0]).html($(e.currentTarget).val());
 
 	},
 	
@@ -201,24 +152,5 @@ Summary.prototype = {
 		}
 		return lookup;
 	}
-//	<select id="TimeTimeOutMeridian" name="data[Time][time_out][meridian]">
-//<option value="am">am</option>
-//<option selected="selected" value="pm">pm</option>
-//</select>
-//
-//	SortKeys : function (target) {
-//		this.keys = {};
-//		var exemplars = $(target);
-//		var rawMembers = $(target + ' aside.keys > span').attr('class');
-//	},
-//	SortKey: function (name, used) {
-//		this.name = name;
-//		this.used = typeof(used) === 'undefined' ? false : used;
-//	},
-//	SortKeyValue: function (name, used) {
-//		this.name = name;
-//		this.used = typeof(used) === 'undefined' ? false : used;
-//	}
-
 }
 
