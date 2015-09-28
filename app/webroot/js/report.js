@@ -2,11 +2,11 @@ $(document).ready(function () {
 	
 	sum = new Summary('div.time');
 	var block = $(sum.summaryblock);
-	block.find('span.sortkey').html(sum.sortChoices(sum.keys));
+	block.find('span.sortkey').html(sum.sortSelectList(sum.keys));
 	block.find('select').on('change', function(){
 		var index = sum.indexOf(sum.keys, $(this).val());
 		var values = sum.keys[index].values;
-		block.find('span.sortkeyvalue').html(sum.sortChoices(values));
+		block.find('span.sortkeyvalue').html(sum.sortSelectList(values));
 	});
 	
 	$('div#report').append(block);
@@ -97,7 +97,7 @@ Summary.prototype = {
 	
 	'summaryblock': "<section class=\"subsummary\"><header><span class=\"sortkey\"></span><span class=\"sortkeyvalue\"></span><span class=\"summaryvalue\"></span></header><section class=\"records\"><!-- records or subsummary sections to summarize --></section></section>",
 	
-	sortChoices: function(set) {
+	sortSelectList: function(set) {
 		var keys = this.available(set);
 		var j = keys.length;
 		var options = '<option value="">Select a sort key</option>';
@@ -105,7 +105,7 @@ Summary.prototype = {
 			options += '<option value="'+keys[i]+'">'+keys[i]+'</option>';
 		}
 		return '<select>'+options+'</select>';
-	}
+	},
 	
 //	<select id="TimeTimeOutMeridian" name="data[Time][time_out][meridian]">
 //<option value="am">am</option>
