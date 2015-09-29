@@ -27,7 +27,7 @@ div.time p {
 	
 }
 div#report {
-	min-width: 700px;
+	width: 800px;
 	min-height: 50px;
 	border: thin solid #888;
 }
@@ -39,12 +39,13 @@ section.subsummary > h1 {
 	color: #fff;
 }
 section.subsummary{
+	width: 100%;
 	min-height: 55px;
-	background-color: linen;
 }
 
 section.records {
-	min-height: 20rem;
+	min-height: 10rem;
+	padding: 1px 0 0 2rem;
 }
 
 section.subsummary > header > span > select {

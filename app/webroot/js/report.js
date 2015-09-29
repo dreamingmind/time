@@ -5,20 +5,6 @@ $(document).ready(function () {
 
 	var x = 'x';
 	
-    $( "div.time" ).draggable();
-    $( "section.records" ).droppable({
-      drop: function( event, ui ) {
-		  $(this).append(ui.draggable);
-		  ui.draggable.attr('style', '');
-		  ui.draggable.draggable();
-		  sum.total(this);
-//        $( this )
-//          .addClass( "ui-state-highlight" )
-//          .find( "p" )
-//            .html( "Dropped!" );
-      }
-    });
-	
   });
 
 Summary = function(target) {
@@ -75,20 +61,42 @@ Summary = function(target) {
 		}
 	};
 				
-	this.keyLookup = this.lookupTable(this.keys);		
+	this.keyLookup = this.lookupTable(this.keys);	
+	
+	this.setDragDrop();
 }
 	
 
 Summary.prototype = {
 	
 	total: function(parentnode) {
-		var values = $(parentnode).children('div').children('aside').children('span.summaryvalue');
+		var values = $(parentnode).children('*');
 		var total = 0;
 		var j = values.length;
 		for (var i = 0; i < j; i++) {
-			total += parseFloat($(values[i]).html());
+			total += parseInt($(values[i]).attr('data-seconds'));
 		}
-		$(parentnode).siblings('header').children('span.summaryvalue').html(total);
+		$(parentnode).parent('*').attr('data-seconds', total)
+		var decimal = (parseInt(100 * (total / 3600))) / 100;
+		$(parentnode).siblings('header').children('span.summaryvalue').html(decimal);
+		this.setDragDrop();
+	},
+	
+	setDragDrop: function() {
+		$( "div.time" ).draggable();
+		$( "section.subsummary" ).draggable();
+		$( "section.records" ).droppable({
+		  drop: function( event, ui ) {
+			  var origin = ui.draggable.parent().parent();
+			  $(this).append(ui.draggable);
+			  ui.draggable.attr('style', '');
+			  sum.total(this);
+			  if (origin.attr('class') == 'subsummary') {
+				  sum.total(origin);
+			  }
+		  }
+		});
+		$( "section.records" ).droppable("option", "tolerance", "pointer" );
 	},
 	
 	/**
@@ -116,7 +124,7 @@ Summary.prototype = {
 		return result;
 	},
 	
-	'summaryblock': "<section class=\"subsummary\"><header><span class=\"sortkey\"></span><span class=\"sortkeyvalue\"></span><span class=\"summaryvalue\"></span></header><section class=\"records droppable\"><!-- records or subsummary sections to summarize --></section></section>",
+	'summaryblock': "<section class=\"subsummary\" data-seconds=\"0\"><header><span class=\"sortkey\"></span><span class=\"sortkeyvalue\"></span><span class=\"summaryvalue\"></span></header><section class=\"records droppable\"><!-- records or subsummary sections to summarize --></section></section>",
 	
 	/**
 	 * Make a select list from the currently available keys or values on a key
@@ -142,15 +150,20 @@ Summary.prototype = {
 		return label+'<select>'+options.join('')+'</select>';
 	},
 	
+	rnd: function() {
+		return parseInt(256 - (30 * Math.random()));
+	},
+	
 	newSummaryBlock: function () {
 		// make and hold a block
 		var block = $(sum.summaryblock);
 		// modify it, adding the key select list with its behavior
 		block.find('span.sortkey').html(this.sortSelectList(sum.keys));
 		block.find('select').on('change', this.sortKeyChange.bind(this));
+		block.css('background-color', 'rgb('+this.rnd()+', '+this.rnd()+', '+this.rnd()+')');
 		// place in the dom
 		$('div#report').prepend(block);
-
+		this.setDragDrop();
 	},
 	
 	sortKeyChange: function(e){
