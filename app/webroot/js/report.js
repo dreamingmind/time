@@ -2,6 +2,7 @@ $(document).ready(function () {
 	
 	sum = new Summary('div.time');
 	sum.newSummaryBlock();
+	$('#newsummary').on('click', sum.newSummaryBlock.bind(sum));
 
 	var x = 'x';
 	
@@ -87,13 +88,14 @@ Summary.prototype = {
 		$( "section.subsummary" ).draggable();
 		$( "section.records" ).droppable({
 		  drop: function( event, ui ) {
-			  var origin = ui.draggable.parent().parent();
+//			  var origin = ui.draggable.parent().parent();
 			  $(this).append(ui.draggable);
 			  ui.draggable.attr('style', '');
 			  sum.total(this);
-			  if (origin.attr('class') == 'subsummary') {
-				  sum.total(origin);
-			  }
+			  $(this).css('background-color', 'rgb('+this.rnd()+', '+this.rnd()+', '+this.rnd()+')');
+//			  if (origin.attr('class') == 'subsummary') {
+//				  sum.total(origin);
+//			  }
 		  }
 		});
 		$( "section.records" ).droppable("option", "tolerance", "pointer" );
@@ -169,7 +171,7 @@ Summary.prototype = {
 	sortKeyChange: function(e){
 		var choice = $(e.currentTarget).val();
 		var index = this.keyLookup[choice];
-		this.keys[index].used = true;
+//		this.keys[index].used = true;
 		$($(e.currentTarget).siblings('label')[0]).html(choice.toLocaleUpperCase());
 		var values = this.keys[index].values;
 		$(e.currentTarget).parents('header').find('span.sortkeyvalue').html(this.sortSelectList(values));
@@ -178,7 +180,13 @@ Summary.prototype = {
 	
 	sortValueChange: function(e){
 		$($(e.currentTarget).siblings('label')[0]).html($(e.currentTarget).val());
-
+		var sortkey = $(e.currentTarget).parents('header').children('span.sortkey').children('select').val();
+		var keyindex = this.lookupTable(sortkey);
+		var valueindex = this.valueLookup(sortkey, $(e.currentTarget).val());
+		this.keys[keyindex].values[valueindex].used = true;
+		if (this.keys[keyindex].available.lenth == 0) {
+			this.keys[keyindex].used = true;
+		}
 	},
 	
 	lookupTable: function(subject) {

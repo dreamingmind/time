@@ -29,7 +29,7 @@ $this->end();
 		echo $this->Tk->nestedList($report, array('class' => 'timereport'));
 	?>
 </div>
-
+<button id="newsummary">New Summary Block</button>
 <div id="report">
 	<?php
 		$result = array_map('synthTime', $times);

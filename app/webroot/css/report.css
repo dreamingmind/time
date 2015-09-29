@@ -41,6 +41,7 @@ section.subsummary > h1 {
 section.subsummary{
 	width: 100%;
 	min-height: 55px;
+	border: #999 solid thin;
 }
 
 section.records {
