@@ -5,7 +5,21 @@ $(document).ready(function () {
 
 	var x = 'x';
 	
-});
+    $( "div.time" ).draggable();
+    $( "section.records" ).droppable({
+      drop: function( event, ui ) {
+		  $(this).append(ui.draggable);
+		  ui.draggable.attr('style', '');
+		  ui.draggable.draggable();
+		  sum.total(this);
+//        $( this )
+//          .addClass( "ui-state-highlight" )
+//          .find( "p" )
+//            .html( "Dropped!" );
+      }
+    });
+	
+  });
 
 Summary = function(target) {
 	
@@ -67,6 +81,16 @@ Summary = function(target) {
 
 Summary.prototype = {
 	
+	total: function(parentnode) {
+		var values = $(parentnode).children('div').children('aside').children('span.summaryvalue');
+		var total = 0;
+		var j = values.length;
+		for (var i = 0; i < j; i++) {
+			total += parseFloat($(values[i]).html());
+		}
+		$(parentnode).siblings('header').children('span.summaryvalue').html(total);
+	},
+	
 	/**
 	 * Get the index of a value on a key
 	 * 
@@ -92,7 +116,7 @@ Summary.prototype = {
 		return result;
 	},
 	
-	'summaryblock': "<section class=\"subsummary\"><header><span class=\"sortkey\"></span><span class=\"sortkeyvalue\"></span><span class=\"summaryvalue\"></span></header><section class=\"records\"><!-- records or subsummary sections to summarize --></section></section>",
+	'summaryblock': "<section class=\"subsummary\"><header><span class=\"sortkey\"></span><span class=\"sortkeyvalue\"></span><span class=\"summaryvalue\"></span></header><section class=\"records droppable\"><!-- records or subsummary sections to summarize --></section></section>",
 	
 	/**
 	 * Make a select list from the currently available keys or values on a key

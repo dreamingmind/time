@@ -1,4 +1,6 @@
 <?php
+App::uses('CakeNumber', 'Utility');
+
 $this->start('css');
 	echo $this->Html->css('report');
 $this->end();
@@ -47,13 +49,16 @@ function synthTime($val) {
 		'project' => $val['Project']['name'],
 		'task' => $val['Task']['name'],
 		'time' => $time,
-		'activity' => $val['Time']['activity']
+		'activity' => $val['Time']['activity'],
+		'id' => $val['Time']['id']
 	];
 }
 
 function timeLine($time) {
+	$id = array_pop($time);
 	$activity = array_pop($time);
 	$seconds = array_pop($time);
+	$time['summaryvalue'] = CakeNumber::precision($seconds/HOUR, 2);
 	$pattern = <<<PAT
 		<span class=\"%s\">%s</span>
 
@@ -62,13 +67,13 @@ PAT;
 		return sprintf("\t\t<span class=\"%s\">%s</span>\n", $keys, $vals);
 	}, $time, array_keys($time));
 	$pattern = <<<PAT
-<div class="time" data-seconds="%s">
+<div id="time-%s" class="time" data-seconds="%s">
 	<aside class="keys">
 %s	</aside>
 	<p class="activity">%s</p>
 </div>\n
 PAT;
-	return sprintf($pattern, $seconds, (implode('', $spans)), $activity);
+	return sprintf($pattern, $id, $seconds, (implode('', $spans)), $activity);
 }
 
 // </editor-fold>

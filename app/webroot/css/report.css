@@ -15,8 +15,14 @@ div.time aside > span {
 	color: #fff;
 	font-size: 80%;
 	display: inline-block;
-	width: 32%;
+	width: 30%;
 }
+
+div.time aside > span.summaryvalue {
+	width: 7%;
+	float: right;
+}
+
 div.time p {
 	
 }
@@ -35,6 +41,10 @@ section.subsummary > h1 {
 section.subsummary{
 	min-height: 55px;
 	background-color: linen;
+}
+
+section.records {
+	min-height: 20rem;
 }
 
 section.subsummary > header > span > select {
