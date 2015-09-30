@@ -126,7 +126,7 @@ Summary.prototype = {
 		return result;
 	},
 	
-	'summaryblock': "<section class=\"subsummary\" data-seconds=\"0\"><header><span class=\"sortkey\"></span><span class=\"sortkeyvalue\"></span><span class=\"summaryvalue\"></span></header><section class=\"records droppable\"><!-- records or subsummary sections to summarize --></section></section>",
+	'summaryblock': "<section class=\"subsummary\" data-seconds=\"0\"><header><span class=\"sortkey\"></span><span class=\"sortkeyvalue\"></span><button class=\"load\">Load</button><button class=\"unload\">Unoad</button><span class=\"summaryvalue\"></span></header><section class=\"records droppable\"><!-- records or subsummary sections to summarize --></section></section>",
 	
 	/**
 	 * Make a select list from the currently available keys or values on a key
@@ -152,22 +152,46 @@ Summary.prototype = {
 		return label+'<select>'+options.join('')+'</select>';
 	},
 	
+	/**
+	 * Make a color number within 30 values of white
+	 * 
+	 * @returns Int
+	 */
 	rnd: function() {
 		return parseInt(256 - (30 * Math.random()));
 	},
 	
 	newSummaryBlock: function () {
-		// make and hold a block
+		// make and hold a block of random color
 		var block = $(sum.summaryblock);
+		block.css('background-color', 'rgb('+this.rnd()+', '+this.rnd()+', '+this.rnd()+')');
 		// modify it, adding the key select list with its behavior
 		block.find('span.sortkey').html(this.sortSelectList(sum.keys));
 		block.find('select').on('change', this.sortKeyChange.bind(this));
-		block.css('background-color', 'rgb('+this.rnd()+', '+this.rnd()+', '+this.rnd()+')');
+		// intitialize the buttons
+		block.find('button').prop('disabled', true);
+		block.find('button.load').on('change', this.loadMembers.bind(this));
+		block.find('button.unload').on('change', this.unloadMembers.bind(this));
 		// place in the dom
 		$('div#report').prepend(block);
 		this.setDragDrop();
 	},
 	
+	loadMembers: function(e) {
+		var self = $(e.currentTarget);
+		if (self.prop('disabled') === true) {
+			return;
+		}
+		var sortFilters = self.siblings('span').find('select');
+		var parent = self.parent('section.subsummary').parent;
+		var members = parent.children(this.target);
+		
+	},
+	
+	unloadMembers: function(e) {
+		
+	},
+		
 	sortKeyChange: function(e){
 		var choice = $(e.currentTarget).val();
 		var index = this.keyLookup[choice];
@@ -196,6 +220,16 @@ Summary.prototype = {
 			lookup[subject[i].name] = i;
 		}
 		return lookup;
+//	},
+//	
+//	member: {
+////		construct: function(member) {
+////			this.node = $(member);
+////		}
+//	},
+//	
+//	summaryblock: {
+//		
 	}
 }
 
