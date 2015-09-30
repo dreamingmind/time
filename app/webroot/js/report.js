@@ -89,10 +89,10 @@ Summary.prototype = {
 		$( "section.records" ).droppable({
 		  drop: function( event, ui ) {
 //			  var origin = ui.draggable.parent().parent();
+			  ui.draggable.css('position', 'realtive').css('left', '0px').css('top', '0px');
 			  $(this).append(ui.draggable);
-			  ui.draggable.attr('style', '');
 			  sum.total(this);
-			  $(this).css('background-color', 'rgb('+this.rnd()+', '+this.rnd()+', '+this.rnd()+')');
+//			  $(this).css('background-color', 'rgb('+this.rnd()+', '+this.rnd()+', '+this.rnd()+')');
 //			  if (origin.attr('class') == 'subsummary') {
 //				  sum.total(origin);
 //			  }
