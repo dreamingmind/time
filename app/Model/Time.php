@@ -28,7 +28,7 @@ class Time extends AppModel {
 		'2' => 'Reported',	// recipient has recorded the hours but hasn't been invoiced
 		'4' => 'Pending',	// hours worked in advance of a billable project
 		'8' => 'Invoiced',	// recipient has been invoiced. hours closed.
-		'9' => 'Unbillable', // hours that couldnt be billed on any project
+		'16' => 'Unbillable', // hours that couldnt be billed on any project
 	];
 
     /**
