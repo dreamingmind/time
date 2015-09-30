@@ -116,8 +116,18 @@ CakePlugin::load('AclExtras');
  * 
  */
 
-//Status constants
+//Time Status constants
 define("OPEN", 1);
 define("REVIEW", 2);
 define("CLOSED", 4);
 define("PAUSED", 8);
+
+//os_billing_status
+//customer_billing_status
+// constants
+define("OPEN", 1); // recipient has no knowledge of hours
+define("REPORTED", 2); // recipient has recorded the hours but hasn't been invoiced
+define("PENDING", 4); // hours worked in advance of a billable project
+define("INVOICED", 8); // recipient has been invoiced. hours closed.
+define('UNBILLABLE', 9); // hours that couldn't be billed on any project
+

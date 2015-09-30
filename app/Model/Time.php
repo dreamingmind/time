@@ -22,6 +22,14 @@ class Time extends AppModel {
             ),
         )
     );
+	
+	public $billingStatus = [
+		'1' => 'Open',		// recipient has no knowledge of hours
+		'2' => 'Reported',	// recipient has recorded the hours but hasn't been invoiced
+		'4' => 'Pending',	// hours worked in advance of a billable project
+		'8' => 'Invoiced',	// recipient has been invoiced. hours closed.
+		'9' => 'Unbillable', // hours that couldnt be billed on any project
+	];
 
     /**
      * A list of all user names
