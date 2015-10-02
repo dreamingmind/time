@@ -10,38 +10,11 @@ $(document).ready(function () {
 
 Summary = function(target) {
 	
-	/**
-	 * Make the set of possible values for a given key
-	 * 
-	 * Keys are the possible subsummary breaks like 'project' or 'user'. 
-	 * The values for each are all the distinct values currently on the page. 
-	 * 
-	 * @param string key
-	 * @returns {Summary.initSummaryValues.result|Array}
-	 */
-	this.initSummaryValues = function(key) {
-		var rawValues = $(this.target).children('aside.keys').children('span[class="'+key+'"]');
-		var result = [];
-		var exists = {};
-		var j = rawValues.length;
-		for(var i = 0; i < j; i++) {
-			var value = $(rawValues[i]).html();
-			if (typeof(exists[value]) === 'undefined') {
-				exists[value] = true;
-				result.push({
-					'name': value,
-					'used': false // needs a system to set this
-				});
-			}
-		}
-		return result;
-	}
-	
 	// the selector to get the records to be summarized
 	this.target = target;
-	
 	// prepare list of possible subsummary breaks
 	this.keys = [];
+	
 	// each key entry will be an object describing that key and its possible values
 	var keyExemplars = $(target);
 	if (keyExemplars.length > 0) {
@@ -63,12 +36,38 @@ Summary = function(target) {
 	};
 				
 	this.keyLookup = this.lookupTable(this.keys);	
-	
 	this.setDragDrop();
 }
 	
 
 Summary.prototype = {
+	
+	/**
+	 * Make the set of possible values for a given key
+	 * 
+	 * Keys are the possible subsummary breaks like 'project' or 'user'. 
+	 * The values for each are all the distinct values currently on the page. 
+	 * 
+	 * @param string key
+	 * @returns {Summary.initSummaryValues.result|Array}
+	 */
+	initSummaryValues: function(key) {
+		var rawValues = $(this.target).children('aside.keys').children('span[class="'+key+'"]');
+		var result = [];
+		var exists = {};
+		var j = rawValues.length;
+		for(var i = 0; i < j; i++) {
+			var value = $(rawValues[i]).html();
+			if (typeof(exists[value]) === 'undefined') {
+				exists[value] = true;
+				result.push({
+					'name': value,
+					'used': false // needs a system to set this
+				});
+			}
+		}
+		return result;
+	},
 	
 	/**
 	 * Calculate the total for a node based on it's children
