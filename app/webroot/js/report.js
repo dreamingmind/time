@@ -285,7 +285,7 @@ Summary.prototype = {
 		var keyindex = this.lookupTable(sortkey);
 		var valueindex = this.valueLookup(sortkey, $(e.currentTarget).val());
 		this.keys[keyindex].values[valueindex].used = true;
-		if (this.keys[keyindex].available.lenth == 0) {
+		if (this.keys[keyindex].available.length == 0) {
 			this.keys[keyindex].used = true;
 		}
 	},
