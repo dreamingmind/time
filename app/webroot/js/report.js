@@ -3,8 +3,11 @@ $(document).ready(function () {
 	sum = new Summary('div.time');
 	sum.newSummaryBlock();
 	$('#newsummary').on('click', sum.newSummaryBlock.bind(sum));
-
-	var x = 'x';
+	
+	var members = $(sum.target);
+	members.each(function(){
+		$(this).data('member', new ReportMember(this));
+	});
 	
   });
 
@@ -18,7 +21,7 @@ Summary = function(target) {
 	// each key entry will be an object describing that key and its possible values
 	var keyExemplars = $(target);
 	if (keyExemplars.length > 0) {
-		var candidates = $(keyExemplars[0]).children('aside.keys').children('span');
+		var candidates = $(keyExemplars[0]).children('header.keys').children('span');
 		var j = candidates.length;
 		for (var i = 0; i < j; i++) {
 			var key = $(candidates[i]).attr('class');
@@ -52,7 +55,7 @@ Summary.prototype = {
 	 * @returns {Summary.initSummaryValues.result|Array}
 	 */
 	initSummaryValues: function(key) {
-		var rawValues = $(this.target).children('aside.keys').children('span[class="'+key+'"]');
+		var rawValues = $(this.target).children('header.keys').children('span[class="'+key+'"]');
 		var result = [];
 		var exists = {};
 		var j = rawValues.length;
@@ -306,16 +309,59 @@ Summary.prototype = {
 			lookup[subject[i].name] = i;
 		}
 		return lookup;
-//	},
-//	
-//	member: {
-////		construct: function(member) {
-////			this.node = $(member);
-////		}
-//	},
-//	
-//	summaryblock: {
-//		
+	},
+	
+	getMember: function(node) {
+		if ($(node)[0].tagName == 'DIV' && $(node).attr('id').match(/time-\d+/)) {
+			return $(node).data('member');
+		}
+		return $(node).parent(this.target).data('member');
+	},
+	
+	getSummary: function(node) {
+		if ($(node)[0].tagName == 'SECTION' && $(node).attr('class').match(/subsummary/)) {
+			return $(node).data('subsummary');
+		}
+		return $(node).parent('section.subsummary').data('subsummary');
 	}
-}
+	
+};
+
+SummaryBlock = function(node) {
+	
+};
+
+SummaryBlock.prototype = {
+
+};
+
+
+ReportMember = function(node) {
+	this.member = $(node);
+};
+
+ReportMember.prototype = {
+	header: function(){
+		return $(this.member.children('header')[0]);
+	},
+	heading: function(name) {
+		return $(this.header().children('span.'+name));
+	},
+	value: function(name, content) {
+		if (!typeof(content) === 'undefined') {
+			this.heading(name).html(content);
+		}
+		return this.heading(name).html();
+	},
+	details: function() {
+		return $(this.member.children('details')[0]);
+	},
+	detail: function(name, content) {
+		var detail = $(this.details().children('.'+name));
+		if (!typeof(content) === 'undefined') {
+			detail.html(content);
+		}
+		return detail.html();
+	}
+};
 

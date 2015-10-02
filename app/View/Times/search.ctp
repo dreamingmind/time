@@ -68,9 +68,11 @@ PAT;
 	}, $time, array_keys($time));
 	$pattern = <<<PAT
 <div id="time-%s" class="time" data-seconds="%s">
-	<aside class="keys">
-%s	</aside>
-	<p class="activity">%s</p>
+	<header class="keys">
+%s	</header>
+	<details>
+		<p class="activity">%s</p>
+	</details>
 </div>\n
 PAT;
 	return sprintf($pattern, $id, $seconds, (implode('', $spans)), $activity);

@@ -4,21 +4,21 @@ div.time {
 	border: thin solid #ddd;
 	margin-top: -1px;
 }
-div.time aside {
+div.time header {
 	padding: .2rem .5rem;
 	background: #999;
 } 
 div.time p {
 	margin: .5rem;
 }
-div.time aside > span {
+div.time header > span {
 	color: #fff;
 	font-size: 80%;
 	display: inline-block;
 	width: 30%;
 }
 
-div.time aside > span.summaryvalue {
+div.time header > span.summaryvalue {
 	width: 7%;
 	float: right;
 }
