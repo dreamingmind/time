@@ -70,6 +70,12 @@ Summary = function(target) {
 
 Summary.prototype = {
 	
+	/**
+	 * Calculate the total for a node based on it's children
+	 * 
+	 * @param element parentnode
+	 * @returns void
+	 */
 	total: function(parentnode) {
 		var values = $(parentnode).children('*');
 		var total = 0;
@@ -83,6 +89,13 @@ Summary.prototype = {
 		this.setDragDrop();
 	},
 	
+	/**
+	 * Set drag and drop behaviors on appropriate elements
+	 * 
+	 * establish the drop behavior fo the elements
+	 * 
+	 * @returns void
+	 */
 	setDragDrop: function() {
 		$( "div.time" ).draggable();
 		$( "section.subsummary" ).draggable();
@@ -115,6 +128,29 @@ Summary.prototype = {
 		return this.indexOf(this.keys[key].lookup[value]);
 	},
 	
+	/**
+	 * Get the sort keys or values that are available as subsummary breakpoints
+	 * 
+	 * This tool is not well understood yet. Concept is this: given two 
+	 * sort keys (name, project) and two values on each ('jill, jimm) and 
+	 * (gardening, galavanting). At the start of a report all keys and values 
+	 * are available. In the report:
+	 *	prj:Gardening			sum
+	 *		name:Jill			sum
+	 *		name:Jimm			sum
+	 *	prj:Galavanting			sum
+	 *		name:Jill			sum
+	 *		name:Jimm			sum
+	 *	Each block would have a key select and a value select and those lists 
+	 *	would contain the choices that are logically unused at that point.
+	 *	`available` would track usage and return the choices. But it's not 
+	 *	clear what logic would accomplish this. Right now, `available` is 
+	 *	tracked on each key and value. But since these can show up multiple 
+	 *	times in a reports, some logical cascade must be tracked multiple times.
+	 * 
+	 * @param {type} set
+	 * @returns {Summary.prototype.available.result|Array}
+	 */
 	available: function(set) {
 		var result = [];
 		var limit = set.length;
@@ -161,6 +197,11 @@ Summary.prototype = {
 		return parseInt(256 - (30 * Math.random()));
 	},
 	
+	/**
+	 * Make a new summary block prepending it to the main report area
+	 * 
+	 * @returns void
+	 */
 	newSummaryBlock: function () {
 		// make and hold a block of random color
 		var block = $(sum.summaryblock);
@@ -177,6 +218,16 @@ Summary.prototype = {
 		this.setDragDrop();
 	},
 	
+	/**
+	 * Set the 'Load' button behavior
+	 * 
+	 * Load button is part of a subsummary block. It collects 
+	 * members into the block from the blocks parent based on 
+	 * the sort input settings in the block.
+	 * 
+	 * @param event e
+	 * @returns void
+	 */
 	loadMembers: function(e) {
 		var self = $(e.currentTarget);
 		if (self.prop('disabled') === true) {
@@ -188,10 +239,28 @@ Summary.prototype = {
 		
 	},
 	
+	/**
+	 * Set the 'Unload' button behavior
+	 * 
+	 * The unload button moves subsummary block members out of the 
+	 * block and up to the blocks parent (assumed for now. is this good?)
+	 * 
+	 * @param event e
+	 * @returns void
+	 */
 	unloadMembers: function(e) {
 		
 	},
 		
+	/**
+	 * Set the 'change' behavior for the sort-key select list
+	 * 
+	 * The sort key list names the breakpoint categories that are 
+	 * available for the current record in the report
+	 * 
+	 * @param event e
+	 * @returns void
+	 */
 	sortKeyChange: function(e){
 		var choice = $(e.currentTarget).val();
 		var index = this.keyLookup[choice];
@@ -202,6 +271,14 @@ Summary.prototype = {
 		$(e.currentTarget).parents('header').find('span.sortkeyvalue select').on('change', this.sortValueChange.bind(this));
 	},
 	
+	/**
+	 * Set the 'change behavior for the sort-key value select list
+	 * 
+	 * The sort key value list is the possible values for a single sort key. 
+	 * 
+	 * @param event e
+	 * @returns void
+	 */
 	sortValueChange: function(e){
 		$($(e.currentTarget).siblings('label')[0]).html($(e.currentTarget).val());
 		var sortkey = $(e.currentTarget).parents('header').children('span.sortkey').children('select').val();
@@ -213,6 +290,16 @@ Summary.prototype = {
 		}
 	},
 	
+	/**
+	 * Given a sort-key name (a string) find its index number
+	 * 
+	 * There are many places where we know the name of a sort-key 
+	 * but access to data on these keys is stored in an array, so we 
+	 * always need the index, not the name. This lookup translates. 
+	 * 
+	 * @param string subject
+	 * @returns int
+	 */
 	lookupTable: function(subject) {
 		var lookup = {};
 		var j = subject.length;
