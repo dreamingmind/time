@@ -215,6 +215,7 @@ Summary.prototype = {
 		block.find('button').prop('disabled', true);
 		block.find('button.load').on('change', this.loadMembers.bind(this));
 		block.find('button.unload').on('change', this.unloadMembers.bind(this));
+		block.data('summaryblock', new SummaryBlock(block));
 		// place in the dom
 		$('div#report').prepend(block);
 		this.setDragDrop();
@@ -267,10 +268,18 @@ Summary.prototype = {
 		var choice = $(e.currentTarget).val();
 		var index = this.keyLookup[choice];
 //		this.keys[index].used = true;
-		$($(e.currentTarget).siblings('label')[0]).html(choice.toLocaleUpperCase());
 		var values = this.keys[index].values;
-		$(e.currentTarget).parents('header').find('span.sortkeyvalue').html(this.sortSelectList(values));
-		$(e.currentTarget).parents('header').find('span.sortkeyvalue select').on('change', this.sortValueChange.bind(this));
+		var summaryBlock = this.getSummary(e.currentTarget)
+		
+		summaryBlock.headingNode('sortkey').
+				find('label').html(choice.toLocaleUpperCase());
+		summaryBlock.headingValue('sortkeyvalue', this.sortSelectList(values));
+		summaryBlock.headingNode('sortkeyvalue').
+				find('select').on('change', this.sortValueChange.bind(this));
+		
+//		$($(e.currentTarget).siblings('label')[0]).html(choice.toLocaleUpperCase());
+//		$(e.currentTarget).parents('header').find('span.sortkeyvalue').html(this.sortSelectList(values));
+//		$(e.currentTarget).parents('header').find('span.sortkeyvalue select').on('change', this.sortValueChange.bind(this));
 	},
 	
 	/**
@@ -315,53 +324,141 @@ Summary.prototype = {
 		if ($(node)[0].tagName == 'DIV' && $(node).attr('id').match(/time-\d+/)) {
 			return $(node).data('member');
 		}
-		return $(node).parent(this.target).data('member');
+		return $(node).parents(this.target).data('member');
 	},
 	
 	getSummary: function(node) {
 		if ($(node)[0].tagName == 'SECTION' && $(node).attr('class').match(/subsummary/)) {
-			return $(node).data('subsummary');
+			return $(node).data('summaryblock');
 		}
-		return $(node).parent('section.subsummary').data('subsummary');
+		return $(node).parents('section.subsummary').data('summaryblock');
 	}
 	
 };
 
+/**
+ * An object that manages access to individual subsummary blocks in a report
+ * 
+ * @param $|jQuery|selector node
+ * @returns {ReportMember}
+ */
 SummaryBlock = function(node) {
-	
+	this.summary = $(node);
+	// I could make properties that identify the type of elements at each 
+	// level. eg, right now the header is a <header> but it could be a 
+	// <div>, <section> or whatever. So the specific structure could be 
+	// abstracted with properties to make it more flexible. These config vals 
+	// could be sent in as an object and merged with defaults.
 };
 
 SummaryBlock.prototype = {
-
+	/**
+	 * Get the summary block header
+	 * @returns {$|jQuery}
+	 */
+	header: function(){
+		return $(this.summary.children('header')[0]);
+	},
+	/**
+	 * Get a named span from the member header
+	 * @param string name span class, typically a column name
+	 * @returns {$|jQuery}
+	 */
+	headingNode: function(name) {
+		return $(this.header().children('span.'+name)[0]);
+	},
+	/**
+	 * Get or set and get the contents of a named header span
+	 * @param string name span class, typically a column name
+	 * @param {string|innerhtml} content Optional content to put in the header span
+	 * @returns {string|innerhtml}
+	 */
+	headingValue: function(name, content) {
+		if (typeof(content) === 'undefined') {
+			return this.headingNode(name).html();
+		}
+		return this.headingNode(name).html(content);
+	},
+	total: function() {
+		var children = this.details();
+		var total = 0;
+		total += children.each(this.total());
+		this.summary.attr('data-seconds', total);
+		return total;
+	}
 };
 
-
+/**
+ * An object that manages access to individual member records in a report
+ * 
+ * @param $|jQuery|selector node
+ * @returns {ReportMember}
+ */
 ReportMember = function(node) {
 	this.member = $(node);
+	// I could make properties that identify the type of elements at each 
+	// level. eg, right now the header is a <header> but it could be a 
+	// <div>, <section> or whatever. So the specific structure could be 
+	// abstracted with properties to make it more flexible. These config vals 
+	// could be sent in as an object and merged with defaults.
 };
-
 ReportMember.prototype = {
+	/**
+	 * Get the members header
+	 * @returns {$|jQuery}
+	 */
 	header: function(){
 		return $(this.member.children('header')[0]);
 	},
-	heading: function(name) {
-		return $(this.header().children('span.'+name));
+	/**
+	 * Get a named span from the member header
+	 * @param string name span class, typically a column name
+	 * @returns {$|jQuery}
+	 */
+	headingNode: function(name) {
+		return $(this.header().children('span.'+name)[0]);
 	},
-	value: function(name, content) {
-		if (!typeof(content) === 'undefined') {
-			this.heading(name).html(content);
+	/**
+	 * Get or set and get the contents of a named header span
+	 * @param string name span class, typically a column name
+	 * @param {string|innerhtml} content Optional content to put in the header span
+	 * @returns {string|innerhtml}
+	 */
+	headingValue: function(name, content) {
+		if (typeof(content) === 'undefined') {
+			return this.headingNode(name).html();
 		}
-		return this.heading(name).html();
+		return this.headingNode(name).html(content);
 	},
+	/**
+	 * Get the details section of a the member
+	 * @returns {$|jQuery}
+	 */
 	details: function() {
 		return $(this.member.children('details')[0]);
 	},
-	detail: function(name, content) {
-		var detail = $(this.details().children('.'+name));
+	/**
+	 * Get a named node from the member's details
+	 * @param string name span class, typically a column name
+	 * @returns {$|jQuery}
+	 */
+	detailNode: function(name) {
+		return $(this.details().children('.'+name)[0]);
+	},
+	/**
+	 * Get or set and get the contents of a named detail element
+	 * @param string name element class, typically a column name
+	 * @param {string|innerhtml} content Optional content to put in the detail element
+	 * @returns {string|innerhtml}
+	 */
+	detailValue: function(name, content) {
 		if (!typeof(content) === 'undefined') {
-			detail.html(content);
+			this.detailNode(name).html(content);
 		}
-		return detail.html();
+		return this.detailNode(name).html();
+	},
+	total: function(){
+		return this.member.attr('data-seconds');
 	}
 };
 
