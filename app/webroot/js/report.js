@@ -1,6 +1,7 @@
 $(document).ready(function () {
 	
 	sum = new Summary('div.time');
+	$(window).data('summary', sum);
 	sum.newSummaryBlock();
 	$('#newsummary').on('click', sum.newSummaryBlock.bind(sum));
 	
@@ -78,17 +79,10 @@ Summary.prototype = {
 	 * @param element parentnode
 	 * @returns void
 	 */
-	total: function(parentnode) {
-		var values = $(parentnode).children('*');
-		var total = 0;
-		var j = values.length;
-		for (var i = 0; i < j; i++) {
-			total += parseInt($(values[i]).attr('data-seconds'));
-		}
-		$(parentnode).parent('*').attr('data-seconds', total)
-		var decimal = (parseInt(100 * (total / 3600))) / 100;
-		$(parentnode).siblings('header').children('span.summaryvalue').html(decimal);
-		this.setDragDrop();
+	total: function() {
+		$('div#report').children('section.subsummary').each(function() {
+			$(this).data('summaryblock').total();
+		});
 	},
 	
 	/**
@@ -103,17 +97,13 @@ Summary.prototype = {
 		$( "section.subsummary" ).draggable();
 		$( "section.records" ).droppable({
 		  drop: function( event, ui ) {
-//			  var origin = ui.draggable.parent().parent();
 			  ui.draggable.css('position', 'realtive').css('left', '0px').css('top', '0px');
 			  $(this).append(ui.draggable);
-			  sum.total(this);
-//			  $(this).css('background-color', 'rgb('+this.rnd()+', '+this.rnd()+', '+this.rnd()+')');
-//			  if (origin.attr('class') == 'subsummary') {
-//				  sum.total(origin);
-//			  }
+			  $(window).data('summary').total();
 		  }
 		});
 		$( "section.records" ).droppable("option", "tolerance", "pointer" );
+		$( "section.records" ).droppable( "option", "greedy", true );
 	},
 	
 	/**
@@ -215,6 +205,7 @@ Summary.prototype = {
 		block.find('button').prop('disabled', true);
 		block.find('button.load').on('change', this.loadMembers.bind(this));
 		block.find('button.unload').on('change', this.unloadMembers.bind(this));
+		// attach the blocks access tool
 		block.data('summaryblock', new SummaryBlock(block));
 		// place in the dom
 		$('div#report').prepend(block);
@@ -291,9 +282,13 @@ Summary.prototype = {
 	 * @returns void
 	 */
 	sortValueChange: function(e){
-		$($(e.currentTarget).siblings('label')[0]).html($(e.currentTarget).val());
-		var sortkey = $(e.currentTarget).parents('header').children('span.sortkey').children('select').val();
+		var summaryBlock = this.getSummary(e.currentTarget);
+		summaryBlock.headingValue('sortkeyvalue', $(e.currentTarget).val());
+		var sortkey = summaryBlock.headingValue('sortkey').find('select').val();
+//		$($(e.currentTarget).siblings('label')[0]).html($(e.currentTarget).val());
+//		var sortkey = $(e.currentTarget).parents('header').children('span.sortkey').children('select').val();
 		var keyindex = this.lookupTable(sortkey);
+		
 		var valueindex = this.valueLookup(sortkey, $(e.currentTarget).val());
 		this.keys[keyindex].values[valueindex].used = true;
 		if (this.keys[keyindex].available.length == 0) {
@@ -379,12 +374,26 @@ SummaryBlock.prototype = {
 		}
 		return this.headingNode(name).html(content);
 	},
+	
+	details: function() {
+		return this.summary.children('section.records');
+	},
+	
 	total: function() {
-		var children = this.details();
+		var children = this.details().children();
+		var type = '';
 		var total = 0;
-		total += children.each(this.total());
+		var j = children.length;
+		for (var i = 0; i < j; i++) {
+			type = $(children[i]).attr('class').match(/time/) ? 'member' : 'summaryblock';
+			total += parseInt($(children[i]).data(type).total());
+		}
+//		total += children.each(function(){this.total()});
 		this.summary.attr('data-seconds', total);
+		var hours = total/3600;
+		this.headingValue('summaryvalue', hours.toFixed(2));
 		return total;
+		
 	}
 };
 
