@@ -2,13 +2,26 @@ $(document).ready(function () {
 	
 	sum = new Summary('div.time');
 	$(window).data('summary', sum);
-	sum.newSummaryBlock();
-	$('#newsummary').on('click', sum.newSummaryBlock.bind(sum));
+	$('#newsummary').on('click', sum.newSummaryBlock.bind(sum, 'section#report'));
+	
+	// make the project level summary block
+	// it needs limited features
+	sum.newSummaryBlock('div#content');
+	var masterblock = sum.getSummary('section.subsummary');
+	masterblock.summary.attr('id', 'report');
+	masterblock.header().html('<span class="title">Report</span><span class="summaryvalue"></span>');
+	
+	// move the members into the report and total them
+	masterblock.details().html($('#member_pool').html());
+	$('#member_pool').html('');
 	
 	var members = $(sum.target);
 	members.each(function(){
 		$(this).data('member', new ReportMember(this));
 	});
+	
+	masterblock.total();
+	sum.newSummaryBlock('#report > section.records');
 	
   });
 
@@ -154,7 +167,7 @@ Summary.prototype = {
 		return result;
 	},
 	
-	'summaryblock': "<section class=\"subsummary\" data-seconds=\"0\"><header><span class=\"sortkey\"></span><span class=\"sortkeyvalue\"></span><button class=\"load\">Load</button><button class=\"unload\">Unoad</button><span class=\"summaryvalue\"></span></header><section class=\"records droppable\"><!-- records or subsummary sections to summarize --></section></section>",
+	'summaryblock': "<section class=\"subsummary\" data-seconds=\"0\"><header><span class=\"sortkey\"></span><span class=\"sortkeyvalue\"></span><span class=\"summaryvalue\"></span></header><section class=\"records droppable\"><!-- records or subsummary sections to summarize --></section></section>",
 	
 	/**
 	 * Make a select list from the currently available keys or values on a key
@@ -194,7 +207,7 @@ Summary.prototype = {
 	 * 
 	 * @returns void
 	 */
-	newSummaryBlock: function () {
+	newSummaryBlock: function (wrapper) {
 		// make and hold a block of random color
 		var block = $(sum.summaryblock);
 		block.css('background-color', 'rgb('+this.rnd()+', '+this.rnd()+', '+this.rnd()+')');
@@ -208,7 +221,7 @@ Summary.prototype = {
 		// attach the blocks access tool
 		block.data('summaryblock', new SummaryBlock(block));
 		// place in the dom
-		$('div#report').prepend(block);
+		$(wrapper).prepend(block);
 		this.setDragDrop();
 	},
 	

@@ -30,7 +30,7 @@ $this->end();
 	?>
 </div>
 <button id="newsummary">New Summary Block</button>
-<div id="report">
+<div id="member_pool">
 	<?php
 		$result = array_map('synthTime', $times);
 		echo implode('', array_map('timeLine', $result)); 
