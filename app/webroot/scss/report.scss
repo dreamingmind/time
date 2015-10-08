@@ -1,10 +1,69 @@
+
 div.time {
 	width: 700px;
-	aside > span {
+	border: thin solid #ddd;
+	margin-top: -1px;
+	
+	header {
+		padding: .2rem .5rem;
+		background: #999;
+	} 
+	header > span {
+		color: #fff;
+		font-size: 80%;
 		display: inline-block;
-		width: 20%;
+		width: 30%;
+		
+			.summaryvalue {
+				width: 7%;
+				float: right;
+			}
 	}
 	p {
-		width: 100%;
+		margin: .5rem;
 	}
+}
+section#report {
+	width: 800px;
+	min-height: 50px;
+	border: thin solid #888;
+}
+section.subsummary > h1 {
+	margin: 0;
+	padding: 1px .5rem 0;
+	background-color: #888;
+	font-size: 1.2rem;
+	color: #fff;
+}
+section.subsummary{
+	width: 100%;
+	min-height: 55px;
+	border: #999 solid thin;
+}
+
+section.records {
+	min-height: 10rem;
+	padding: 1px 0 0 2rem;
+}
+
+section.subsummary > header > span > select {
+	display: none;
+}
+
+section.subsummary > header > span > label {
+	padding-right: 2rem;
+	color: #fff;
+}
+
+section.subsummary > header > span > select {
+	margin-left: -1.5rem;
+}
+
+section.subsummary > header {
+    background: #777;
+    padding: 0.5rem;
+}
+
+section.subsummary > header > span:hover > select {
+	display: inline-block;
 }

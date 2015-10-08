@@ -1,72 +1,57 @@
-
 div.time {
-	width: 700px;
-	border: thin solid #ddd;
-	margin-top: -1px;
-}
-div.time header {
-	padding: .2rem .5rem;
-	background: #999;
-} 
-div.time p {
-	margin: .5rem;
-}
-div.time header > span {
-	color: #fff;
-	font-size: 80%;
-	display: inline-block;
-	width: 30%;
-}
+  width: 700px;
+  border: thin solid #ddd;
+  margin-top: -1px; }
+  div.time header {
+    padding: .2rem .5rem;
+    background: #999; }
+  div.time header > span {
+    color: #fff;
+    font-size: 80%;
+    display: inline-block;
+    width: 30%; }
+    div.time header > span .summaryvalue {
+      width: 7%;
+      float: right; }
+  div.time p {
+    margin: .5rem; }
 
-div.time header > span.summaryvalue {
-	width: 7%;
-	float: right;
-}
+section#report {
+  width: 800px;
+  min-height: 50px;
+  border: thin solid #888; }
 
-div.time p {
-	
-}
-div#report {
-	width: 800px;
-	min-height: 50px;
-	border: thin solid #888;
-}
 section.subsummary > h1 {
-	margin: 0;
-	padding: 1px .5rem 0;
-	background-color: #888;
-	font-size: 1.2rem;
-	color: #fff;
-}
-section.subsummary{
-	width: 100%;
-	min-height: 55px;
-	border: #999 solid thin;
-}
+  margin: 0;
+  padding: 1px .5rem 0;
+  background-color: #888;
+  font-size: 1.2rem;
+  color: #fff; }
+
+section.subsummary {
+  width: 100%;
+  min-height: 55px;
+  border: #999 solid thin; }
 
 section.records {
-	min-height: 10rem;
-	padding: 1px 0 0 2rem;
-}
+  min-height: 10rem;
+  padding: 1px 0 0 2rem; }
 
 section.subsummary > header > span > select {
-	display: none;
-}
+  display: none; }
 
 section.subsummary > header > span > label {
-	padding-right: 2rem;
-	color: #fff;
-}
+  padding-right: 2rem;
+  color: #fff; }
 
 section.subsummary > header > span > select {
-	margin-left: -1.5rem;
-}
+  margin-left: -1.5rem; }
 
 section.subsummary > header {
-    background: #777;
-    padding: 0.5rem;
-}
+  background: #777;
+  padding: 0.5rem; }
 
 section.subsummary > header > span:hover > select {
-	display: inline-block;
-}
+  display: inline-block; }
+
+/*# sourceMappingURL=report.css.map */
