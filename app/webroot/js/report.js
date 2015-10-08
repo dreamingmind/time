@@ -1,31 +1,32 @@
 $(document).ready(function () {
 	
-	sum = new Summary('div.time');
-	$(window).data('summary', sum);
-	$('#newsummary').on('click', sum.newSummaryBlock.bind(sum, 'section#report'));
+	var report_members = 'div.time';
+	report = new ReportMaker(report_members);
+	$(window).data('summary', report);
+	$('#newsummary').on('click', report.newSummaryBlock.bind(report, 'section#report > section.records'));
 	
 	// make the project level summary block
 	// it needs limited features
-	sum.newSummaryBlock('div#content');
-	var masterblock = sum.getSummary('section.subsummary');
-	masterblock.summary.attr('id', 'report');
+	report.newSummaryBlock.call(report, 'div#content', true);
+	var masterblock = report.getSummary('section.subsummary');
+	masterblock.node.attr('id', 'report');
 	masterblock.header().html('<span class="title">Report</span><span class="summaryvalue"></span>');
 	
 	// move the members into the report and total them
 	masterblock.details().html($('#member_pool').html());
 	$('#member_pool').html('');
 	
-	var members = $(sum.target);
+	var members = $(report.target);
 	members.each(function(){
 		$(this).data('member', new ReportMember(this));
 	});
 	
 	masterblock.total();
-	sum.newSummaryBlock('#report > section.records');
+	report.newSummaryBlock.call(report, '#report > section.records');
 	
   });
 
-Summary = function(target) {
+ReportMaker = function(target) {
 	
 	// the selector to get the records to be summarized
 	this.target = target;
@@ -57,7 +58,7 @@ Summary = function(target) {
 }
 	
 
-Summary.prototype = {
+ReportMaker.prototype = {
 	
 	/**
 	 * Make the set of possible values for a given key
@@ -66,7 +67,7 @@ Summary.prototype = {
 	 * The values for each are all the distinct values currently on the page. 
 	 * 
 	 * @param string key
-	 * @returns {Summary.initSummaryValues.result|Array}
+	 * @returns {ReportMaker.initSummaryValues.result|Array}
 	 */
 	initSummaryValues: function(key) {
 		var rawValues = $(this.target).children('header.keys').children('span[class="'+key+'"]');
@@ -93,9 +94,7 @@ Summary.prototype = {
 	 * @returns void
 	 */
 	total: function() {
-		$('div#report').children('section.subsummary').each(function() {
-			$(this).data('summaryblock').total();
-		});
+		$('section#report').data('summaryblock').total();
 	},
 	
 	/**
@@ -154,7 +153,7 @@ Summary.prototype = {
 	 *	times in a reports, some logical cascade must be tracked multiple times.
 	 * 
 	 * @param {type} set
-	 * @returns {Summary.prototype.available.result|Array}
+	 * @returns {ReportMaker.prototype.available.result|Array}
 	 */
 	available: function(set) {
 		var result = [];
@@ -207,58 +206,26 @@ Summary.prototype = {
 	 * 
 	 * @returns void
 	 */
-	newSummaryBlock: function (wrapper) {
+	newSummaryBlock: function (wrapper, append) {
 		// make and hold a block of random color
-		var block = $(sum.summaryblock);
+		var block = $(this.summaryblock);
 		block.css('background-color', 'rgb('+this.rnd()+', '+this.rnd()+', '+this.rnd()+')');
 		// modify it, adding the key select list with its behavior
-		block.find('span.sortkey').html(this.sortSelectList(sum.keys));
+		block.find('span.sortkey').html(this.sortSelectList(this.keys));
 		block.find('select').on('change', this.sortKeyChange.bind(this));
 		// intitialize the buttons
 		block.find('button').prop('disabled', true);
-		block.find('button.load').on('change', this.loadMembers.bind(this));
-		block.find('button.unload').on('change', this.unloadMembers.bind(this));
 		// attach the blocks access tool
 		block.data('summaryblock', new SummaryBlock(block));
 		// place in the dom
-		$(wrapper).prepend(block);
+		if (append) {
+			$(wrapper).append(block);
+		} else {
+			$(wrapper).prepend(block);
+		}		
 		this.setDragDrop();
 	},
 	
-	/**
-	 * Set the 'Load' button behavior
-	 * 
-	 * Load button is part of a subsummary block. It collects 
-	 * members into the block from the blocks parent based on 
-	 * the sort input settings in the block.
-	 * 
-	 * @param event e
-	 * @returns void
-	 */
-	loadMembers: function(e) {
-		var self = $(e.currentTarget);
-		if (self.prop('disabled') === true) {
-			return;
-		}
-		var sortFilters = self.siblings('span').find('select');
-		var parent = self.parent('section.subsummary').parent;
-		var members = parent.children(this.target);
-		
-	},
-	
-	/**
-	 * Set the 'Unload' button behavior
-	 * 
-	 * The unload button moves subsummary block members out of the 
-	 * block and up to the blocks parent (assumed for now. is this good?)
-	 * 
-	 * @param event e
-	 * @returns void
-	 */
-	unloadMembers: function(e) {
-		
-	},
-		
 	/**
 	 * Set the 'change' behavior for the sort-key select list
 	 * 
@@ -351,7 +318,7 @@ Summary.prototype = {
  * @returns {ReportMember}
  */
 SummaryBlock = function(node) {
-	this.summary = $(node);
+	this.node = $(node);
 	// I could make properties that identify the type of elements at each 
 	// level. eg, right now the header is a <header> but it could be a 
 	// <div>, <section> or whatever. So the specific structure could be 
@@ -361,11 +328,11 @@ SummaryBlock = function(node) {
 
 SummaryBlock.prototype = {
 	/**
-	 * Get the summary block header
+	 * Get the node block header
 	 * @returns {$|jQuery}
 	 */
 	header: function(){
-		return $(this.summary.children('header')[0]);
+		return $(this.node.children('header')[0]);
 	},
 	/**
 	 * Get a named span from the member header
@@ -389,7 +356,7 @@ SummaryBlock.prototype = {
 	},
 	
 	details: function() {
-		return this.summary.children('section.records');
+		return this.node.children('section.records');
 	},
 	
 	total: function() {
@@ -402,7 +369,7 @@ SummaryBlock.prototype = {
 			total += parseInt($(children[i]).data(type).total());
 		}
 //		total += children.each(function(){this.total()});
-		this.summary.attr('data-seconds', total);
+		this.node.attr('data-seconds', total);
 		var hours = total/3600;
 		this.headingValue('summaryvalue', hours.toFixed(2));
 		return total;
@@ -417,7 +384,7 @@ SummaryBlock.prototype = {
  * @returns {ReportMember}
  */
 ReportMember = function(node) {
-	this.member = $(node);
+	this.node = $(node);
 	// I could make properties that identify the type of elements at each 
 	// level. eg, right now the header is a <header> but it could be a 
 	// <div>, <section> or whatever. So the specific structure could be 
@@ -430,7 +397,7 @@ ReportMember.prototype = {
 	 * @returns {$|jQuery}
 	 */
 	header: function(){
-		return $(this.member.children('header')[0]);
+		return $(this.node.children('header')[0]);
 	},
 	/**
 	 * Get a named span from the member header
@@ -457,7 +424,7 @@ ReportMember.prototype = {
 	 * @returns {$|jQuery}
 	 */
 	details: function() {
-		return $(this.member.children('details')[0]);
+		return $(this.node.children('details')[0]);
 	},
 	/**
 	 * Get a named node from the member's details
@@ -480,7 +447,7 @@ ReportMember.prototype = {
 		return this.detailNode(name).html();
 	},
 	total: function(){
-		return this.member.attr('data-seconds');
+		return this.node.attr('data-seconds');
 	}
 };
 
