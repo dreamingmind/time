@@ -168,9 +168,15 @@ ReportMaker.prototype = {
 	 * @returns void
 	 */
 	setDragDrop: function () {
+		// this one just does (or re-does) the whole page
 		$("div.time").draggable();
 		$("section.subsummary").draggable();
-		$("section.records").droppable({
+		this.setDropBehavior($("section.records"));
+	},
+	
+	setDropBehavior: function (node) {
+		// this configures a drop point (the 'details' of a summary block)
+		node.droppable({
 			drop: function (event, ui) {
 				ui.draggable.css('position', 'realtive').css('left', '0px').css('top', '0px');
 				$(this).append(ui.draggable);
@@ -179,6 +185,16 @@ ReportMaker.prototype = {
 		});
 		$("section.records").droppable("option", "tolerance", "pointer");
 		$("section.records").droppable("option", "greedy", true);
+	},
+	
+	initDragDrop: function(node) {
+		// this sets up dragging and if necessary 
+		// a drop point for a single node
+		node.draggable();
+		var Block = node.data('access');
+		if (Block instanceof SummaryBlock) {
+			this.setDropBehavior(Block.details());
+		}
 	},
 	/**
 	 * Get the index of a value on a key
@@ -274,6 +290,13 @@ ReportMaker.prototype = {
 		block.find('button').prop('disabled', true);
 		// attach the blocks access tool
 		block.data('access', new SummaryBlock(block, selectors));
+		this.initDragDrop(block);
+		
+//		return block;
+		
+		// this would probably work better if it returned the block and 
+		// let the caller install it where needed
+		
 		// place in the dom
 		if (append) {
 			$(wrapper).append(block);
@@ -301,9 +324,13 @@ ReportMaker.prototype = {
 		var parents = $(summaryBlock.selector.node+'[data-breakpoint="'+breakpoint+'"]');
 		$(summaryBlock.node).remove();
 		
-		j = parents.length;
+		var j = parents.length;
+		var r = values.lenght;
 		for (var i = 0; i < j; i++) {
-			this.newSummaryBlock(parents[i]);
+			var Parent = $(parents[i]).data('access');
+			for (var s = 0; s < r; s++) {
+				this.newSummaryBlock(Parent.details());
+			}
 		}
 		var x = 'y';
 		// values is now the list of subsummaries that need to be made for each parent
