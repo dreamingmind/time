@@ -69,11 +69,15 @@ $(document).ready(function () {
 	
 	report = new ReportMaker(report_members);
 	$(window).data('summary', report);
-	$('#newsummary').on('click', report.newSummaryBlock.bind(report, 'section#report > section.records'));
+	$('#newsummary').on('click', function(){
+		$('section#report > section.records').prepend(report.newSummaryBlock.call(report))
+	});
+//	$('#newsummary').on('click', report.newSummaryBlock.bind(report, 'section#report > section.records'));
 
 	// make the project level summary block
 	// it needs limited features
-	report.newSummaryBlock.call(report, 'div#content', true);
+	$('div#content').append(report.newSummaryBlock.call(report));
+//	report.newSummaryBlock.call(report, 'div#content', true);
 	var masterblock = report.getSummary('section.subsummary');
 	masterblock.node.attr('id', 'report');
 	masterblock.header().html('<span class="title">Report</span><span class="summaryvalue"></span>');
@@ -88,7 +92,9 @@ $(document).ready(function () {
 	masterblock.details().html($(report_members).detach());
 
 	masterblock.total();
-	report.newSummaryBlock.call(report, '#report > section.records');
+	$('#report > section.records').prepend(report.newSummaryBlock.call(report));
+
+//	report.newSummaryBlock.call(report, '#report > section.records');
 
 });
 
@@ -120,7 +126,7 @@ ReportMaker = function (target) {
 	;
 
 	this.keyLookup = this.lookupTable(this.keys);
-	this.setDragDrop();
+	this.setMemberDrag();
 }
 
 ReportMaker.prototype = {
@@ -161,17 +167,12 @@ ReportMaker.prototype = {
 		$('section#report').data('access').total();
 	},
 	/**
-	 * Set drag and drop behaviors on appropriate elements
-	 * 
-	 * establish the drop behavior fo the elements
+	 * Set drag for report member records
 	 * 
 	 * @returns void
 	 */
-	setDragDrop: function () {
-		// this one just does (or re-does) the whole page
-		$("div.time").draggable();
-		$("section.subsummary").draggable();
-		this.setDropBehavior($("section.records"));
+	setMemberDrag: function () {
+		$(this.target).draggable();
 	},
 	
 	setDropBehavior: function (node) {
@@ -292,18 +293,7 @@ ReportMaker.prototype = {
 		block.data('access', new SummaryBlock(block, selectors));
 		this.initDragDrop(block);
 		
-//		return block;
-		
-		// this would probably work better if it returned the block and 
-		// let the caller install it where needed
-		
-		// place in the dom
-		if (append) {
-			$(wrapper).append(block);
-		} else {
-			$(wrapper).prepend(block);
-		}
-		this.setDragDrop();
+		return block;
 	},
 	/**
 	 * Set the 'change' behavior for the sort-key select list
@@ -320,16 +310,22 @@ ReportMaker.prototype = {
 //		this.keys[index].used = true;
 		var values = this.keys[index].values;
 		var summaryBlock = this.getSummary(e.currentTarget);
-		var breakpoint = $(summaryBlock.parent()).attr('data-breakpoint');
-		var parents = $(summaryBlock.selector.node+'[data-breakpoint="'+breakpoint+'"]');
+		var parent_breakpoint = $(summaryBlock.parent()).attr('data-breakpoint');
+		var parents = $(summaryBlock.selector.node+'[data-breakpoint="'+parent_breakpoint+'"]');
 		$(summaryBlock.node).remove();
 		
 		var j = parents.length;
-		var r = values.lenght;
+		var r = values.length;
 		for (var i = 0; i < j; i++) {
 			var Parent = $(parents[i]).data('access');
 			for (var s = 0; s < r; s++) {
-				this.newSummaryBlock(Parent.details());
+				var block = this.newSummaryBlock();
+				var new_breakpoint = values[s];
+				var block_access = block.data('access');
+				block.attr('data-breakpoint', choice);
+				block_access.headingValue('sortkey', values[s].name);
+				Parent.details().prepend(block);
+//				this.newSummaryBlock(Parent.details());
 			}
 		}
 		var x = 'y';
