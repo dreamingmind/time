@@ -47,7 +47,10 @@ section.subsummary{
 		> span:hover > select {
 			display: inline-block;
 		}
-		
+		span.summaryvalue {
+			width: 7%;
+			float: right;
+		}		
 		select {
 			display: none;
 			margin-left: -1.5rem;

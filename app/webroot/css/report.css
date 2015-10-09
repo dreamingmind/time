@@ -36,6 +36,9 @@ section.subsummary {
     padding: 0.5rem; }
     section.subsummary > header > span:hover > select {
       display: inline-block; }
+    section.subsummary > header span.summaryvalue {
+      width: 7%;
+      float: right; }
     section.subsummary > header select {
       display: none;
       margin-left: -1.5rem; }
