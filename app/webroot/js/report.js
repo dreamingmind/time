@@ -325,10 +325,22 @@ ReportMaker.prototype = {
 				block.attr('data-breakpoint', choice);
 				block_access.headingValue('sortkey', values[s].name);
 				Parent.details().prepend(block);
+				var members = Parent.details().children(this.target);
+				var y = members.length;
+				var members_moved = false;
+				for (var x = 0; x < y; x++) {
+					if (this.getMember(members[x]).headingNode(choice).html() === values[s].name) {
+						block_access.details().append($(members[x]).detach());
+						members_moved = true
+					}
+				}
+				if (!members_moved) {
+					block.detach();
+				}
 //				this.newSummaryBlock(Parent.details());
 			}
 		}
-		var x = 'y';
+		this.total();
 		// values is now the list of subsummaries that need to be made for each parent
 
 	},
