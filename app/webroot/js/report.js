@@ -1,6 +1,5 @@
 ReportBlock = function (node, selectors) {
 	this.node = $(node);
-	
 	if (typeof(selectors) == 'object') {
 		var property;
 		for (property in selectors) {
@@ -8,7 +7,6 @@ ReportBlock = function (node, selectors) {
 		}
 	}
 };
-
 ReportBlock.prototype = {
 	/**
 	 * Get the node block header
@@ -37,11 +35,9 @@ ReportBlock.prototype = {
 		}
 		return this.headingNode(name).html(content);
 	},
-	
 	details: function() {
 		return this.node.children(this.selector.detail);
 	},
-
 	/**
 	 * Get a named node from the member's details
 	 * @param string name span class, typically a column name
@@ -61,8 +57,10 @@ ReportBlock.prototype = {
 			this.detailNode(name).html(content);
 		}
 		return this.detailNode(name).html();
+	},
+	parent: function () {
+		return this.node.parent();
 	}
-	
 };
 
 $(document).ready(function () {
@@ -80,14 +78,14 @@ $(document).ready(function () {
 	masterblock.node.attr('id', 'report');
 	masterblock.header().html('<span class="title">Report</span><span class="summaryvalue"></span>');
 
-	// move the members into the report and total them
-	masterblock.details().html($('#member_pool').html());
-	$('#member_pool').html('');
-
 	var members = $(report.target);
 	members.each(function () {
-		$(this).data('member', new ReportMember(this));
+		$(this).data('access', new ReportMember(this));
 	});
+
+	// move the members into the report and total them
+	masterblock.details().html($(report_members).detach());
+//	$('#member_pool').html('');
 
 	masterblock.total();
 	report.newSummaryBlock.call(report, '#report > section.records');
@@ -103,7 +101,7 @@ ReportMaker = function (target) {
 	// each key entry will be an object describing that key and its possible values
 	var keyExemplars = $(target);
 	if (keyExemplars.length > 0) {
-		var candidates = $(keyExemplars[0]).children('header.keys').children('span');
+		var candidates = $(keyExemplars[0]).children('header').children('span');
 		var j = candidates.length;
 		for (var i = 0; i < j; i++) {
 			var key = $(candidates[i]).attr('class');
@@ -160,7 +158,7 @@ ReportMaker.prototype = {
 	 * @returns void
 	 */
 	total: function () {
-		$('section#report').data('summaryblock').total();
+		$('section#report').data('access').total();
 	},
 	/**
 	 * Set drag and drop behaviors on appropriate elements
@@ -275,7 +273,7 @@ ReportMaker.prototype = {
 		// intitialize the buttons
 		block.find('button').prop('disabled', true);
 		// attach the blocks access tool
-		block.data('summaryblock', new SummaryBlock(block, selectors));
+		block.data('access', new SummaryBlock(block, selectors));
 		// place in the dom
 		if (append) {
 			$(wrapper).append(block);
@@ -352,17 +350,16 @@ ReportMaker.prototype = {
 	},
 	getMember: function (node) {
 		if ($(node)[0].tagName == 'DIV' && $(node).attr('id').match(/time-\d+/)) {
-			return $(node).data('member');
+			return $(node).data('access');
 		}
-		return $(node).parents(this.target).data('member');
+		return $(node).parents(this.target).data('access');
 	},
 	getSummary: function (node) {
 		if ($(node)[0].tagName == 'SECTION' && $(node).attr('class').match(/subsummary/)) {
-			return $(node).data('summaryblock');
+			return $(node).data('access');
 		}
-		return $(node).parents('section.subsummary').data('summaryblock');
+		return $(node).parents('section.subsummary').data('access');
 	}
-
 };
 
 /**
@@ -372,16 +369,13 @@ ReportMaker.prototype = {
  * @returns {ReportMember}
  */
 SummaryBlock = function (node, selectors) {
-
 	this.selector = {
 		node: 'section.subsummary',
 		header: 'header',
 		detail: 'section.records'
 	}
-	
 	ReportBlock.call(this, node, selectors);
 };
-
 SummaryBlock.prototype = Object.create(ReportBlock.prototype, {
 	constructor: {
 		value: SummaryBlock,
@@ -393,15 +387,14 @@ SummaryBlock.prototype = Object.create(ReportBlock.prototype, {
 			var total = 0;
 			var j = children.length;
 			for (var i = 0; i < j; i++) {
-				type = $(children[i]).attr('class').match(/time/) ? 'member' : 'summaryblock';
-				total += parseInt($(children[i]).data(type).total());
+//				type = $(children[i]).attr('class').match(/time/) ? 'member' : 'summaryblock';
+				total += parseInt($(children[i]).data('access').total());
 			}
 	//		total += children.each(function(){this.total()});
 			this.node.attr('data-seconds', total);
 			var hours = total / 3600;
 			this.headingValue('summaryvalue', hours.toFixed(2));
 			return total;
-
 		}
 	}
 });
@@ -413,13 +406,11 @@ SummaryBlock.prototype = Object.create(ReportBlock.prototype, {
  * @returns {ReportMember}
  */
 ReportMember = function (node, selectors) {
-
 	this.selector = {
 		node: 'div.time',
 		header: 'header',
 		detail: 'detail'
 	}
-	
 	ReportBlock.call(this, node, selectors);
 };
 ReportMember.prototype = Object.create(ReportBlock.prototype, {
