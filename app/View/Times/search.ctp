@@ -33,6 +33,7 @@ $this->end();
 <div id="member_pool">
 	<?php
 		$result = array_map('synthTime', $times);
+//		debug($result);die;
 		echo implode('', array_map('timeLine', $result)); 
 	?>
 
@@ -58,7 +59,7 @@ function timeLine($time) {
 	$id = array_pop($time);
 	$activity = array_pop($time);
 	$seconds = array_pop($time);
-	$time['summaryvalue'] = CakeNumber::precision($seconds/HOUR, 2);
+	$summaryvalue = CakeNumber::precision($seconds/HOUR, 2);
 	$pattern = <<<PAT
 		<span class=\"%s\">%s</span>
 
@@ -71,11 +72,12 @@ PAT;
 	<header class="keys">
 %s	</header>
 	<details>
+		<p><span class="summaryvalue">%s</span></p>
 		<p class="activity">%s</p>
 	</details>
 </div>\n
 PAT;
-	return sprintf($pattern, $id, $seconds, (implode('', $spans)), $activity);
+	return sprintf($pattern, $id, $seconds, (implode('', $spans)), $summaryvalue, $activity);
 }
 
 // </editor-fold>

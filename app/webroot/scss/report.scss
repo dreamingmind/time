@@ -14,11 +14,11 @@ div.time {
 			display: inline-block;
 			width: 30%;
 		}
-		span.summaryvalue {
-			width: 7%;
-			float: right;
-		}
 	} 
+	.summaryvalue {
+		/*width: 7%;*/
+		float: right;
+	}
 	p {
 		margin: .5rem;
 	}

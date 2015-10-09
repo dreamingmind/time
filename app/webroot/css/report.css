@@ -10,9 +10,9 @@ div.time {
       font-size: 80%;
       display: inline-block;
       width: 30%; }
-    div.time header span.summaryvalue {
-      width: 7%;
-      float: right; }
+  div.time .summaryvalue {
+    /*width: 7%;*/
+    float: right; }
   div.time p {
     margin: .5rem; }
 
