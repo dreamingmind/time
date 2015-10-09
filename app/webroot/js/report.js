@@ -59,7 +59,7 @@ ReportBlock.prototype = {
 		return this.detailNode(name).html();
 	},
 	parent: function () {
-		return this.node.parent();
+		return this.node.parent().parent();
 	}
 };
 
@@ -77,6 +77,7 @@ $(document).ready(function () {
 	var masterblock = report.getSummary('section.subsummary');
 	masterblock.node.attr('id', 'report');
 	masterblock.header().html('<span class="title">Report</span><span class="summaryvalue"></span>');
+	masterblock.node.attr('data-breakpoint', 'report');
 
 	var members = $(report.target);
 	members.each(function () {
@@ -85,7 +86,6 @@ $(document).ready(function () {
 
 	// move the members into the report and total them
 	masterblock.details().html($(report_members).detach());
-//	$('#member_pool').html('');
 
 	masterblock.total();
 	report.newSummaryBlock.call(report, '#report > section.records');
@@ -296,17 +296,18 @@ ReportMaker.prototype = {
 		var index = this.keyLookup[choice];
 //		this.keys[index].used = true;
 		var values = this.keys[index].values;
-		var summaryBlock = this.getSummary(e.currentTarget)
+		var summaryBlock = this.getSummary(e.currentTarget);
+		var breakpoint = $(summaryBlock.parent()).attr('data-breakpoint');
+		var parents = $(summaryBlock.selector.node+'[data-breakpoint="'+breakpoint+'"]');
+		$(summaryBlock.node).remove();
+		
+		j = parents.length;
+		for (var i = 0; i < j; i++) {
+			this.newSummaryBlock(parents[i]);
+		}
+		var x = 'y';
+		// values is now the list of subsummaries that need to be made for each parent
 
-		summaryBlock.headingNode('sortkey').
-				find('label').html(choice.toLocaleUpperCase());
-		summaryBlock.headingValue('sortkeyvalue', this.sortSelectList(values));
-		summaryBlock.headingNode('sortkeyvalue').
-				find('select').on('change', this.sortValueChange.bind(this));
-
-//		$($(e.currentTarget).siblings('label')[0]).html(choice.toLocaleUpperCase());
-//		$(e.currentTarget).parents('header').find('span.sortkeyvalue').html(this.sortSelectList(values));
-//		$(e.currentTarget).parents('header').find('span.sortkeyvalue select').on('change', this.sortValueChange.bind(this));
 	},
 	/**
 	 * Set the 'change behavior for the sort-key value select list
@@ -316,20 +317,20 @@ ReportMaker.prototype = {
 	 * @param event e
 	 * @returns void
 	 */
-	sortValueChange: function (e) {
-		var summaryBlock = this.getSummary(e.currentTarget);
-		summaryBlock.headingValue('sortkeyvalue', $(e.currentTarget).val());
-		var sortkey = summaryBlock.headingValue('sortkey').find('select').val();
-//		$($(e.currentTarget).siblings('label')[0]).html($(e.currentTarget).val());
-//		var sortkey = $(e.currentTarget).parents('header').children('span.sortkey').children('select').val();
-		var keyindex = this.lookupTable(sortkey);
-
-		var valueindex = this.valueLookup(sortkey, $(e.currentTarget).val());
-		this.keys[keyindex].values[valueindex].used = true;
-		if (this.keys[keyindex].available.length == 0) {
-			this.keys[keyindex].used = true;
-		}
-	},
+//	sortValueChange: function (e) {
+//		var summaryBlock = this.getSummary(e.currentTarget);
+//		summaryBlock.headingValue('sortkeyvalue', $(e.currentTarget).val());
+//		var sortkey = summaryBlock.headingValue('sortkey').find('select').val();
+////		$($(e.currentTarget).siblings('label')[0]).html($(e.currentTarget).val());
+////		var sortkey = $(e.currentTarget).parents('header').children('span.sortkey').children('select').val();
+//		var keyindex = this.lookupTable(sortkey);
+//
+//		var valueindex = this.valueLookup(sortkey, $(e.currentTarget).val());
+//		this.keys[keyindex].values[valueindex].used = true;
+//		if (this.keys[keyindex].available.length == 0) {
+//			this.keys[keyindex].used = true;
+//		}
+//	},
 	/**
 	 * Given a sort-key name (a string) find its index number
 	 * 
