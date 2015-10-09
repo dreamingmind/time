@@ -1,14 +1,21 @@
-ReportBlock = function (node) {
+ReportBlock = function (node, selectors) {
 	this.node = $(node);
+	
+	if (typeof(selectors) == 'object') {
+		var property;
+		for (property in selectors) {
+			this.selector[property] = selectors[property];
+		}
+	}
 };
 
 ReportBlock.prototype = {
-		/**
+	/**
 	 * Get the node block header
 	 * @returns {$|jQuery}
 	 */
 	header: function(){
-		return $(this.node.children('header')[0]);
+		return $(this.node.children(this.selector.header)[0]);
 	},
 	/**
 	 * Get a named span from the member header
@@ -32,7 +39,7 @@ ReportBlock.prototype = {
 	},
 	
 	details: function() {
-		return this.node.children('section.records');
+		return this.node.children(this.selector.detail);
 	},
 
 	/**
@@ -56,10 +63,12 @@ ReportBlock.prototype = {
 		return this.detailNode(name).html();
 	}
 	
-}
+};
+
 $(document).ready(function () {
 
 	var report_members = 'div.time';
+	
 	report = new ReportMaker(report_members);
 	$(window).data('summary', report);
 	$('#newsummary').on('click', report.newSummaryBlock.bind(report, 'section#report > section.records'));
@@ -86,7 +95,6 @@ $(document).ready(function () {
 });
 
 ReportMaker = function (target) {
-
 	// the selector to get the records to be summarized
 	this.target = target;
 	// prepare list of possible subsummary breaks
@@ -257,7 +265,7 @@ ReportMaker.prototype = {
 	 * 
 	 * @returns void
 	 */
-	newSummaryBlock: function (wrapper, append) {
+	newSummaryBlock: function (wrapper, append, selectors) {
 		// make and hold a block of random color
 		var block = $(this.summaryblock);
 		block.css('background-color', 'rgb(' + this.rnd() + ', ' + this.rnd() + ', ' + this.rnd() + ')');
@@ -267,7 +275,7 @@ ReportMaker.prototype = {
 		// intitialize the buttons
 		block.find('button').prop('disabled', true);
 		// attach the blocks access tool
-		block.data('summaryblock', new SummaryBlock(block));
+		block.data('summaryblock', new SummaryBlock(block, selectors));
 		// place in the dom
 		if (append) {
 			$(wrapper).append(block);
@@ -363,8 +371,15 @@ ReportMaker.prototype = {
  * @param $|jQuery|selector node
  * @returns {ReportMember}
  */
-SummaryBlock = function (node) {
-	ReportBlock.call(this, node);
+SummaryBlock = function (node, selectors) {
+
+	this.selector = {
+		node: 'section.subsummary',
+		header: 'header',
+		detail: 'section.records'
+	}
+	
+	ReportBlock.call(this, node, selectors);
 };
 
 SummaryBlock.prototype = Object.create(ReportBlock.prototype, {
@@ -397,8 +412,15 @@ SummaryBlock.prototype = Object.create(ReportBlock.prototype, {
  * @param $|jQuery|selector node
  * @returns {ReportMember}
  */
-ReportMember = function (node) {
-	ReportBlock.call(this, node);
+ReportMember = function (node, selectors) {
+
+	this.selector = {
+		node: 'div.time',
+		header: 'header',
+		detail: 'detail'
+	}
+	
+	ReportBlock.call(this, node, selectors);
 };
 ReportMember.prototype = Object.create(ReportBlock.prototype, {
 	constructor: {
