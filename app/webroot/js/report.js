@@ -257,14 +257,15 @@ ReportMaker.prototype = {
 		var keys = this.available(set);
 		var j = keys.length;
 		var label = '<label>Select a subsummary filter.</label>';
-		var options = j === 1 ? [] : ['<option value="">Select a sort key</option>'];
+//		var options = j === 1 ? [] : ['<option value="">Select a sort key</option>'];
+		var options = ['<option value="">Select a sort key</option>'];
 		for (var i = 0; i < j; i++) {
 			options.push('<option value="' + keys[i] + '">' + keys[i] + '</option>');
 		}
-		if (j === 1) {
-			options[0] = options[0].replace(/(<option )/, '$1selected="selected" ');
-			label = label.replace(/>.*</, '>' + keys[0] + '<');
-		}
+//		if (j === 1) {
+//			options[0] = options[0].replace(/(<option )/, '$1selected="selected" ');
+//			label = label.replace(/>.*</, '>' + keys[0] + '<');
+//		}
 		return label + '<select>' + options.join('') + '</select>';
 	},
 	/**
@@ -316,8 +317,10 @@ ReportMaker.prototype = {
 		
 		var j = parents.length;
 		var r = values.length;
+		// the set of parent nodes that will contain this new breakpoint nest
 		for (var i = 0; i < j; i++) {
 			var Parent = $(parents[i]).data('access');
+			// the breakpoints inside a single parent
 			for (var s = 0; s < r; s++) {
 				var block = this.newSummaryBlock();
 				var new_breakpoint = values[s];
@@ -328,20 +331,32 @@ ReportMaker.prototype = {
 				var members = Parent.details().children(this.target);
 				var y = members.length;
 				var members_moved = false;
+				// move the appropriate members from the parent to the breakpoint
 				for (var x = 0; x < y; x++) {
 					if (this.getMember(members[x]).headingNode(choice).html() === values[s].name) {
 						block_access.details().append($(members[x]).detach());
 						members_moved = true
 					}
 				}
+				// if the breakpoint recieved no members, remove it
 				if (!members_moved) {
 					block.detach();
-				}
-//				this.newSummaryBlock(Parent.details());
-			}
+				} // done with members for a single breakpoint
+
+			} // done populating a doing the flavors of 'choice' for a single parent
+			
+		} // done distrubuting the choice into all parents
+		
+		// flag choice done, do css adjustment, recalc the page
+		this.keys[index].used = true;
+		 // list of remaining breakpoints
+		var report_css = $('style#report-css');
+		if (this.available(this.keys).length === 0) {
+			report_css.append(this.target + ' header {display: none;}');
+		} else {
+			report_css.append('section[data-breakpoint="' + choice + '"] .' + choice + ' {display: none;}');
 		}
 		this.total();
-		// values is now the list of subsummaries that need to be made for each parent
 
 	},
 	/**

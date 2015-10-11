@@ -6,6 +6,7 @@ $this->start('css');
 $this->end();
 $this->start('script');
 	echo $this->Html->script('report');
+	echo '<style id="report-css"> </style>';
 $this->end();
 ?>
 <div class="times form">
