@@ -128,7 +128,6 @@ ReportMaker = function (target) {
 	this.keyLookup = this.lookupTable(this.keys);
 	this.setMemberDrag();
 }
-
 ReportMaker.prototype = {
 	constructor: ReportMaker,
 	/**
@@ -349,38 +348,18 @@ ReportMaker.prototype = {
 		
 		// flag choice done, do css adjustment, recalc the page
 		this.keys[index].used = true;
-		 // list of remaining breakpoints
+		
 		var report_css = $('style#report-css');
 		if (this.available(this.keys).length === 0) {
 			report_css.append(this.target + ' header {display: none;}');
 		} else {
 			report_css.append('section[data-breakpoint="' + choice + '"] .' + choice + ' {display: none;}');
 		}
+		
 		this.total();
 
 	},
-	/**
-	 * Set the 'change behavior for the sort-key value select list
-	 * 
-	 * The sort key value list is the possible values for a single sort key. 
-	 * 
-	 * @param event e
-	 * @returns void
-	 */
-//	sortValueChange: function (e) {
-//		var summaryBlock = this.getSummary(e.currentTarget);
-//		summaryBlock.headingValue('sortkeyvalue', $(e.currentTarget).val());
-//		var sortkey = summaryBlock.headingValue('sortkey').find('select').val();
-////		$($(e.currentTarget).siblings('label')[0]).html($(e.currentTarget).val());
-////		var sortkey = $(e.currentTarget).parents('header').children('span.sortkey').children('select').val();
-//		var keyindex = this.lookupTable(sortkey);
-//
-//		var valueindex = this.valueLookup(sortkey, $(e.currentTarget).val());
-//		this.keys[keyindex].values[valueindex].used = true;
-//		if (this.keys[keyindex].available.length == 0) {
-//			this.keys[keyindex].used = true;
-//		}
-//	},
+
 	/**
 	 * Given a sort-key name (a string) find its index number
 	 * 
