@@ -74,7 +74,7 @@ PAT;
 %s	</header>
 	<details>
 		<p><span class="summaryvalue">%s</span></p>
-		<p class="activity">%s</p>
+		<p class="activity">%s&nbsp;</p>
 	</details>
 </div>\n
 PAT;

@@ -1,3 +1,38 @@
+$(document).ready(function () {
+
+	var report_members = 'div.time';
+	
+	report = new ReportMaker(report_members);
+	$(window).data('summary', report);
+	$('#newsummary').on('click', function(){
+		$('section#report > section.records').prepend(report.newSummaryBlock.call(report))
+	});
+//	$('#newsummary').on('click', report.newSummaryBlock.bind(report, 'section#report > section.records'));
+
+	// make the project level summary block
+	// it needs limited features
+	$('div#content').append(report.newSummaryBlock.call(report));
+//	report.newSummaryBlock.call(report, 'div#content', true);
+	var masterblock = report.getSummary('section.subsummary');
+	masterblock.node.attr('id', 'report');
+	masterblock.header().html('<span class="title">Report</span><span class="summaryvalue"></span>');
+	masterblock.node.attr('data-breakpoint', 'report');
+
+	var members = $(report.target);
+	members.each(function () {
+		$(this).data('access', new ReportMember(this));
+	});
+
+	// move the members into the report and total them
+	masterblock.details().html($(report_members).detach());
+
+	masterblock.total();
+	$('#report > section.records').prepend(report.newSummaryBlock.call(report));
+
+//	report.newSummaryBlock.call(report, '#report > section.records');
+
+});
+
 ReportBlock = function (node, selectors) {
 	this.node = $(node);
 	if (typeof(selectors) == 'object') {
@@ -62,41 +97,6 @@ ReportBlock.prototype = {
 		return this.node.parent().parent();
 	}
 };
-
-$(document).ready(function () {
-
-	var report_members = 'div.time';
-	
-	report = new ReportMaker(report_members);
-	$(window).data('summary', report);
-	$('#newsummary').on('click', function(){
-		$('section#report > section.records').prepend(report.newSummaryBlock.call(report))
-	});
-//	$('#newsummary').on('click', report.newSummaryBlock.bind(report, 'section#report > section.records'));
-
-	// make the project level summary block
-	// it needs limited features
-	$('div#content').append(report.newSummaryBlock.call(report));
-//	report.newSummaryBlock.call(report, 'div#content', true);
-	var masterblock = report.getSummary('section.subsummary');
-	masterblock.node.attr('id', 'report');
-	masterblock.header().html('<span class="title">Report</span><span class="summaryvalue"></span>');
-	masterblock.node.attr('data-breakpoint', 'report');
-
-	var members = $(report.target);
-	members.each(function () {
-		$(this).data('access', new ReportMember(this));
-	});
-
-	// move the members into the report and total them
-	masterblock.details().html($(report_members).detach());
-
-	masterblock.total();
-	$('#report > section.records').prepend(report.newSummaryBlock.call(report));
-
-//	report.newSummaryBlock.call(report, '#report > section.records');
-
-});
 
 ReportMaker = function (target) {
 	// the selector to get the records to be summarized
@@ -325,7 +325,7 @@ ReportMaker.prototype = {
 				var new_breakpoint = values[s];
 				var block_access = block.data('access');
 				block.attr('data-breakpoint', choice);
-				block_access.headingValue('sortkey', values[s].name);
+				block_access.headingValue('sortkey', values[s].name + '&nbsp;');
 				Parent.details().prepend(block);
 				var members = Parent.details().children(this.target);
 				var y = members.length;
