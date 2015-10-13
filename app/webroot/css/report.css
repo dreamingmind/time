@@ -12,7 +12,7 @@ div.time {
       width: 30%; }
   div.time .summaryvalue {
     /*width: 7%;*/
-    float: right; }
+    /*float: right;*/ }
   div.time p {
     margin: .5rem; }
 

@@ -2,6 +2,7 @@
 App::uses('CakeNumber', 'Utility');
 
 $this->start('css');
+	echo $this->Html->css('foundation');
 	echo $this->Html->css('report');
 $this->end();
 $this->start('script');
@@ -72,13 +73,13 @@ PAT;
 <div id="time-%s" class="time" data-seconds="%s">
 	<header class="keys">
 %s	</header>
-	<details>
-		<p><span class="summaryvalue">%s</span></p>
-		<p class="activity">%s&nbsp;</p>
+	<details class="row">
+		<span class="activity columns small-11">%s&nbsp;</span>
+		<span class="summaryvalue columns small-1">%s</span>
 	</details>
 </div>\n
 PAT;
-	return sprintf($pattern, $id, $seconds, (implode('', $spans)), $summaryvalue, $activity);
+	return sprintf($pattern, $id, $seconds, (implode('', $spans)), $activity, $summaryvalue);
 }
 
 // </editor-fold>
